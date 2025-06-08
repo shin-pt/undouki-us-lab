@@ -309,6 +309,55 @@
         .seminars-link { margin-top: 50px; display: inline-block; font-weight: 600; }
         .seminars-link:hover { text-decoration: underline; }
 
+        /* --- 参加者特典セクション --- */
+        .seminar-benefits {
+            margin-top: 60px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .seminar-benefits h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        .benefits-text {
+            color: var(--secondary-color);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .video-section h4 {
+            font-size: 1.4rem;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .video-item {
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .video-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        .video-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 12px;
+        }
+
         /* --- Gallery Section (New) --- */
         #gallery {
             text-align: center;
@@ -722,6 +771,30 @@
                     </div>
                     <p class="seminar-note">※ 募集開始時期が異なる場合があります。詳細は各ボタンからご確認ください。</p>
                 </div>
+                
+                <!-- 資料・特典動画セクション -->
+                <div class="seminar-benefits">
+                    <h3>参加者特典</h3>
+                    <p class="benefits-text">セミナー参加者には、復習用資料と特典動画を配布しております。ご自宅でも継続的に学習を深めていただけます。</p>
+                    
+                    <div class="video-section">
+                        <h4>特典動画の一部をご紹介</h4>
+                        <div class="video-grid">
+                            <div class="video-item">
+                                <video controls muted>
+                                    <source src="picture_site/chl.mp4" type="video/mp4">
+                                    お使いのブラウザは動画再生に対応していません。
+                                </video>
+                            </div>
+                            <div class="video-item">
+                                <video controls muted>
+                                    <source src="picture_site/PFP.mp4" type="video/mp4">
+                                    お使いのブラウザは動画再生に対応していません。
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -897,7 +970,7 @@
                     <h3>連絡先情報</h3>
                     <div class="contact-details">
                         <p><strong>団体名:</strong> 運動器超音波Lab</p>
-                        <p><strong>Email:</strong> s.momodani.s@gmail.com</p>
+                        <p><strong>Email:</strong> info@undouki-us-lab.jp</p>
                     </div>
                 </div>
                 <form class="contact-form" action="https://formspree.io/f/mpwrpawr" method="POST">
