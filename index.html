@@ -482,18 +482,12 @@
             padding: 20px;
             text-align: center;
             transition: all 0.3s ease;
-        }
-        .plan-item.popular {
-            border-color: var(--primary-color);
-            background: rgba(0, 123, 255, 0.1);
-            transform: scale(1.05);
+            cursor: pointer;
         }
         .plan-item:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 123, 255, 0.1);
             transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-        .plan-item.popular:hover {
-            transform: scale(1.05) translateY(-5px);
         }
         .plan-name {
             font-size: 1rem;
@@ -814,7 +808,6 @@
             .seminar-card { width: 100%; min-width: unset; }
             .seminar-buttons { flex-direction: column; align-items: center; gap: 15px; }
             .plans-grid { grid-template-columns: 1fr; gap: 15px; }
-            .plan-item.popular { transform: none; }
         }
         
         @media (max-width: 768px) {
@@ -896,6 +889,8 @@
                     <h1>「リハビリテーション × エコー」で、<br>もっと"見える"臨床へ。</h1>
                     <p>運動器超音波Labは、多職種でエコーを学び合う実践的なスキルアップセミナーです。</p>
                     <a href="#seminars" class="hero-btn">最新セミナーを見る</a>
+                    <br>
+                    <a href="#echo-quiz-app" class="hero-btn" style="margin-top: 25px; background-color: var(--accent-green);">エコークイズアプリを見る</a>
                 </div>
             </div>
         </section>
@@ -927,13 +922,13 @@
         <section id="echo-quiz-app">
             <div class="container">
                 <h2 class="section-title">エコークイズアプリ</h2>
-                <p class="section-intro">運動器超音波診断の知識を効率的に学べる<strong>オンライン学習ツール</strong>をご紹介します。<br>セミナーでの学びをさらに深め、いつでもどこでも復習できます。</p>
+                <p class="section-intro">運動器超音波の知識を効率的に学べる<strong>オンライン学習ツール</strong>をご紹介します。<br>セミナーでの学びをさらに深め、いつでもどこでも復習できます。</p>
                 
                 <div class="quiz-app-grid">
                     <div class="quiz-app-content">
                         <div class="quiz-app-card">
                             <div class="quiz-app-header">
-                                <h3>運動器超音波診断 学習クイズアプリ</h3>
+                                <h3>運動器超音波 学習クイズアプリ</h3>
                                 <div class="quiz-app-badge">Web版対応</div>
                             </div>
                             
@@ -964,21 +959,27 @@
                             <div class="quiz-plans">
                                 <h4>料金プラン</h4>
                                 <div class="plans-grid">
-                                    <div class="plan-item">
-                                        <div class="plan-name">無料プラン</div>
-                                        <div class="plan-price">¥0</div>
-                                        <div class="plan-features">基本問題20問</div>
-                                    </div>
-                                    <div class="plan-item popular">
-                                        <div class="plan-name">ベーシック</div>
-                                        <div class="plan-price">¥1,500<span>/月</span></div>
-                                        <div class="plan-features">100問以上 + 詳細解説</div>
-                                    </div>
-                                    <div class="plan-item">
-                                        <div class="plan-name">プレミアム</div>
-                                        <div class="plan-price">¥3,000<span>/月</span></div>
-                                        <div class="plan-features">全機能 + 動画解説20本以上</div>
-                                    </div>
+                                    <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                                        <div class="plan-item">
+                                            <div class="plan-name">無料プラン</div>
+                                            <div class="plan-price">¥0</div>
+                                            <div class="plan-features">基本問題20問</div>
+                                        </div>
+                                    </a>
+                                    <a href="https://buy.stripe.com/dRmeVd2DL2AYdG27bMeME00?success_url=https://echo-quiz-app.web.app/?payment=success&plan=basic&cancel_url=https://echo-quiz-app.web.app/?payment=cancel" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                                        <div class="plan-item">
+                                            <div class="plan-name">ベーシック</div>
+                                            <div class="plan-price">¥1,500<span>/月</span></div>
+                                            <div class="plan-features">100問以上 + 詳細解説</div>
+                                        </div>
+                                    </a>
+                                    <a href="https://buy.stripe.com/dRm14na6d5Na6dAcw6eME01?success_url=https://echo-quiz-app.web.app/?payment=success&plan=pro&cancel_url=https://echo-quiz-app.web.app/?payment=cancel" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
+                                        <div class="plan-item">
+                                            <div class="plan-name">プレミアム</div>
+                                            <div class="plan-price">¥3,000<span>/月</span></div>
+                                            <div class="plan-features">全機能 + 動画解説20本以上</div>
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
                             
