@@ -308,6 +308,50 @@
         }
         .seminars-link { margin-top: 50px; display: inline-block; font-weight: 600; }
         .seminars-link:hover { text-decoration: underline; }
+        
+        /* --- 特別開催セミナー --- */
+        .special-seminar {
+            margin-top: 60px;
+            text-align: center;
+        }
+        .special-title {
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            color: var(--accent-green);
+        }
+        .special-image-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .special-image {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+        .special-cta {
+            text-align: center;
+        }
+        .special-btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--accent-green);
+            color: white;
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+        .special-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(40, 167, 69, 0.4);
+        }
+        .special-btn i {
+            margin-right: 10px;
+        }
 
         /* --- 参加者特典セクション --- */
         .seminar-benefits {
@@ -356,6 +400,149 @@
             height: auto;
             display: block;
             border-radius: 12px;
+        }
+
+        /* --- Echo Quiz App Section --- */
+        #echo-quiz-app {
+            background-color: #1a1a1a; /* Seminar背景色(#121212)より少し明るめ */
+        }
+        .quiz-app-grid {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .quiz-app-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        .quiz-app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .quiz-app-header h3 {
+            font-size: 1.8rem;
+            margin: 0;
+            color: var(--text-color);
+        }
+        .quiz-app-badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .quiz-features {
+            margin-bottom: 40px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .feature-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 20px;
+            width: 30px;
+            text-align: center;
+        }
+        .feature-item h4 {
+            font-size: 1.2rem;
+            margin: 0 0 5px 0;
+            color: var(--text-color);
+        }
+        .feature-item p {
+            margin: 0;
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+        .quiz-plans h4 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            text-align: center;
+        }
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        .plan-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .plan-item.popular {
+            border-color: var(--primary-color);
+            background: rgba(0, 123, 255, 0.1);
+            transform: scale(1.05);
+        }
+        .plan-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .plan-item.popular:hover {
+            transform: scale(1.05) translateY(-5px);
+        }
+        .plan-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        .plan-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--secondary-color);
+        }
+        .plan-features {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+        }
+        .quiz-cta {
+            text-align: center;
+        }
+        .quiz-btn-main {
+            display: inline-flex;
+            align-items: center;
+            background: var(--primary-color);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
+            margin-bottom: 15px;
+        }
+        .quiz-btn-main:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
+        }
+        .quiz-btn-main i {
+            margin-right: 10px;
+        }
+        .quiz-note {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin: 0;
+            font-style: italic;
         }
 
         /* --- Gallery Section (New) --- */
@@ -626,6 +813,8 @@
             .about-image { margin-top: 40px; }
             .seminar-card { width: 100%; min-width: unset; }
             .seminar-buttons { flex-direction: column; align-items: center; gap: 15px; }
+            .plans-grid { grid-template-columns: 1fr; gap: 15px; }
+            .plan-item.popular { transform: none; }
         }
         
         @media (max-width: 768px) {
@@ -666,6 +855,8 @@
             .seminar-card h3 { font-size: 1.5rem; }
             .faq-grid, .access-grid { grid-template-columns: 1fr; gap: 20px; }
             .faq-item, .access-card { padding: 20px; }
+            .quiz-app-card { padding: 25px; }
+            .quiz-app-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
     </style>
 </head>
@@ -676,6 +867,7 @@
             <a href="#home" class="logo">運動器超音波Lab</a>
             <nav class="main-nav">
                 <a href="#about">団体について</a>
+                <a href="#echo-quiz-app">クイズアプリ</a>
                 <a href="#seminars">セミナー</a>
                 <a href="#gallery">セミナー風景</a>
                 <a href="#instructors">講師紹介</a>
@@ -731,6 +923,79 @@
             </div>
         </section>
 
+        <!-- Echo Quiz App Section -->
+        <section id="echo-quiz-app">
+            <div class="container">
+                <h2 class="section-title">エコークイズアプリ</h2>
+                <p class="section-intro">運動器超音波診断の知識を効率的に学べる<strong>オンライン学習ツール</strong>をご紹介します。<br>セミナーでの学びをさらに深め、いつでもどこでも復習できます。</p>
+                
+                <div class="quiz-app-grid">
+                    <div class="quiz-app-content">
+                        <div class="quiz-app-card">
+                            <div class="quiz-app-header">
+                                <h3>運動器超音波診断 学習クイズアプリ</h3>
+                                <div class="quiz-app-badge">Web版対応</div>
+                            </div>
+                            
+                            <div class="quiz-features">
+                                <div class="feature-item">
+                                    <i class="fa-solid fa-brain"></i>
+                                    <div>
+                                        <h4>体系的な学習</h4>
+                                        <p>上肢・下肢・体幹の部位別クイズで効率的に学習</p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fa-solid fa-video"></i>
+                                    <div>
+                                        <h4>動画解説付き</h4>
+                                        <p>20本以上の詳細動画で理解を深める<br><small style="color: var(--secondary-color);">（毎月3〜5本追加予定）</small></p>
+                                    </div>
+                                </div>
+                                <div class="feature-item">
+                                    <i class="fa-solid fa-mobile-alt"></i>
+                                    <div>
+                                        <h4>いつでもどこでも</h4>
+                                        <p>スマホ・タブレット・PCで学習可能</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quiz-plans">
+                                <h4>料金プラン</h4>
+                                <div class="plans-grid">
+                                    <div class="plan-item">
+                                        <div class="plan-name">無料プラン</div>
+                                        <div class="plan-price">¥0</div>
+                                        <div class="plan-features">基本問題20問</div>
+                                    </div>
+                                    <div class="plan-item popular">
+                                        <div class="plan-name">ベーシック</div>
+                                        <div class="plan-price">¥1,500<span>/月</span></div>
+                                        <div class="plan-features">100問以上 + 詳細解説</div>
+                                    </div>
+                                    <div class="plan-item">
+                                        <div class="plan-name">プレミアム</div>
+                                        <div class="plan-price">¥3,000<span>/月</span></div>
+                                        <div class="plan-features">全機能 + 動画解説20本以上</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quiz-cta">
+                                <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" class="quiz-btn-main">
+                                    <i class="fa-solid fa-external-link-alt"></i>
+                                    アプリを試してみる
+                                </a>
+                                <p class="quiz-note">※ まずは無料プランでお試しください</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
         <!-- Seminars Section -->
         <section id="seminars">
             <div class="container">
@@ -760,16 +1025,30 @@
                 <!-- 申し込みボタン -->
                 <div class="seminar-cta">
                     <div class="seminar-buttons">
-                        <a href="https://peatix.com/event/4450491/view" target="_blank" rel="noopener noreferrer" class="seminar-btn-main primary">
+                        <a href="https://ultrasound20250820.peatix.com/view" target="_blank" rel="noopener noreferrer" class="seminar-btn-main primary">
                             <span class="btn-month">今月開催分</span>
                             <span class="btn-text">詳細・お申し込み</span>
                         </a>
-                        <a href="https://ultrasound20250820.peatix.com/view" target="_blank" rel="noopener noreferrer" class="seminar-btn-main secondary">
+                        <a href="#" class="seminar-btn-main secondary">
                             <span class="btn-month">来月開催分</span>
                             <span class="btn-text">詳細・お申し込み</span>
                         </a>
                     </div>
                     <p class="seminar-note">※ 募集開始時期が異なる場合があります。詳細は各ボタンからご確認ください。</p>
+                    
+                    <!-- 特別開催セミナー -->
+                    <div class="special-seminar">
+                        <h3 class="special-title">🎉 特別開催！</h3>
+                        <div class="special-image-container">
+                            <img src="https://github.com/shin-pt/undouki-us-lab/blob/main/picture_site/seminar01.jpeg?raw=true" alt="エコーハンズオン特別セミナー" class="special-image">
+                            <div class="special-cta">
+                                <a href="https://ultrasound20250914.peatix.com/view" target="_blank" rel="noopener noreferrer" class="special-btn">
+                                    <i class="fas fa-external-link-alt"></i>
+                                    詳細・お申し込み
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- 資料・特典動画セクション -->
