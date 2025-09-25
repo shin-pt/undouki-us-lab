@@ -943,8 +943,8 @@
                                 <div class="feature-item">
                                     <i class="fa-solid fa-video"></i>
                                     <div>
-                                        <h4>動画解説付き</h4>
-                                        <p>20本以上の詳細動画で理解を深める<br><small style="color: var(--secondary-color);">（毎月3〜5本追加予定）</small></p>
+                                        <h4>動画解説（購入型）</h4>
+                                        <p>詳細動画を個別購入で理解を深める<br><small style="color: var(--secondary-color);">（必要な動画のみ購入可能）</small></p>
                                     </div>
                                 </div>
                                 <div class="feature-item">
@@ -958,7 +958,7 @@
                             
                             <div class="quiz-plans">
                                 <h4>料金プラン</h4>
-                                <div class="plans-grid">
+                                <div class="plans-grid" style="grid-template-columns: repeat(2, 1fr);">
                                     <!-- リンク一時停止中 - 再開通時はコメントを解除してください -->
                                     <!-- <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;"> -->
                                         <div class="plan-item" style="cursor: default;">
@@ -974,17 +974,26 @@
                                             <div class="plan-features">100問以上 + 詳細解説</div>
                                         </div>
                                     <!-- </a> -->
-                                    <!-- <a href="https://buy.stripe.com/dRm14na6d5Na6dAcw6eME01?success_url=https://echo-quiz-app.web.app/?payment=success&plan=pro&cancel_url=https://echo-quiz-app.web.app/?payment=cancel" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;"> -->
-                                        <div class="plan-item" style="cursor: default;">
-                                            <div class="plan-name">プレミアム</div>
-                                            <div class="plan-price">¥3,000<span>/月</span></div>
-                                            <div class="plan-features">全機能 + 動画解説20本以上</div>
-                                        </div>
-                                    <!-- </a> -->
+                                </div>
+
+                                <!-- 動画解説購入型の説明 -->
+                                <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                                    <h5 style="color: var(--text-color); margin-bottom: 15px; font-size: 1.1rem; text-align: center;">
+                                        <i class="fa-solid fa-video" style="margin-right: 8px; color: var(--primary-color);"></i>
+                                        動画解説（個別購入）
+                                    </h5>
+                                    <p style="color: var(--secondary-color); font-size: 0.95rem; text-align: center; margin: 0 0 15px 0; line-height: 1.6;">
+                                        学習に必要な動画解説を個別に購入できます。<br>
+                                        <small>※ 詳細な価格・購入方法は準備中です</small>
+                                    </p>
+                                    <p style="color: var(--primary-color); font-size: 0.9rem; text-align: center; margin: 0; font-weight: 600;">
+                                        <i class="fa-solid fa-lightbulb" style="margin-right: 5px;"></i>
+                                        パックプランも検討中
+                                    </p>
                                 </div>
                             </div>
-                            
-                            <div class="quiz-cta">
+
+                            <div class="quiz-cta" style="margin-top: 40px; padding-top: 20px;">
                                 <!-- リンク一時停止中 - 再開通時はコメントを解除してください -->
                                 <!-- <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" class="quiz-btn-main"> -->
                                 <div class="quiz-btn-main" style="cursor: default; opacity: 0.6;">
@@ -1030,12 +1039,14 @@
                 <!-- 申し込みボタン -->
                 <div class="seminar-cta">
                     <div class="seminar-buttons">
-                        <a href="https://ultrasound20250820.peatix.com/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; transition: all 0.3s ease; max-width: 600px; width: 100%;">
-                            <img src="https://github.com/shin-pt/undouki-us-lab/blob/main/picture_site/Lumber.jpeg?raw=true" alt="今月開催分セミナー" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3); cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 123, 255, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(0, 123, 255, 0.3)';">
+                        <a href="https://ultrasound2025010.peatix.com/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; transition: all 0.3s ease; max-width: 600px; width: 100%;">
+                            <img src="https://github.com/shin-pt/undouki-us-lab/blob/main/picture_site/cover-koeT7P4FGA0pNAPA81pJgwhfRNOxYjir.jpeg?raw=true" alt="足関節内側のエコーのミカタセミナー" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3); cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(0, 123, 255, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(0, 123, 255, 0.3)';">
                         </a>
-                        <a href="https://ultrasound202509.peatix.com/view" target="_blank" rel="noopener noreferrer" style="display: inline-block; transition: all 0.3s ease; max-width: 600px; width: 100%;">
-                            <img src="https://github.com/shin-pt/undouki-us-lab/blob/main/picture_site/sekitui.jpeg?raw=true" alt="来月開催分セミナー" style="width: 100%; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3); cursor: pointer;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(40, 167, 69, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(40, 167, 69, 0.3)';">
-                        </a>
+                        <div style="display: inline-block; max-width: 600px; width: 100%; padding: 40px; background-color: rgba(255, 255, 255, 0.1); border-radius: 12px; text-align: center; border: 2px dashed rgba(255, 255, 255, 0.3);">
+                            <i class="fas fa-info-circle" style="font-size: 2rem; color: var(--secondary-color); margin-bottom: 15px;"></i>
+                            <p style="color: var(--secondary-color); font-size: 1.1rem; margin: 0; font-weight: 600;">現在は新しい情報はありません</p>
+                            <p style="color: var(--secondary-color); font-size: 0.9rem; margin: 10px 0 0 0; opacity: 0.8;">新しいセミナー情報があり次第更新いたします</p>
+                        </div>
                     </div>
                     <p class="seminar-note">※ 募集開始時期が異なる場合があります。詳細は各ボタンからご確認ください。</p>
                     
@@ -1043,10 +1054,11 @@
                     <div class="special-seminar">
                         <h3 class="special-title">🎉 特別開催！</h3>
                         <div class="special-image-container">
-                            <a href="https://ultrasound20250914.peatix.com/view" target="_blank" rel="noopener noreferrer">
-                                <img src="https://github.com/shin-pt/undouki-us-lab/blob/main/picture_site/seminar01.jpeg?raw=true" alt="エコーハンズオン特別セミナー" class="special-image" style="cursor: pointer;">
-                            </a>
-                            <p style="margin-top: 15px; color: var(--secondary-color); font-size: 0.95rem; text-align: center;">※ 画像をクリックすると詳細・お申し込みページへ移動します</p>
+                            <div style="max-width: 800px; margin: 0 auto; padding: 60px 40px; background-color: rgba(255, 255, 255, 0.1); border-radius: 16px; text-align: center; border: 2px dashed rgba(255, 255, 255, 0.3);">
+                                <i class="fas fa-info-circle" style="font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px;"></i>
+                                <p style="color: var(--secondary-color); font-size: 1.3rem; margin: 0 0 15px 0; font-weight: 600;">現在は新しい情報はありません</p>
+                                <p style="color: var(--secondary-color); font-size: 1rem; margin: 0; opacity: 0.8;">新しい特別セミナー情報があり次第更新いたします</p>
+                            </div>
                         </div>
                     </div>
                 </div>
