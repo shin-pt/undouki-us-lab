@@ -797,6 +797,12 @@
             color: var(--primary-color);
         }
 
+        /* --- Echo Videos Button Hover Effect --- */
+        .videos-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(156, 39, 176, 0.5) !important;
+        }
+
         /* --- Responsive Design --- */
         @media (max-width: 992px) {
             h2.section-title { font-size: 2.5rem; }
@@ -896,6 +902,10 @@
                         過去のセミナー資料を見る
                         <span style="display: block; font-size: 0.8rem; margin-top: 5px; color: rgba(255,255,255,0.8);">（準備中）</span>
                     </span>
+                    <br>
+                    <a href="echo-videos.html" class="hero-btn" style="margin-top: 25px; background-color: #9c27b0;">
+                        エコー動画を見る
+                    </a>
                 </div>
             </div>
         </section>
@@ -1103,6 +1113,37 @@
                     </span>
                     <p style="color: var(--secondary-color); margin-top: 20px; font-size: 0.9rem; font-style: italic;">
                         各資料 ¥1,500 / 決済後すぐにPDFをダウンロード可能
+                    </p>
+                </div>
+
+                <!-- エコー動画セクション -->
+                <div class="echo-videos-section" style="text-align: center; margin-top: 60px; padding: 50px 0; background: rgba(156, 39, 176, 0.1); border-radius: 16px; border: 1px solid rgba(156, 39, 176, 0.3);">
+                    <h3 style="font-size: 2rem; margin-bottom: 25px; color: var(--text-color);">
+                        <i class="fas fa-video" style="margin-right: 12px; color: #9c27b0;"></i>
+                        エコー動画
+                    </h3>
+                    <p style="color: var(--secondary-color); margin-bottom: 35px; font-size: 1.1rem; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.8;">
+                        運動器エコーの<strong style="color: var(--text-color);">観察動画</strong>と<strong style="color: var(--text-color);">動態動画</strong>を個別に購入できます。<br>
+                        <strong style="color: var(--text-color);">上肢・体幹・下肢</strong>の各部位ごとに、必要な動画だけを選んで学習できます。
+                    </p>
+                    <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 35px; flex-wrap: wrap; max-width: 800px; margin-left: auto; margin-right: auto;">
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 20px 30px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="font-size: 0.9rem; color: var(--secondary-color); margin-bottom: 8px;">観察動画</div>
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--text-color);">¥800</div>
+                            <div style="font-size: 0.85rem; color: var(--secondary-color); margin-top: 8px;">54本</div>
+                        </div>
+                        <div style="background: rgba(255, 255, 255, 0.05); padding: 20px 30px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                            <div style="font-size: 0.9rem; color: var(--secondary-color); margin-bottom: 8px;">動態動画</div>
+                            <div style="font-size: 1.8rem; font-weight: 700; color: var(--text-color);">¥900</div>
+                            <div style="font-size: 0.85rem; color: var(--secondary-color); margin-top: 8px;">13本</div>
+                        </div>
+                    </div>
+                    <a href="echo-videos.html" class="videos-btn" style="display: inline-flex; align-items: center; background: #9c27b0; color: white; padding: 18px 40px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(156, 39, 176, 0.4); font-size: 1.1rem;">
+                        <i class="fas fa-play-circle" style="margin-right: 12px;"></i>
+                        エコー動画を見る
+                    </a>
+                    <p style="color: var(--secondary-color); margin-top: 20px; font-size: 0.9rem; font-style: italic;">
+                        全67本 / 購入後すぐに視聴可能
                     </p>
                 </div>
             </div>
