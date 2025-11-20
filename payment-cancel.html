@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購入キャンセル - 運動器超音波Lab</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .cancel-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 60px 40px;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cancel-icon {
+            font-size: 80px;
+            color: #f5576c;
+            margin-bottom: 30px;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .message {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .info-box h3 {
+            color: #f57c00;
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #666;
+        }
+
+        .info-box li {
+            margin: 5px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .contact-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .contact-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin: 5px 0;
+        }
+
+        .contact-info a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .cancel-container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cancel-container">
+        <div class="cancel-icon">
+            <i class="fas fa-times-circle"></i>
+        </div>
+
+        <h1>購入がキャンセルされました</h1>
+
+        <p class="message">
+            動画の購入手続きがキャンセルされました。<br>
+            決済は行われていません。
+        </p>
+
+        <div class="info-box">
+            <h3>
+                <i class="fas fa-info-circle"></i>
+                購入を再開する場合
+            </h3>
+            <ul>
+                <li>動画一覧ページに戻って、再度購入ボタンをクリックしてください</li>
+                <li>お支払い方法やカード情報に問題がある場合は、別のカードをお試しください</li>
+                <li>ご不明な点がございましたら、下記お問い合わせ先までご連絡ください</li>
+            </ul>
+        </div>
+
+        <div class="btn-group">
+            <a href="echo-videos.html" class="btn btn-primary">
+                <i class="fas fa-redo"></i>
+                動画一覧に戻る
+            </a>
+            <a href="index.html" class="btn btn-secondary">
+                <i class="fas fa-home"></i>
+                ホームへ
+            </a>
+        </div>
+
+        <div class="contact-info">
+            <p><i class="fas fa-question-circle"></i> <strong>お困りの際は</strong></p>
+            <p>お問い合わせ: <a href="mailto:support@example.com">support@example.com</a></p>
+            <p>または <a href="index.html#contact">お問い合わせフォーム</a> をご利用ください</p>
+        </div>
+    </div>
+
+    <!-- Payment Cancel Processing Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚫 Payment cancelled by user');
+
+            // URLパラメータから動画IDを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('video_id');
+
+            if (videoId) {
+                console.log('Cancelled video ID:', videoId);
+            }
+
+            // ペンディング中の購入情報をクリア
+            try {
+                localStorage.removeItem('pending_video_purchase');
+                localStorage.removeItem('purchase_timestamp');
+                console.log('🧹 Cleared pending purchase data');
+            } catch (e) {
+                console.warn('⚠️ Failed to clear pending purchase:', e);
+            }
+
+            // Google Analytics などのトラッキング設定がある場合はここに追加
+            // gtag('event', 'checkout_cancel', { video_id: videoId });
+        });
+    </script>
+</body>
+</html>

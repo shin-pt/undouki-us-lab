@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エコー動画販売 - 運動器超音波Lab</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="運動器超音波Labのエコー動画を購入できます。臨床で役立つ実践的な超音波技術を動画で学習。">
+    <meta name="keywords" content="エコー動画,超音波動画,運動器超音波,理学療法,学習動画">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Stripe Payment Configuration -->
+    <script src="video-payment-config.js"></script>
+
+    <style>
+        /* --- CSS Variables --- */
+        :root {
+            --bg-color: #121212;
+            --bg-light-color: #f4f6f8;
+            --text-color: #e0e0e0;
+            --text-dark-color: #333333;
+            --primary-color: #007bff;
+            --secondary-color: #999999;
+            --accent-green: #28a745;
+            --accent-purple: #9c27b0;
+            --container-width: 1140px;
+            --section-padding: 100px 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: var(--section-padding);
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Poppins', 'Noto Sans JP', sans-serif;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.3;
+        }
+
+        h1.page-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-align: center;
+        }
+
+        .page-intro {
+            color: var(--secondary-color);
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        /* --- Header --- */
+        .main-header {
+            position: relative;
+            padding: 30px 0;
+            background-color: var(--bg-color);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .back-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #66b2ff;
+        }
+        .back-link i {
+            margin-right: 8px;
+        }
+
+        /* --- Filter Section --- */
+        .filter-section {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--text-color);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .search-box {
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+
+        /* --- Video Grid --- */
+        .videos-section {
+            padding-top: 60px;
+        }
+
+        .category-section {
+            margin-bottom: 80px;
+        }
+
+        .category-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .video-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+        }
+
+        .video-thumbnail.observation {
+            background: rgba(102, 126, 234, 0.15);
+            border-bottom: 3px solid #667eea;
+        }
+
+        .video-thumbnail.dynamics {
+            background: rgba(240, 147, 251, 0.15);
+            border-bottom: 3px solid #f093fb;
+        }
+
+        .video-type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .video-content {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            min-height: 60px;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .video-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .video-vimeo-link {
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .video-vimeo-link:hover {
+            color: var(--primary-color);
+        }
+
+        .buy-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .buy-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+        }
+
+        .buy-btn.disabled {
+            background-color: #666;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .buy-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* --- Info Section --- */
+        .info-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 50px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 80px;
+        }
+
+        .info-section h2 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-item i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .info-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .info-item p {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+
+        /* --- Stats Bar --- */
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 50px 0;
+            background-color: #0c0c0c;
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .copyright {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            h1.page-title {
+                font-size: 2rem;
+            }
+
+            .video-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .info-section {
+                padding: 30px 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            .filter-buttons {
+                gap: 10px;
+            }
+
+            .filter-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .stats-bar {
+                padding: 20px;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">運動器超音波Lab</a>
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>ホームに戻る
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="videos-section">
+            <div class="container">
+                <h1 class="page-title">エコー動画販売</h1>
+                <p class="page-intro">
+                    臨床で役立つ運動器超音波の実践的な技術を、<strong>高品質な動画</strong>で学習できます。<br>
+                    購入後すぐに視聴可能。何度でも繰り返し学習できます。
+                </p>
+
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-number">67</div>
+                        <div class="stat-label">動画総数</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">¥800~</div>
+                        <div class="stat-label">観察動画</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">¥900~</div>
+                        <div class="stat-label">動態動画</div>
+                    </div>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="filter-section">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">すべて</button>
+                        <button class="filter-btn" data-filter="upper_limb">上肢</button>
+                        <button class="filter-btn" data-filter="trunk">体幹</button>
+                        <button class="filter-btn" data-filter="lower_limb">下肢</button>
+                        <button class="filter-btn" data-filter="observation">観察動画</button>
+                        <button class="filter-btn" data-filter="dynamics">動態動画</button>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="動画を検索...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <!-- 上肢動画セクション -->
+                <div class="category-section" data-category="upper_limb">
+                    <h2 class="category-title">上肢動画</h2>
+                    <div class="video-grid" id="upperLimbGrid">
+                        <!-- 観察動画 -->
+                        <div class="video-card" data-type="observation" data-title="棘上筋・肩甲上神経の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">棘上筋・肩甲上神経の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1091718243" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="棘下筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">棘下筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1091597047" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="烏口腕筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">烏口腕筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092658636" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="上腕筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">上腕筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092659006" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="上腕二頭筋短頭の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">上腕二頭筋短頭の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092659246" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="上腕二頭筋長頭の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">上腕二頭筋長頭の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092659592" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="腕尺関節の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">腕尺関節の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092660082" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="回外筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">回外筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092654299" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="総指伸筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">総指伸筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092478011" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="腕橈関節の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">腕橈関節の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092013447" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="腋窩神経前枝・後上腕回旋動脈の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">腋窩神経前枝・後上腕回旋動脈の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1091799643" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <!-- 動態動画 -->
+                        <div class="video-card" data-type="dynamics" data-title="烏口上腕靱帯の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">烏口上腕靱帯の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1091720547" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="肩甲下筋と烏口腕筋・上腕二頭筋短頭の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">肩甲下筋と烏口腕筋・上腕二頭筋短頭の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1091796864" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="肩外転動作時の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">肩外転動作時の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1091792981" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 体幹動画セクション -->
+                <div class="category-section" data-category="trunk">
+                    <h2 class="category-title">体幹動画</h2>
+                    <div class="video-grid" id="trunkGrid">
+                        <div class="video-card" data-type="observation" data-title="頚長筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">頚長筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092013130" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="頭長筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">頭長筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092157828" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="総頸動脈・甲状腺の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">総頸動脈・甲状腺の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092356049" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="前・中斜角筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">前・中斜角筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092480512" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="胸鎖乳突筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">胸鎖乳突筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092653543" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="肩甲挙筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">肩甲挙筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092643614" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="肩甲舌骨筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">肩甲舌骨筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092615250" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="側腹筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">側腹筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092355626" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="腹直筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">腹直筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1106841001" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 下肢動画セクション -->
+                <div class="category-section" data-category="lower_limb">
+                    <h2 class="category-title">下肢動画</h2>
+                    <div class="video-grid" id="lowerLimbGrid">
+                        <!-- 観察動画（一部抜粋、実際は全40本以上） -->
+                        <div class="video-card" data-type="observation" data-title="大腿直筋起始部の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿直筋起始部の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092350426" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="大腿四頭筋 長軸の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿四頭筋 長軸の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092350714" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="大腿四頭筋 短軸の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿四頭筋 短軸の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092351138" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="内側広筋斜走線維の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">内側広筋斜走線維の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092345627" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="膝内側側副靱帯の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝内側側副靱帯の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092014126" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="膝外側側副靱帯の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝外側側副靱帯の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092345087" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="内側半月板の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">内側半月板の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092157098" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="膝蓋下脂肪体の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝蓋下脂肪体の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092670770" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="膝蓋骨外側支持組織の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝蓋骨外側支持組織の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092344460" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="薄筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">薄筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092015885" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="長内転筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">長内転筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092016106" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="半腱様筋・半膜様筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">半腱様筋・半膜様筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092019733" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="長母趾伸筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">長母趾伸筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092159995" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="長趾伸筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">長趾伸筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092346708" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="足底腱膜の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">足底腱膜の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092354794" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="前脛骨筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">前脛骨筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092478603" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="前距腓靱帯の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">前距腓靱帯の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092479918" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="小趾外転筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">小趾外転筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092481164" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="母趾外転筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">母趾外転筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092013798" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="距骨前脂肪体の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">距骨前脂肪体の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092654011" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="下腿三頭筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">下腿三頭筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092655028" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="アキレス腱周囲の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">アキレス腱周囲の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092655905" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="腸脛靭帯の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">腸脛靭帯の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092670399" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="縫工筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">縫工筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092671169" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="長母趾伸筋の観察2">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">長母趾伸筋の観察2</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1092349811" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="小殿筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">小殿筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1106840874" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="observation" data-title="大腿筋膜張筋の観察">
+                            <div class="video-thumbnail observation">
+                                観察動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿筋膜張筋の観察</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥800</span>
+                                    <a href="https://vimeo.com/1106840945" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <!-- 動態動画 -->
+                        <div class="video-card" data-type="dynamics" data-title="膝屈伸時の縫工筋の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝屈伸時の縫工筋の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092015015" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="膝屈伸時の内側半月板の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝屈伸時の内側半月板の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092017797" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="膝屈伸時の大腿前脂肪体の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝屈伸時の大腿前脂肪体の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092155484" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="底背屈時のKFPの動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">底背屈時のKFPの動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092158658" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="内反ストレス時の膝外側側副靱帯の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">内反ストレス時の膝外側側副靱帯の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092345392" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="底背屈時の距腿関節の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">底背屈時の距腿関節の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092346357" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="大腿四頭筋セッティング時の膝蓋下脂肪体">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿四頭筋セッティング時の膝蓋下脂肪体</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092352234" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="大腿四頭筋セッティング時の大腿前脂肪体">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿四頭筋セッティング時の大腿前脂肪体</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092352696" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="大腿四頭筋セッティング時の筋動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">大腿四頭筋セッティング時の筋動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092353765" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="膝屈伸時の膝蓋骨外側組織の動態">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝屈伸時の膝蓋骨外側組織の動態</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092017459" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="膝蓋骨外側支持組織への徒手療法">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝蓋骨外側支持組織への徒手療法</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092018841" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="膝蓋下脂肪体への徒手療法">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">膝蓋下脂肪体への徒手療法</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092019395" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+
+                        <div class="video-card" data-type="dynamics" data-title="長母趾屈筋への徒手療法">
+                            <div class="video-thumbnail dynamics">
+                                動態動画
+                            </div>
+                            <div class="video-content">
+                                <h3 class="video-title">長母趾屈筋への徒手療法</h3>
+                                <div class="video-meta">
+                                    <span class="video-price">¥900</span>
+                                    <a href="https://vimeo.com/1092350132" target="_blank" class="video-vimeo-link">
+                                        <i class="fab fa-vimeo"></i> プレビュー
+                                    </a>
+                                </div>
+                                <button class="buy-btn" data-video-placeholder="true">購入する</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 動画学習の特徴 -->
+                <div class="info-section">
+                    <h2>動画学習の特徴</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-infinity"></i>
+                            <h3>無制限視聴</h3>
+                            <p>購入後は何度でも繰り返し視聴できます</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>マルチデバイス対応</h3>
+                            <p>スマホ・タブレット・PCで視聴可能</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-certificate"></i>
+                            <h3>高品質コンテンツ</h3>
+                            <p>臨床経験豊富な講師による実践的な内容</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-download"></i>
+                            <h3>即時アクセス</h3>
+                            <p>購入後すぐに視聴を開始できます</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p class="copyright">© 2024 運動器超音波Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // フィルター機能
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const videoCards = document.querySelectorAll('.video-card');
+        const categorySections = document.querySelectorAll('.category-section');
+        const searchInput = document.getElementById('searchInput');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // アクティブボタンの切り替え
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filter = button.getAttribute('data-filter');
+
+                // カテゴリーセクションの表示/非表示
+                if (filter === 'all') {
+                    categorySections.forEach(section => section.style.display = 'block');
+                    videoCards.forEach(card => card.style.display = 'block');
+                } else if (filter === 'upper_limb' || filter === 'trunk' || filter === 'lower_limb') {
+                    categorySections.forEach(section => {
+                        if (section.getAttribute('data-category') === filter) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                } else if (filter === 'observation' || filter === 'dynamics') {
+                    categorySections.forEach(section => section.style.display = 'block');
+                    videoCards.forEach(card => {
+                        if (card.getAttribute('data-type') === filter) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // 検索機能
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+
+            videoCards.forEach(card => {
+                const title = card.getAttribute('data-title').toLowerCase();
+                if (title.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // セクションの表示/非表示（すべてのカードが非表示の場合はセクションも非表示）
+            categorySections.forEach(section => {
+                const visibleCards = section.querySelectorAll('.video-card[style*="display: block"], .video-card:not([style*="display: none"])');
+                if (visibleCards.length === 0 || searchTerm !== '') {
+                    // 検索中は該当するカードがあるセクションのみ表示
+                    const anyVisible = Array.from(section.querySelectorAll('.video-card')).some(card =>
+                        card.style.display !== 'none' && card.getAttribute('data-title').toLowerCase().includes(searchTerm)
+                    );
+                    section.style.display = anyVisible ? 'block' : 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        });
+
+        // スムーススクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+    <!-- Initialize Video Purchase Buttons -->
+    <script>
+        // Wait for DOM to be ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎬 Initializing video purchase system...');
+
+            // Find all purchase buttons
+            const buyButtons = document.querySelectorAll('.buy-btn[data-video-placeholder="true"]');
+            console.log(`📊 Found ${buyButtons.length} video purchase buttons`);
+
+            buyButtons.forEach(button => {
+                // Get the video card container
+                const videoCard = button.closest('.video-card');
+                if (!videoCard) return;
+
+                // Get video title from the card
+                const titleElement = videoCard.querySelector('.video-title');
+                if (!titleElement) return;
+
+                const videoTitle = titleElement.textContent.trim();
+                const videoPrice = videoCard.querySelector('.video-price')?.textContent || '¥800';
+
+                // Create a video ID from the title (simplified version - will be replaced with actual mapping)
+                // For now, we'll use the data-title attribute if available, or create from title
+                let videoId = videoCard.getAttribute('data-title');
+
+                // If no data-title, create a simple ID from the title
+                if (!videoId) {
+                    videoId = videoTitle.replace(/の観察|の動態|[  ・]/g, '').toLowerCase();
+                }
+
+                // Update button text to show price
+                button.innerHTML = `${videoPrice}で購入`;
+
+                // Add click event listener
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Call the purchaseVideo function from video-payment-config.js
+                    if (typeof purchaseVideo === 'function') {
+                        purchaseVideo(videoId);
+                    } else {
+                        console.error('❌ purchaseVideo function not found. Make sure video-payment-config.js is loaded.');
+                        alert('決済システムの読み込みに失敗しました。ページを再読み込みしてください。');
+                    }
+                });
+
+                console.log(`✅ Initialized: ${videoTitle} (${videoId}) - ${videoPrice}`);
+            });
+
+            console.log('✅ Video purchase system initialized successfully');
+        });
+    </script>
+
+</body>
+</html>

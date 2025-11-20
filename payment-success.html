@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購入完了 - 運動器超音波Lab</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 60px 40px;
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #28a745;
+            margin-bottom: 30px;
+            animation: checkmark 0.6s ease-in-out;
+        }
+
+        @keyframes checkmark {
+            0% {
+                transform: scale(0);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .message {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .video-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .video-info h3 {
+            color: #333;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .video-info p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 600px) {
+            .success-container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+
+        <h1>購入が完了しました！</h1>
+
+        <p class="message">
+            動画のご購入ありがとうございます。<br>
+            購入された動画の情報を確認中です...
+        </p>
+
+        <div id="videoInfo" class="video-info" style="display: none;">
+            <h3><i class="fas fa-video"></i> 購入動画</h3>
+            <p id="videoTitle">動画タイトル</p>
+            <p id="videoPrice">価格: ¥800</p>
+        </div>
+
+        <div class="loading active">
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; color: #666;">処理中...</p>
+        </div>
+
+        <div class="btn-group" id="actionButtons" style="display: none;">
+            <a href="echo-videos.html" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i>
+                動画一覧に戻る
+            </a>
+            <a href="index.html" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                ホームへ
+            </a>
+        </div>
+
+        <p style="margin-top: 30px; color: #999; font-size: 0.9rem;">
+            <i class="fas fa-envelope"></i> 購入確認メールを送信しました
+        </p>
+    </div>
+
+    <!-- Payment Success Processing Script -->
+    <script src="video-payment-config.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('💳 Processing payment success...');
+
+            // URLパラメータから動画IDを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('video_id');
+            const sessionId = urlParams.get('session_id');
+
+            console.log('Video ID from URL:', videoId);
+            console.log('Session ID:', sessionId);
+
+            // ローディングを表示
+            const loading = document.querySelector('.loading');
+            const videoInfoDiv = document.getElementById('videoInfo');
+            const actionButtons = document.getElementById('actionButtons');
+
+            // 少し遅延させて処理を実行（アニメーション効果のため）
+            setTimeout(function() {
+                if (videoId) {
+                    // 動画を購入済みとしてマーク
+                    if (typeof markAsPurchased === 'function') {
+                        markAsPurchased(videoId);
+                        console.log(`✅ Marked video as purchased: ${videoId}`);
+                    }
+
+                    // 購入動画情報を表示
+                    const price = typeof getVideoPrice === 'function'
+                        ? getVideoPrice(videoId)
+                        : 800;
+
+                    document.getElementById('videoTitle').textContent = `動画ID: ${videoId}`;
+                    document.getElementById('videoPrice').textContent = `価格: ¥${price}`;
+
+                    videoInfoDiv.style.display = 'block';
+                } else {
+                    console.warn('⚠️ No video_id parameter found in URL');
+                    document.getElementById('videoTitle').textContent = '動画情報を取得できませんでした';
+                    videoInfoDiv.style.display = 'block';
+                }
+
+                // ローディングを非表示にしてボタンを表示
+                loading.classList.remove('active');
+                actionButtons.style.display = 'flex';
+
+                // ペンディング中の購入情報をクリア
+                try {
+                    localStorage.removeItem('pending_video_purchase');
+                    localStorage.removeItem('purchase_timestamp');
+                    console.log('🧹 Cleared pending purchase data');
+                } catch (e) {
+                    console.warn('⚠️ Failed to clear pending purchase:', e);
+                }
+
+            }, 1500); // 1.5秒後に表示
+
+            // Google Analytics などのトラッキング設定がある場合はここに追加
+            // gtag('event', 'purchase', { value: price, currency: 'JPY', transaction_id: sessionId });
+        });
+    </script>
+</body>
+</html>
