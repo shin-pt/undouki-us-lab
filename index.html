@@ -36,6 +36,11 @@
             --accent-green: #28a745; /* Seminar Green */
             --container-width: 1140px;
             --section-padding: 100px 0;
+            /* グラデーション用の色 */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-blue: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            --gradient-green: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         }
 
         * {
@@ -46,6 +51,23 @@
 
         html {
             scroll-behavior: smooth;
+        }
+
+        /* スクロールアニメーション用 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
         }
 
         body {
@@ -80,6 +102,31 @@
             font-weight: 900;
             word-break: keep-all;
             overflow-wrap: normal;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+        h2.section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            border-radius: 2px;
+        }
+        .light-bg h2.section-title {
+            background: linear-gradient(135deg, #333333 0%, #666666 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .light-bg h2.section-title::after {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
         }
 
         .section-intro {
@@ -107,12 +154,20 @@
 
         /* --- Header --- */
         .main-header {
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             padding: 30px 0;
             z-index: 1000;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+        .main-header.scrolled {
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
         }
         .main-header .container {
             display: flex;
@@ -125,6 +180,14 @@
             color: var(--text-color);
             text-decoration: none;
             letter-spacing: 1px;
+            transition: all 0.3s ease;
+            background: var(--gradient-blue);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo:hover {
+            transform: scale(1.05);
         }
         .main-nav {
             display: flex;
@@ -136,11 +199,27 @@
             margin-left: 20px;
             font-weight: 600;
             font-size: 0.9rem;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             white-space: nowrap;
+            position: relative;
+            padding: 5px 0;
+        }
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-blue);
+            transition: width 0.3s ease;
+        }
+        .main-nav a:hover::after {
+            width: 100%;
         }
         .main-nav a:hover {
             color: var(--primary-color);
+            transform: translateY(-2px);
         }
 
         /* --- Hero Section --- */
@@ -151,6 +230,8 @@
             padding-top: 120px;
             background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.8)), url(https://images.unsplash.com/photo-1581091222030-41ce94309703?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1772&q=80) no-repeat center bottom/cover;
             text-align: center;
+            opacity: 1 !important;
+            transform: none !important;
         }
         .hero-text {
             max-width: 900px;
@@ -170,17 +251,32 @@
         .hero-btn {
             display: inline-block;
             padding: 15px 40px;
-            background-color: var(--primary-color);
+            background: var(--gradient-blue);
             color: #fff;
             border-radius: 50px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 1px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+        .hero-btn:hover::before {
+            left: 100%;
         }
         .hero-btn:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 123, 255, 0.4);
         }
 
         /* --- About Section --- */
@@ -218,17 +314,34 @@
             width: 48%;
             min-width: 340px;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
+            border-radius: 16px;
             padding: 30px;
-            background-color: rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .seminar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-blue);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        .seminar-card:hover::before {
+            opacity: 0.1;
         }
         .seminar-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-15px) scale(1.02);
             border-color: rgba(255, 255, 255, 0.4);
-            background-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 60px rgba(0, 123, 255, 0.3);
         }
         .seminar-tag {
             display: inline-block;
@@ -272,7 +385,7 @@
         .seminar-btn-main {
             display: flex;
             flex-direction: column;
-            background-color: var(--primary-color);
+            background: var(--gradient-blue);
             color: #fff;
             text-align: center;
             padding: 20px 35px;
@@ -282,19 +395,21 @@
             box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
             min-width: 200px;
             text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
         .seminar-btn-main.secondary {
-            background-color: var(--accent-green);
+            background: var(--gradient-green);
             box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
         }
         .seminar-btn-main:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.05);
         }
         .seminar-btn-main.primary:hover {
-            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 123, 255, 0.5);
         }
         .seminar-btn-main.secondary:hover {
-            box-shadow: 0 15px 40px rgba(40, 167, 69, 0.4);
+            box-shadow: 0 20px 50px rgba(40, 167, 69, 0.5);
         }
         .btn-month {
             font-size: 0.9rem;
@@ -413,7 +528,9 @@
         /* --- Echo Quiz App Section --- */
         #echo-quiz-app {
             background-color: #1a1a1a; /* Seminar背景色(#121212)より少し明るめ */
+            text-align: center;
         }
+        #echo-quiz-app .section-intro { margin: 0 auto 60px auto; }
         .quiz-app-grid {
             display: flex;
             justify-content: center;
@@ -564,11 +681,11 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
         }
         .gallery-item img {
             width: 100%;
@@ -581,11 +698,16 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(rgba(18, 18, 18, 0.3), rgba(18, 18, 18, 0.7));
+            background: linear-gradient(to top, rgba(18, 18, 18, 0.9) 0%, rgba(18, 18, 18, 0.3) 50%, transparent 100%);
             display: flex;
             align-items: flex-end;
             padding: 25px;
             color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
         }
         .gallery-caption {
             font-size: 1.1rem;
@@ -594,6 +716,10 @@
         }
 
         /* --- Instructors Section (New) --- */
+        #instructors {
+            text-align: center;
+        }
+        #instructors .section-intro { margin: 0 auto 60px auto; }
         .instructor-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -619,11 +745,24 @@
 
 
         /* --- Contact Section --- */
+        #contact {
+            text-align: center;
+        }
         #contact .container {
+            display: block;
+        }
+        .contact-grid {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 60px;
             align-items: center;
+            text-align: left;
+        }
+        .contact-info {
+            text-align: left;
+        }
+        .contact-form {
+            text-align: left;
         }
         .contact-info h3 { font-size: 1.8rem; margin-bottom: 20px; }
         .contact-details p { margin-bottom: 10px; }
@@ -689,6 +828,10 @@
         .copyright { color: #555; font-size: 0.9rem; }
 
         /* --- FAQ Section --- */
+        #faq {
+            text-align: center;
+        }
+        #faq .section-intro { margin: 0 auto 60px auto; }
         .faq-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -714,6 +857,10 @@
         }
 
         /* --- Access Section --- */
+        #access {
+            text-align: center;
+        }
+        #access .section-intro { margin: 0 auto 60px auto; }
         .access-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -782,6 +929,8 @@
             background-color: #121212;
             padding: 120px 0 60px 0;
             text-align: center;
+            opacity: 1 !important;
+            transform: none !important;
         }
         .logo-showcase {
             max-width: 400px;
@@ -827,7 +976,7 @@
             h2.section-title { font-size: 2.5rem; }
             .hero-text h1 { font-size: 2.8rem; }
             .main-nav { display: none; /* Simple hiding for demo */ }
-            .about-grid, #contact .container { grid-template-columns: 1fr; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
             .faq-grid, .access-grid { grid-template-columns: 1fr; }
             .about-image { margin-top: 40px; }
             .seminar-card { width: 100%; min-width: unset; }
@@ -966,9 +1115,9 @@
         <!-- About Section -->
         <section id="about" class="light-bg">
             <div class="container">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 60px;">運動器超音波Labとは</h2>
                 <div class="about-grid">
                     <div class="about-text">
-                        <h2 class="section-title">運動器超音波Labとは</h2>
                         <p class="section-intro">
                             私たちは、理学療法士・医師・作業療法士・鍼灸師・柔道整復師・トレーナーなど、**多職種でエコーを学び合う実技中心のセミナー団体**です。
                         </p>
@@ -1372,23 +1521,25 @@
         <!-- Contact Section -->
         <section id="contact" class="light-bg">
             <div class="container">
-                <div class="contact-info">
-                    <h2 class="section-title">お問い合わせ</h2>
-                    <p class="section-intro">セミナーに関するご質問、ご相談など、お気軽にお問い合わせください。</p>
-                    <h3>連絡先情報</h3>
-                    <div class="contact-details">
-                        <p><strong>団体名:</strong> 運動器超音波Lab</p>
-                        <p><strong>Email:</strong> s.momodani.s@gmail.com</p>
+                <h2 class="section-title" style="text-align: center; margin-bottom: 60px;">お問い合わせ</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <p class="section-intro">セミナーに関するご質問、ご相談など、お気軽にお問い合わせください。</p>
+                        <h3>連絡先情報</h3>
+                        <div class="contact-details">
+                            <p><strong>団体名:</strong> 運動器超音波Lab</p>
+                            <p><strong>Email:</strong> s.momodani.s@gmail.com</p>
+                        </div>
                     </div>
+                    <form class="contact-form" action="https://formspree.io/f/mpwrpawr" method="POST">
+                        <div class="form-group"><input type="text" name="name" placeholder="お名前" required></div>
+                        <div class="form-group"><input type="email" name="email" placeholder="メールアドレス" required></div>
+                        <div class="form-group"><input type="text" name="subject" placeholder="件名" required></div>
+                        <div class="form-group"><textarea name="message" rows="5" placeholder="お問い合わせ内容" required></textarea></div>
+                        <input type="hidden" name="_subject" value="運動器超音波Lab お問い合わせ">
+                        <button type="submit" class="send-btn">メッセージを送信</button>
+                    </form>
                 </div>
-                <form class="contact-form" action="https://formspree.io/f/mpwrpawr" method="POST">
-                    <div class="form-group"><input type="text" name="name" placeholder="お名前" required></div>
-                    <div class="form-group"><input type="email" name="email" placeholder="メールアドレス" required></div>
-                    <div class="form-group"><input type="text" name="subject" placeholder="件名" required></div>
-                    <div class="form-group"><textarea name="message" rows="5" placeholder="お問い合わせ内容" required></textarea></div>
-                    <input type="hidden" name="_subject" value="運動器超音波Lab お問い合わせ">
-                    <button type="submit" class="send-btn">メッセージを送信</button>
-                </form>
             </div>
         </section>
 
@@ -1414,6 +1565,39 @@
                     behavior: 'smooth'
                 });
             });
+        });
+
+        // スクロールアニメーション
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // アニメーション対象要素を監視（ロゴセクションとホームセクションは除外）
+        document.querySelectorAll('section:not(#logo-display):not(#home), .seminar-card, .gallery-item, .instructor-card, .faq-item, .access-card, .quiz-app-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(el);
+        });
+
+        // ヘッダーのスクロール効果
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.main-header');
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
         });
 
     </script>
