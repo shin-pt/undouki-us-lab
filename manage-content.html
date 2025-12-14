@@ -278,6 +278,100 @@
             margin-bottom: 20px;
             opacity: 0.3;
         }
+
+        /* Edit Modal */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            animation: fadeIn 0.3s;
+        }
+
+        .edit-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .edit-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 30px;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .edit-modal-content h2 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .edit-modal-content label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .edit-modal-content textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-family: 'Noto Sans JP', sans-serif;
+            resize: vertical;
+        }
+
+        .edit-modal-content textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .edit-modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -313,6 +407,19 @@
         <div id="message" class="message"></div>
     </div>
 
+    <!-- Edit Modal -->
+    <div id="editModal" class="edit-modal">
+        <div class="edit-modal-content">
+            <h2><i class="fas fa-edit"></i> 説明を編集</h2>
+            <label for="editDescription">説明</label>
+            <textarea id="editDescription" placeholder="コンテンツの説明を入力してください"></textarea>
+            <div class="edit-modal-actions">
+                <button class="btn btn-secondary" onclick="closeEditModal()">キャンセル</button>
+                <button class="btn" onclick="saveDescription()">保存</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -326,8 +433,10 @@
             query,
             getDocs,
             updateDoc,
+            deleteDoc,
             doc,
-            orderBy
+            orderBy,
+            serverTimestamp
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase設定
@@ -352,11 +461,13 @@
 
         // 認証チェック
         onAuthStateChanged(auth, async (user) => {
+            console.log('🔐 Auth state changed:', user ? `Logged in as ${user.email}` : 'Not logged in');
             if (!user) {
                 alert('このツールを使用するにはログインが必要です。\n認証ページにリダイレクトします。');
                 window.location.href = 'auth.html';
                 return;
             }
+            console.log('✅ User authenticated, loading content...');
             await loadContent();
         });
 
@@ -365,11 +476,23 @@
             try {
                 contentList.innerHTML = '<div class="loading"><div class="spinner"></div><p>読み込み中...</p></div>';
                 
-                const q = query(
-                    collection(db, 'salon_content'),
-                    orderBy('order', 'asc'),
-                    orderBy('publishedAt', 'desc')
-                );
+                console.log('📥 Loading content from Firestore...');
+                
+                // orderフィールドがない場合でも読み込めるように、orderByを削除して試す
+                let q;
+                try {
+                    q = query(
+                        collection(db, 'salon_content'),
+                        orderBy('order', 'asc'),
+                        orderBy('publishedAt', 'desc')
+                    );
+                    const querySnapshot = await getDocs(q);
+                    console.log(`✅ Found ${querySnapshot.size} documents with order field`);
+                } catch (orderError) {
+                    console.warn('⚠️ Order field query failed, trying without order:', orderError);
+                    // orderフィールドがない場合は、orderByなしで読み込む
+                    q = query(collection(db, 'salon_content'));
+                }
 
                 const querySnapshot = await getDocs(q);
                 allContent = [];
@@ -379,23 +502,66 @@
                     allContent.push({
                         id: docSnapshot.id,
                         title: data.title || 'タイトルなし',
+                        description: data.description || '',
                         category: data.category || 'その他',
                         type: data.type || 'video',
                         isActive: data.isActive !== undefined ? data.isActive : true,
                         requiredPlan: data.requiredPlan || null,
                         url: data.url || '',
+                        order: data.order || 0,
                         publishedAt: data.publishedAt ? data.publishedAt.toDate() : null
                     });
                 });
 
+                console.log(`✅ Loaded ${allContent.length} content items:`, allContent.map(c => ({
+                id: c.id,
+                title: c.title,
+                category: c.category,
+                isActive: c.isActive
+            })));
+
+                if (allContent.length === 0) {
+                    console.warn('⚠️ No content found in Firestore collection "salon_content"');
+                    contentList.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-info-circle"></i>
+                            <p>コンテンツが登録されていません</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
+                                <a href="add-content.html" style="color: #667eea;">コンテンツを追加する</a>
+                            </p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // orderフィールドでソート（クライアント側）
+                allContent.sort((a, b) => {
+                    if (a.order !== b.order) {
+                        return a.order - b.order;
+                    }
+                    if (a.publishedAt && b.publishedAt) {
+                        return b.publishedAt - a.publishedAt;
+                    }
+                    return 0;
+                });
+
                 displayContent();
             } catch (error) {
-                console.error('読み込みエラー:', error);
+                console.error('❌ 読み込みエラー:', error);
+                console.error('エラー詳細:', {
+                    code: error.code,
+                    message: error.message,
+                    stack: error.stack
+                });
                 contentList.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-exclamation-triangle"></i>
                         <p>コンテンツの読み込みに失敗しました</p>
                         <p style="font-size: 0.9rem; margin-top: 10px;">${error.message}</p>
+                        <p style="font-size: 0.85rem; margin-top: 10px; color: #999;">
+                            エラーコード: ${error.code || '不明'}<br>
+                            ブラウザのコンソール（F12）で詳細を確認してください。
+                        </p>
                     </div>
                 `;
             }
@@ -406,25 +572,40 @@
             const statusValue = statusFilter.value;
             const categoryValue = categoryFilter.value;
 
+            console.log('📊 Displaying content:', {
+                totalContent: allContent.length,
+                statusFilter: statusValue,
+                categoryFilter: categoryValue
+            });
+
             let filteredContent = allContent;
 
             // ステータスフィルタ
             if (statusValue === 'active') {
                 filteredContent = filteredContent.filter(c => c.isActive);
+                console.log(`  → After status filter (active): ${filteredContent.length} items`);
             } else if (statusValue === 'inactive') {
                 filteredContent = filteredContent.filter(c => !c.isActive);
+                console.log(`  → After status filter (inactive): ${filteredContent.length} items`);
             }
 
             // カテゴリフィルタ
             if (categoryValue !== 'all') {
                 filteredContent = filteredContent.filter(c => c.category === categoryValue);
+                console.log(`  → After category filter (${categoryValue}): ${filteredContent.length} items`);
             }
 
+            console.log(`✅ Final filtered content: ${filteredContent.length} items`);
+
             if (filteredContent.length === 0) {
+                console.warn('⚠️ No content matches the current filters');
                 contentList.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-inbox"></i>
                         <p>該当するコンテンツがありません</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
+                            フィルタを変更するか、<a href="add-content.html" style="color: #667eea;">コンテンツを追加</a>してください。
+                        </p>
                     </div>
                 `;
                 return;
@@ -435,10 +616,16 @@
                     ? content.publishedAt.toLocaleDateString('ja-JP')
                     : '日付なし';
 
+                const description = content.description || '説明はありません';
+                
+                const safeDescription = (description || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+                const safeTitle = content.title.replace(/'/g, "\\'");
+                
                 return `
-                    <div class="content-item ${!content.isActive ? 'inactive' : ''}">
+                    <div class="content-item ${!content.isActive ? 'inactive' : ''}" data-content-id="${content.id}">
                         <div class="content-info">
                             <div class="content-title">${content.title}</div>
+                            <div style="color: #999; font-size: 0.9rem; margin: 8px 0;">${description || '説明はありません'}</div>
                             <div class="content-meta">
                                 <span><i class="fas fa-folder"></i> ${content.category}</span>
                                 <span><i class="fas fa-calendar"></i> ${publishedDate}</span>
@@ -450,15 +637,31 @@
                             </div>
                         </div>
                         <div class="content-actions">
+                            <button class="btn edit-description-btn" data-content-id="${content.id}" data-content-title="${safeTitle}" data-content-description="${safeDescription}" style="margin-right: 10px;">
+                                <i class="fas fa-edit"></i> 説明編集
+                            </button>
                             <label class="toggle-switch">
                                 <input type="checkbox" ${content.isActive ? 'checked' : ''} 
                                        onchange="toggleContent('${content.id}', this.checked)">
                                 <span class="slider"></span>
                             </label>
+                            <button class="btn btn-danger" onclick="deleteContent('${content.id}', '${safeTitle}')" style="margin-left: 10px;">
+                                <i class="fas fa-trash"></i> 削除
+                            </button>
                         </div>
                     </div>
                 `;
             }).join('');
+
+            // 説明編集ボタンのイベントリスナーを追加
+            document.querySelectorAll('.edit-description-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const contentId = btn.dataset.contentId;
+                    const contentTitle = btn.dataset.contentTitle;
+                    const currentDescription = btn.dataset.contentDescription || '';
+                    editDescription(contentId, contentTitle, currentDescription);
+                });
+            });
         }
 
         // コンテンツの公開/非公開を切り替え
@@ -503,6 +706,140 @@
                 displayContent();
             }
         };
+
+        // コンテンツを削除
+        window.deleteContent = async function(contentId, contentTitle) {
+            if (!confirm(`「${contentTitle}」を削除しますか？\n\nこの操作は取り消せません。`)) {
+                return;
+            }
+
+            console.log('🗑️ Deleting content:', { contentId, contentTitle });
+
+            try {
+                const contentRef = doc(db, 'salon_content', contentId);
+                console.log('📝 Content reference:', contentRef.path);
+                
+                await deleteDoc(contentRef);
+                console.log('✅ Content deleted successfully');
+
+                // ローカルデータから削除
+                allContent = allContent.filter(c => c.id !== contentId);
+
+                message.className = 'message success';
+                message.innerHTML = `
+                    <i class="fas fa-check-circle"></i> 
+                    「${contentTitle}」を削除しました
+                `;
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+
+                displayContent();
+            } catch (error) {
+                console.error('❌ 削除エラー:', error);
+                console.error('エラー詳細:', {
+                    code: error.code,
+                    message: error.message,
+                    stack: error.stack
+                });
+                
+                let errorMessage = '削除に失敗しました';
+                if (error.code === 'permission-denied') {
+                    errorMessage = '削除権限がありません。Firestoreのセキュリティルールを確認してください。';
+                } else if (error.code === 'not-found') {
+                    errorMessage = 'コンテンツが見つかりませんでした。既に削除されている可能性があります。';
+                } else {
+                    errorMessage = `削除に失敗しました: ${error.message}`;
+                }
+                
+                message.className = 'message error';
+                message.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i> 
+                    ${errorMessage}
+                    <br><br>
+                    <small>エラーコード: ${error.code || '不明'}</small>
+                `;
+                message.style.display = 'block';
+            }
+        };
+
+        // 編集用の変数
+        let editingContentId = null;
+
+        // 説明を編集するモーダルを開く
+        window.editDescription = function(contentId, contentTitle, currentDescription) {
+            editingContentId = contentId;
+            const modal = document.getElementById('editModal');
+            const textarea = document.getElementById('editDescription');
+            
+            // HTMLエンティティをデコード
+            const decodedDescription = currentDescription
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .replace(/&amp;/g, '&');
+            
+            // 現在の説明を設定（「説明はありません」の場合は空にする）
+            textarea.value = decodedDescription === '説明はありません' ? '' : decodedDescription;
+            modal.classList.add('active');
+        };
+
+        // 編集モーダルを閉じる
+        window.closeEditModal = function() {
+            const modal = document.getElementById('editModal');
+            modal.classList.remove('active');
+            editingContentId = null;
+            document.getElementById('editDescription').value = '';
+        };
+
+        // 説明を保存
+        window.saveDescription = async function() {
+            if (!editingContentId) return;
+
+            const newDescription = document.getElementById('editDescription').value.trim();
+            
+            try {
+                const contentRef = doc(db, 'salon_content', editingContentId);
+                await updateDoc(contentRef, {
+                    description: newDescription || '',
+                    updatedAt: serverTimestamp()
+                });
+
+                // ローカルデータを更新
+                const content = allContent.find(c => c.id === editingContentId);
+                if (content) {
+                    content.description = newDescription || '';
+                }
+
+                message.className = 'message success';
+                message.innerHTML = `
+                    <i class="fas fa-check-circle"></i> 
+                    説明を更新しました
+                `;
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+
+                closeEditModal();
+                displayContent();
+            } catch (error) {
+                console.error('説明更新エラー:', error);
+                message.className = 'message error';
+                message.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i> 
+                    説明の更新に失敗しました: ${error.message}
+                `;
+                message.style.display = 'block';
+            }
+        };
+
+        // モーダルの背景クリックで閉じる
+        document.getElementById('editModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editModal') {
+                closeEditModal();
+            }
+        });
 
         // フィルタ変更時の再表示
         statusFilter.addEventListener('change', displayContent);

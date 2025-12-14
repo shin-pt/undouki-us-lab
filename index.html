@@ -158,16 +158,18 @@
             top: 0;
             left: 0;
             width: 100%;
-            padding: 30px 0;
+            padding: 50px 0;
             z-index: 1000;
             transition: all 0.3s ease;
             background: transparent;
+            min-height: 150px;
         }
         .main-header.scrolled {
             background: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
             padding: 20px 0;
             box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            min-height: 80px;
         }
         .main-header .container {
             display: flex;
@@ -175,18 +177,40 @@
             align-items: center;
         }
         .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .logo img {
+            height: 120px;
+            width: auto;
+            max-width: 120px;
+            object-fit: contain;
+            transition: transform 0.3s ease, height 0.3s ease, max-width 0.3s ease;
+            display: block;
+        }
+
+        .main-header.scrolled .logo img {
+            height: 60px;
+            max-width: 60px;
+        }
+
+        .logo:hover img {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--text-color);
-            text-decoration: none;
+            color: #ffffff;
             letter-spacing: 1px;
-            transition: all 0.3s ease;
-            background: var(--gradient-blue);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            white-space: nowrap;
         }
-        .logo:hover {
+
+        .logo:hover .logo-text {
             transform: scale(1.05);
         }
         .main-nav {
@@ -194,6 +218,7 @@
             flex-wrap: nowrap;
             align-items: center;
             white-space: nowrap;
+            gap: 10px;
         }
         .main-nav a {
             margin-left: 20px;
@@ -222,6 +247,183 @@
             transform: translateY(-2px);
         }
 
+        /* --- User Menu Dropdown --- */
+        .user-menu {
+            position: relative;
+            margin-left: 20px;
+        }
+
+        .user-menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 25px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            font-weight: 600;
+            min-width: 120px;
+            position: relative;
+        }
+
+        .user-menu-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+        }
+
+        .user-menu-btn.active {
+            background: rgba(0, 123, 255, 0.2);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .user-menu-btn i {
+            font-size: 1.1rem;
+        }
+
+        .user-menu-btn .dropdown-arrow {
+            font-size: 0.7rem;
+            transition: transform 0.3s ease;
+        }
+
+        .user-menu-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .user-menu-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            background: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            min-width: 240px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-15px) scale(0.95);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            overflow: hidden;
+        }
+
+        .user-menu-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 8px solid rgba(18, 18, 18, 0.98);
+            filter: drop-shadow(0 -2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .user-menu-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .user-menu-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.95rem;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .user-menu-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .user-menu-dropdown a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--primary-color);
+            transform: scaleY(0);
+            transition: transform 0.2s ease;
+        }
+
+        .user-menu-dropdown a:hover {
+            background: linear-gradient(90deg, rgba(0, 123, 255, 0.15) 0%, rgba(0, 123, 255, 0.05) 100%);
+            color: var(--primary-color);
+            padding-left: 24px;
+        }
+
+        .user-menu-dropdown a:hover::before {
+            transform: scaleY(1);
+        }
+
+        .user-menu-dropdown a:hover i {
+            transform: scale(1.1);
+        }
+
+        .user-menu-dropdown a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
+
+        .user-menu-dropdown .user-info {
+            padding: 18px 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(0, 123, 255, 0.1) 0%, rgba(0, 123, 255, 0.05) 100%);
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+        }
+
+        .user-menu-dropdown .user-info .user-email {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 5px;
+        }
+
+        .auth-link {
+            background: var(--gradient-blue);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .auth-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4);
+        }
+
+        .auth-link::after {
+            display: none;
+        }
+
+        @media (max-width: 992px) {
+            .user-menu-dropdown {
+                right: -10px;
+            }
+        }
+
         /* --- Hero Section --- */
         #home {
             min-height: 100vh;
@@ -248,35 +450,142 @@
             margin-bottom: 40px;
             color: var(--secondary-color);
         }
+        .hero-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-width: 800px;
+            margin: 50px auto 0;
+        }
+
         .hero-btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background: var(--gradient-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
             color: #fff;
-            border-radius: 50px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-transform: none;
+            letter-spacing: 0.5px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
+            text-decoration: none;
+            min-height: 80px;
         }
+
         .hero-btn::before {
             content: '';
             position: absolute;
             top: 0;
-            left: -100%;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
+            background: var(--gradient-blue);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
         }
+
         .hero-btn:hover::before {
-            left: 100%;
+            opacity: 1;
         }
+
         .hero-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 123, 255, 0.4);
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 123, 255, 0.4);
+            color: #fff;
+        }
+
+        .hero-btn i {
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-btn:hover i {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .hero-btn.primary {
+            background: var(--gradient-blue);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-btn.primary::before {
+            background: linear-gradient(135deg, #0056b3 0%, #007bff 100%);
+        }
+
+        .hero-btn.green {
+            background: var(--gradient-green);
+            border-color: rgba(40, 167, 69, 0.3);
+        }
+
+        .hero-btn.green::before {
+            background: linear-gradient(135deg, #20c997 0%, #28a745 100%);
+        }
+
+        .hero-btn.purple {
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+            border-color: rgba(156, 39, 176, 0.3);
+        }
+
+        .hero-btn.purple::before {
+            background: linear-gradient(135deg, #7b1fa2 0%, #9c27b0 100%);
+        }
+
+        .hero-btn.disabled {
+            background: rgba(102, 102, 102, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .hero-btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .hero-btn.disabled i {
+            opacity: 0.5;
+        }
+
+        .hero-btn-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .hero-btn-text .main-text {
+            font-size: 1rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .hero-btn-text .sub-text {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+
+        @media (max-width: 768px) {
+            .hero-buttons {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .hero-btn {
+                min-height: 70px;
+                padding: 18px 25px;
+            }
         }
 
         /* --- About Section --- */
@@ -523,145 +832,6 @@
             height: auto;
             display: block;
             border-radius: 12px;
-        }
-
-        /* --- Echo Quiz App Section --- */
-        #echo-quiz-app {
-            background-color: #1a1a1a; /* Seminar背景色(#121212)より少し明るめ */
-            text-align: center;
-        }
-        #echo-quiz-app .section-intro { margin: 0 auto 60px auto; }
-        .quiz-app-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .quiz-app-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .quiz-app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        .quiz-app-header h3 {
-            font-size: 1.8rem;
-            margin: 0;
-            color: var(--text-color);
-        }
-        .quiz-app-badge {
-            background: var(--primary-color);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .quiz-features {
-            margin-bottom: 40px;
-        }
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .feature-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-right: 20px;
-            width: 30px;
-            text-align: center;
-        }
-        .feature-item h4 {
-            font-size: 1.2rem;
-            margin: 0 0 5px 0;
-            color: var(--text-color);
-        }
-        .feature-item p {
-            margin: 0;
-            color: var(--secondary-color);
-            font-size: 1rem;
-        }
-        .quiz-plans h4 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: var(--text-color);
-            text-align: center;
-        }
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .plan-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .plan-item:hover {
-            border-color: var(--primary-color);
-            background: rgba(0, 123, 255, 0.1);
-            transform: translateY(-5px);
-        }
-        .plan-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 10px;
-        }
-        .plan-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-        .plan-price span {
-            font-size: 1rem;
-            color: var(--secondary-color);
-        }
-        .plan-features {
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-        }
-        .quiz-cta {
-            text-align: center;
-        }
-        .quiz-btn-main {
-            display: inline-flex;
-            align-items: center;
-            background: var(--primary-color);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
-            margin-bottom: 15px;
-        }
-        .quiz-btn-main:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
-        }
-        .quiz-btn-main i {
-            margin-right: 10px;
-        }
-        .quiz-note {
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-            margin: 0;
-            font-style: italic;
         }
 
         /* --- Gallery Section (New) --- */
@@ -924,46 +1094,6 @@
             margin-right: 8px;
         }
 
-        /* --- Logo Display Section --- */
-        #logo-display {
-            background-color: #121212;
-            padding: 120px 0 60px 0;
-            text-align: center;
-            opacity: 1 !important;
-            transform: none !important;
-        }
-        .logo-showcase {
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        .main-logo {
-            width: 100%;
-            height: auto;
-            max-width: 350px;
-            border-radius: 0;
-            box-shadow: none;
-            transition: all 0.3s ease;
-            background: transparent;
-            padding: 0;
-        }
-        .main-logo:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-        }
-        .text-logo {
-            font-size: 3rem;
-            font-weight: 900;
-            color: var(--text-color);
-            text-align: center;
-            margin: 0;
-            padding: 40px 0;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-        }
-        .text-logo:hover {
-            transform: translateY(-10px);
-            color: var(--primary-color);
-        }
 
         /* --- Echo Videos Button Hover Effect --- */
         .videos-btn:hover {
@@ -975,7 +1105,12 @@
         @media (max-width: 992px) {
             h2.section-title { font-size: 2.5rem; }
             .hero-text h1 { font-size: 2.8rem; }
-            .main-nav { display: none; /* Simple hiding for demo */ }
+            .main-nav > a:not(.auth-link) { 
+                display: none; 
+            }
+            .main-nav {
+                display: flex !important;
+            }
             .about-grid, .contact-grid { grid-template-columns: 1fr; }
             .faq-grid, .access-grid { grid-template-columns: 1fr; }
             .about-image { margin-top: 40px; }
@@ -985,13 +1120,24 @@
         }
         
         @media (max-width: 768px) {
-            /* Mobile版でのロゴセクション調整 */
-            #logo-display {
-                padding: 80px 0 50px 0;
-                min-height: auto;
+            .main-header {
+                min-height: 120px;
+                padding: 40px 0;
             }
-            .main-logo {
-                max-width: 280px;
+            .main-header.scrolled {
+                min-height: 70px;
+                padding: 15px 0;
+            }
+            .logo img {
+                height: 90px;
+                max-width: 90px;
+            }
+            .main-header.scrolled .logo img {
+                height: 50px;
+                max-width: 50px;
+            }
+            .logo-text {
+                font-size: 1.5rem;
             }
 
             /* Mobile版でのヒーローセクション調整 */
@@ -1025,17 +1171,28 @@
             .seminar-card h3 { font-size: 1.5rem; }
             .faq-grid, .access-grid { grid-template-columns: 1fr; gap: 20px; }
             .faq-item, .access-card { padding: 20px; }
-            .quiz-app-card { padding: 25px; }
-            .quiz-app-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
 
         /* iPhone SE等の超小型デバイス対応 */
         @media (max-width: 400px) {
-            #logo-display {
-                padding: 60px 0 40px 0;
+            .main-header {
+                min-height: 100px;
+                padding: 30px 0;
             }
-            .main-logo {
-                max-width: 240px;
+            .main-header.scrolled {
+                min-height: 60px;
+                padding: 10px 0;
+            }
+            .logo img {
+                height: 70px;
+                max-width: 70px;
+            }
+            .main-header.scrolled .logo img {
+                height: 40px;
+                max-width: 40px;
+            }
+            .logo-text {
+                font-size: 1.3rem;
             }
 
             #home {
@@ -1065,32 +1222,61 @@
 
     <header class="main-header">
         <div class="container">
-            <a href="#home" class="logo">運動器超音波Lab</a>
+            <a href="#home" class="logo">
+                <img src="picture_site/logo.png" alt="運動器超音波Lab ロゴ">
+                <span class="logo-text">運動器超音波Lab</span>
+            </a>
             <nav class="main-nav">
                 <a href="#about">団体について</a>
-                <a href="#echo-quiz-app">クイズアプリ</a>
                 <a href="#seminars">セミナー</a>
                 <a href="#gallery">セミナー風景</a>
                 <a href="#instructors">講師紹介</a>
                 <a href="#faq">よくある質問</a>
                 <a href="#access">アクセス</a>
                 <a href="#contact">お問い合わせ</a>
-                <a href="salon.html" id="salonLink" style="display: none;"><i class="fas fa-users"></i> オンラインサロン</a>
-                <a href="auth.html" id="authLink">ログイン</a>
+                
+                <!-- ログイン前の表示 -->
+                <a href="auth.html" id="authLink" class="auth-link">ログイン</a>
+                
+                <!-- ログイン後のユーザーメニュー -->
+                <div class="user-menu" id="userMenu" style="display: none;">
+                    <button class="user-menu-btn" id="userMenuBtn">
+                        <i class="fas fa-user-circle"></i>
+                        <span>アカウント</span>
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </button>
+                    <div class="user-menu-dropdown" id="userMenuDropdown">
+                        <div class="user-info">
+                            <div style="font-weight: 600; color: var(--text-color);">マイアカウント</div>
+                            <div class="user-email" id="userEmailDisplay"></div>
+                        </div>
+                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
+                            <i class="fas fa-clock"></i>
+                            <span>マイページ（準備中）</span>
+                        </span>
+                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
+                            <i class="fas fa-clock"></i>
+                            <span>オンラインサロン（準備中）</span>
+                        </span>
+                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
+                            <i class="fas fa-clock"></i>
+                            <span>プラン管理（準備中）</span>
+                        </span>
+                        <a href="echo-videos.html">
+                            <i class="fas fa-video"></i>
+                            <span>エコー動画</span>
+                        </a>
+                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
+                            <i class="fas fa-clock"></i>
+                            <span>ログアウト（準備中）</span>
+                        </span>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
 
     <main>
-
-        <!-- Logo Display Section -->
-        <section id="logo-display">
-            <div class="container">
-                <div class="logo-showcase">
-                    <img src="picture_site/logo.png" alt="運動器超音波Lab ロゴ" class="main-logo">
-                </div>
-            </div>
-        </section>
 
         <!-- Home Section -->
         <section id="home">
@@ -1098,18 +1284,40 @@
                 <div class="hero-text">
                     <h1>「リハビリテーション × エコー」で、<br>もっと"見える"臨床へ。</h1>
                     <p>運動器超音波Labは、多職種でエコーを学び合う実践的なスキルアップセミナーです。</p>
-                    <a href="#seminars" class="hero-btn">最新セミナーを見る</a>
-                    <br>
-                    <a href="#echo-quiz-app" class="hero-btn" style="margin-top: 25px; background-color: var(--accent-green);">エコークイズアプリを見る</a>
-                    <br>
-                    <span class="hero-btn" style="margin-top: 25px; background-color: #666; cursor: not-allowed; opacity: 0.6; position: relative;">
-                        過去のセミナー資料を見る
-                        <span style="display: block; font-size: 0.8rem; margin-top: 5px; color: rgba(255,255,255,0.8);">（準備中）</span>
-                    </span>
-                    <br>
-                    <a href="echo-videos.html" class="hero-btn" style="margin-top: 25px; background-color: #9c27b0;">
-                        エコー動画を見る
-                    </a>
+                    
+                    <div class="hero-buttons">
+                        <a href="#seminars" class="hero-btn primary">
+                            <i class="fas fa-calendar-alt"></i>
+                            <div class="hero-btn-text">
+                                <span class="main-text">最新セミナーを見る</span>
+                                <span class="sub-text">月2回開催の定期セミナー</span>
+                            </div>
+                        </a>
+                        
+                        <span class="hero-btn green disabled">
+                            <i class="fas fa-clock"></i>
+                            <div class="hero-btn-text">
+                                <span class="main-text">オンラインサロンについて</span>
+                                <span class="sub-text">（準備中）</span>
+                            </div>
+                        </span>
+                        
+                        <span class="hero-btn disabled">
+                            <i class="fas fa-file-pdf"></i>
+                            <div class="hero-btn-text">
+                                <span class="main-text">過去のセミナー資料を見る</span>
+                                <span class="sub-text">（準備中）</span>
+                            </div>
+                        </span>
+                        
+                        <a href="echo-videos.html" class="hero-btn purple">
+                            <i class="fas fa-video"></i>
+                            <div class="hero-btn-text">
+                                <span class="main-text">エコー動画を見る</span>
+                                <span class="sub-text">全67本の動画ライブラリ</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1133,95 +1341,6 @@
                         <!-- 画像出典: https://unsplash.com/photos/group-of-people-in-a-room-nF8xhLMmg0c -->
                         <img src="picture_site/waiting-room.jpg" alt="セミナー風景">
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Echo Quiz App Section -->
-        <section id="echo-quiz-app">
-            <div class="container">
-                <h2 class="section-title">エコークイズアプリ</h2>
-                <p class="section-intro">運動器超音波の知識を効率的に学べる<strong>オンライン学習ツール</strong>をご紹介します。<br>セミナーでの学びをさらに深め、いつでもどこでも復習できます。</p>
-                
-                <div class="quiz-app-grid">
-                    <div class="quiz-app-content">
-                        <div class="quiz-app-card">
-                            <div class="quiz-app-header">
-                                <h3>運動器超音波 学習クイズアプリ</h3>
-                                <div class="quiz-app-badge">Web版対応</div>
-                            </div>
-                            
-                            <div class="quiz-features">
-                                <div class="feature-item">
-                                    <i class="fa-solid fa-brain"></i>
-                                    <div>
-                                        <h4>体系的な学習</h4>
-                                        <p>上肢・下肢・体幹の部位別クイズで効率的に学習</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fa-solid fa-video"></i>
-                                    <div>
-                                        <h4>動画解説（購入型）</h4>
-                                        <p>詳細動画を個別購入で理解を深める<br><small style="color: var(--secondary-color);">（必要な動画のみ購入可能）</small></p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fa-solid fa-mobile-alt"></i>
-                                    <div>
-                                        <h4>いつでもどこでも</h4>
-                                        <p>スマホ・タブレット・PCで学習可能</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="quiz-plans">
-                                <h4>料金プラン</h4>
-                                <div class="plans-grid" style="grid-template-columns: repeat(2, 1fr);">
-                                    <!-- リンク一時停止中 - 再開通時はコメントを解除してください -->
-                                    <!-- <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;"> -->
-                                        <div class="plan-item" style="cursor: default;">
-                                            <div class="plan-name">無料プラン</div>
-                                            <div class="plan-price">¥0</div>
-                                            <div class="plan-features">基本問題20問</div>
-                                        </div>
-                                    <!-- </a> -->
-                                    <!-- <a href="https://buy.stripe.com/dRmeVd2DL2AYdG27bMeME00?success_url=https://echo-quiz-app.web.app/?payment=success&plan=basic&cancel_url=https://echo-quiz-app.web.app/?payment=cancel" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;"> -->
-                                        <div class="plan-item" style="cursor: default;">
-                                            <div class="plan-name">ベーシック</div>
-                                            <div class="plan-price">¥1,500<span>/月</span></div>
-                                            <div class="plan-features">100問以上 + 詳細解説</div>
-                                        </div>
-                                    <!-- </a> -->
-                                </div>
-
-                                <!-- 動画解説購入型の説明 -->
-                                <div style="margin-top: 30px; padding: 20px; background: rgba(255, 255, 255, 0.05); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                                    <h5 style="color: var(--text-color); margin-bottom: 15px; font-size: 1.1rem; text-align: center;">
-                                        <i class="fa-solid fa-video" style="margin-right: 8px; color: var(--primary-color);"></i>
-                                        動画解説（個別購入）
-                                    </h5>
-                                    <p style="color: var(--secondary-color); font-size: 0.95rem; text-align: center; margin: 0 0 15px 0; line-height: 1.6;">
-                                        学習に必要な動画解説を個別に購入できます。<br>
-                                        <small>※ 詳細な価格・購入方法は準備中です</small>
-                                    </p>
-                                    <p style="color: var(--primary-color); font-size: 0.9rem; text-align: center; margin: 0; font-weight: 600;">
-                                        <i class="fa-solid fa-lightbulb" style="margin-right: 5px;"></i>
-                                        パックプランも検討中
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="quiz-cta" style="margin-top: 40px; padding-top: 20px;">
-                                <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" class="quiz-btn-main">
-                                    <i class="fa-solid fa-external-link-alt"></i>
-                                    アプリを試してみる
-                                </a>
-                                <p class="quiz-note">※ 無料プランで今すぐ始められます</p>
-                            </div>
-                        </div>
-                    </div>
-                    
                 </div>
             </div>
         </section>
@@ -1584,8 +1703,8 @@
             });
         }, observerOptions);
 
-        // アニメーション対象要素を監視（ロゴセクションとホームセクションは除外）
-        document.querySelectorAll('section:not(#logo-display):not(#home), .seminar-card, .gallery-item, .instructor-card, .faq-item, .access-card, .quiz-app-card').forEach(el => {
+        // アニメーション対象要素を監視（ホームセクションは除外）
+        document.querySelectorAll('section:not(#home), .seminar-card, .gallery-item, .instructor-card, .faq-item, .access-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
@@ -1607,7 +1726,7 @@
     <!-- Firebase SDK for Authentication -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getAuth, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         // Firebase設定
         const firebaseConfig = {
@@ -1622,26 +1741,69 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
+        // UI要素
+        const authLink = document.getElementById('authLink');
+        const userMenu = document.getElementById('userMenu');
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userMenuDropdown = document.getElementById('userMenuDropdown');
+        const userEmailDisplay = document.getElementById('userEmailDisplay');
+        const logoutLink = document.getElementById('logoutLink');
+
+        // ユーザーメニューの開閉
+        if (userMenuBtn && userMenuDropdown) {
+            userMenuBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isActive = userMenuDropdown.classList.toggle('active');
+                userMenuBtn.classList.toggle('active', isActive);
+            });
+
+            // メニュー外をクリックしたら閉じる
+            document.addEventListener('click', (e) => {
+                if (!userMenu.contains(e.target)) {
+                    userMenuDropdown.classList.remove('active');
+                    userMenuBtn.classList.remove('active');
+                }
+            });
+        }
+
+        // ログアウト処理
+        if (logoutLink) {
+            logoutLink.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (confirm('ログアウトしますか？')) {
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'auth.html';
+                    } catch (error) {
+                        console.error('ログアウトエラー:', error);
+                        alert('ログアウトに失敗しました。もう一度お試しください。');
+                    }
+                }
+            });
+        }
+
         // 認証状態に応じてナビゲーションを更新
         onAuthStateChanged(auth, (user) => {
-            const authLink = document.getElementById('authLink');
-            const salonLink = document.getElementById('salonLink');
-            
-            if (authLink) {
-                if (user) {
-                    authLink.textContent = 'マイページ';
-                    authLink.href = 'member.html';
-                    // オンラインサロンリンクを表示
-                    if (salonLink) {
-                        salonLink.style.display = 'inline-block';
-                    }
-                } else {
+            if (user) {
+                // ログインしている場合
+                if (authLink) {
+                    authLink.style.display = 'none';
+                }
+                if (userMenu) {
+                    userMenu.style.display = 'block';
+                }
+                if (userEmailDisplay) {
+                    userEmailDisplay.textContent = user.email || '';
+                }
+            } else {
+                // ログインしていない場合
+                if (authLink) {
+                    authLink.style.display = 'inline-block';
                     authLink.textContent = 'ログイン';
                     authLink.href = 'auth.html';
-                    // オンラインサロンリンクを非表示
-                    if (salonLink) {
-                        salonLink.style.display = 'none';
-                    }
+                }
+                if (userMenu) {
+                    userMenu.style.display = 'none';
                 }
             }
         });

@@ -309,9 +309,9 @@
                     <h1>運動器超音波Lab</h1>
                 </div>
                 <nav class="nav-links">
-                    <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
-                    <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
-                    <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
+                    <a href="index.html" target="_self"><i class="fas fa-home"></i> ホーム</a>
+                    <span style="cursor: not-allowed; opacity: 0.6; color: #999;"><i class="fas fa-clock"></i> オンラインサロン（準備中）</span>
+                    <a href="echo-videos.html" target="_self"><i class="fas fa-video"></i> エコー動画</a>
                     <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
                 </nav>
             </div>
@@ -378,11 +378,11 @@
 
                 <!-- アクションボタン -->
                 <div class="btn-group">
-                    <a href="echo-videos.html" class="btn btn-primary">
+                    <a href="echo-videos.html" class="btn btn-primary" target="_self">
                         <i class="fas fa-video"></i>
                         エコー動画を見る
                     </a>
-                    <a href="index.html" class="btn btn-secondary">
+                    <a href="index.html" class="btn btn-secondary" target="_self">
                         <i class="fas fa-home"></i>
                         ホームに戻る
                     </a>
@@ -408,7 +408,9 @@
             query, 
             where, 
             getDocs, 
-            orderBy 
+            orderBy,
+            doc,
+            getDoc
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         // Firebase設定
@@ -479,9 +481,29 @@
             }
         }
 
+        // ユーザーのプラン情報を取得
+        async function getUserPlan(user) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    return userData.plan || null;
+                }
+                return null;
+            } catch (error) {
+                console.error('プラン情報取得エラー:', error);
+                return null;
+            }
+        }
+
         // 購入履歴を表示（Firestoreから取得）
         async function displayPurchaseHistory(user) {
             try {
+                // ユーザーのプラン情報を取得
+                const userPlan = await getUserPlan(user);
+                const isPremium = userPlan === 'premium';
+                const isBasic = userPlan === 'basic';
+
                 // Firestoreから購入履歴を取得
                 const purchasesQuery = query(
                     collection(db, 'purchases'),
@@ -491,32 +513,84 @@
 
                 const querySnapshot = await getDocs(purchasesQuery);
                 
+                // プレミアムプラン会員向けの特別メッセージ
+                let premiumMessage = '';
+                if (isPremium) {
+                    premiumMessage = `
+                        <li class="purchase-item" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 193, 7, 0.1)); border: 2px solid rgba(255, 215, 0, 0.3);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <i class="fas fa-crown" style="font-size: 2rem; color: #ffd700;"></i>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                        <strong style="color: #ffd700; font-size: 1.1rem;">プレミアムプラン会員特典</strong>
+                                        <span style="background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">2980円プラン</span>
+                                    </div>
+                                    <p style="color: #e0e0e0; margin-bottom: 8px;">
+                                        すべてのエコー動画（67本）を視聴できます！
+                                    </p>
+                                    <p style="font-size: 0.9rem; color: #999;">
+                                        個別購入は不要です。<span style="color: #ffd700; font-weight: 600;">オンラインサロン</span>からすべての動画を視聴できます。<span style="color: #ffd700; font-size: 0.85rem;">（準備中）</span>
+                                    </p>
+                                </div>
+                                <span class="btn btn-primary" style="padding: 10px 20px; background: linear-gradient(135deg, #666, #555); cursor: not-allowed; opacity: 0.6;">
+                                    <i class="fas fa-clock"></i> コンテンツを見る（準備中）
+                                </span>
+                            </div>
+                        </li>
+                    `;
+                } else if (isBasic) {
+                    premiumMessage = `
+                        <li class="purchase-item" style="background: rgba(102, 126, 234, 0.1); border: 2px solid rgba(102, 126, 234, 0.3);">
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <i class="fas fa-info-circle" style="font-size: 2rem; color: #667eea;"></i>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                                        <strong style="color: #667eea; font-size: 1.1rem;">1980円プラン会員</strong>
+                                        <span style="background: rgba(102, 126, 234, 0.2); color: #667eea; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">基本プラン</span>
+                                    </div>
+                                    <p style="color: #e0e0e0; margin-bottom: 8px;">
+                                        エコーアプリ、Note記事、アーカイブ動画にアクセス可能です。
+                                    </p>
+                                    <p style="font-size: 0.9rem; color: #999;">
+                                        <span style="color: #667eea; font-weight: 600;">オンラインサロン</span>からコンテンツを視聴できます。<span style="color: #667eea; font-size: 0.85rem;">（準備中）</span>
+                                    </p>
+                                </div>
+                                <span class="btn btn-primary" style="padding: 10px 20px; background: #666; cursor: not-allowed; opacity: 0.6;">
+                                    <i class="fas fa-clock"></i> コンテンツを見る（準備中）
+                                </span>
+                            </div>
+                        </li>
+                    `;
+                }
+                
                 if (querySnapshot.empty) {
                     // 購入履歴がない場合、localStorageも確認（後方互換性）
                     const purchasedVideos = JSON.parse(localStorage.getItem('purchased_videos') || '[]');
                     
                     if (purchasedVideos.length === 0) {
-                        purchaseList.innerHTML = `
+                        purchaseList.innerHTML = premiumMessage + `
                             <li class="purchase-item empty">
                                 <i class="fas fa-inbox" style="font-size: 3rem; color: #666; margin-bottom: 15px;"></i>
-                                <p>購入履歴がありません</p>
-                                <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
-                                    <a href="echo-videos.html" style="color: #007bff; text-decoration: none;">エコー動画を見る</a> から動画を購入できます
-                                </p>
+                                <p>個別購入履歴がありません</p>
+                                ${!isPremium ? `
+                                    <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
+                                        <span style="color: #007bff;">オンラインサロン</span> から動画を購入できます<span style="color: #007bff; font-size: 0.85rem;">（準備中）</span>
+                                    </p>
+                                ` : ''}
                             </li>
                         `;
                     } else {
                         // localStorageから表示（移行期間中）
-                        purchaseList.innerHTML = purchasedVideos.map(videoId => `
+                        purchaseList.innerHTML = premiumMessage + purchasedVideos.map(videoId => `
                             <li class="purchase-item">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
                                     <div>
                                         <i class="fas fa-video" style="color: #007bff; margin-right: 10px;"></i>
                                         <strong>動画ID: ${videoId}</strong>
                                     </div>
-                                    <a href="echo-videos.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
-                                        <i class="fas fa-play"></i> 視聴する
-                                    </a>
+                                    <span class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem; background: #666; cursor: not-allowed; opacity: 0.6;">
+                                        <i class="fas fa-clock"></i> 視聴する（準備中）
+                                    </span>
                                 </div>
                             </li>
                         `).join('');
@@ -535,7 +609,7 @@
                         });
                     });
 
-                    purchaseList.innerHTML = purchases.map(purchase => {
+                    purchaseList.innerHTML = premiumMessage + purchases.map(purchase => {
                         const dateStr = purchase.purchasedAt 
                             ? purchase.purchasedAt.toLocaleDateString('ja-JP', {
                                 year: 'numeric',
@@ -557,9 +631,9 @@
                                             <span>購入日: ${dateStr}</span>
                                         </div>
                                     </div>
-                                    <a href="echo-videos.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
-                                        <i class="fas fa-play"></i> 視聴する
-                                    </a>
+                                    <span class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem; background: #666; cursor: not-allowed; opacity: 0.6;">
+                                        <i class="fas fa-clock"></i> 視聴する（準備中）
+                                    </span>
                                 </div>
                             </li>
                         `;

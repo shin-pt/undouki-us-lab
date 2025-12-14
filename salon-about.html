@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オンラインサロンについて - 運動器超音波Lab</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M43.05 79.73c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23zm13.9-43.05c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23z" fill-opacity="0.03" fill="%23FFF"/></svg>');
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            color: #e0e0e0;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .about-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #999;
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+        .intro-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .intro-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .intro-section h2 i {
+            color: #667eea;
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .content-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .content-card-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .content-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #e0e0e0;
+        }
+
+        .content-card p {
+            color: #999;
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .plan-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            text-align: center;
+        }
+
+        .plan-section h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .plan-section p {
+            font-size: 1.1rem;
+            color: #ccc;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+
+        .plan-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .plan-btn {
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px solid transparent;
+        }
+
+        .plan-btn.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .plan-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .plan-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .plan-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .about-container {
+                padding: 30px 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .plan-buttons {
+                flex-direction: column;
+            }
+
+            .plan-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>運動器超音波Lab</h1>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+                    <span style="cursor: not-allowed; opacity: 0.6; color: #999;"><i class="fas fa-clock"></i> オンラインサロン（準備中）</span>
+                    <a href="auth.html"><i class="fas fa-sign-in-alt"></i> ログイン</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- About Content -->
+        <div class="about-container">
+            <h1 class="page-title">
+                <i class="fas fa-users"></i> オンラインサロンについて
+            </h1>
+            <p class="page-subtitle">
+                運動器超音波Labのオンラインサロンで、いつでもどこでも学習を深められます
+            </p>
+
+            <!-- イントロダクション -->
+            <div class="intro-section">
+                <h2><i class="fas fa-info-circle"></i> オンラインサロンとは</h2>
+                <p>
+                    運動器超音波Labのオンラインサロンは、<strong>会員制の学習プラットフォーム</strong>です。
+                    セミナーに参加できない方や、自宅でじっくり学習したい方向けに、豊富なコンテンツを提供しています。
+                </p>
+                <p>
+                    月額プランにご登録いただくことで、<strong>エコーアプリ、Note記事、アーカイブ動画、PDF資料、エコー動画</strong>など、
+                    様々な学習コンテンツにアクセスできます。
+                </p>
+            </div>
+
+            <!-- コンテンツ紹介 -->
+            <h2 style="font-size: 2rem; margin-bottom: 30px; text-align: center; color: #e0e0e0;">
+                <i class="fas fa-th"></i> 提供コンテンツ
+            </h2>
+            <div class="content-grid">
+                <!-- エコーアプリ -->
+                <div class="content-card">
+                    <i class="fas fa-mobile-alt content-card-icon"></i>
+                    <h3>エコーアプリ</h3>
+                    <p>
+                        運動器超音波の知識をクイズ形式で学習できるアプリです。
+                        部位別に整理された問題で、効率的に知識を定着させられます。
+                    </p>
+                </div>
+
+                <!-- Note記事 -->
+                <div class="content-card">
+                    <i class="fas fa-file-alt content-card-icon"></i>
+                    <h3>Note記事</h3>
+                    <p>
+                        臨床で役立つ運動器超音波の知識を、わかりやすくまとめた記事形式のコンテンツです。
+                        症例解説や診断のコツなど、実践的な情報を短時間で学習できます。
+                    </p>
+                </div>
+
+                <!-- アーカイブ動画 -->
+                <div class="content-card">
+                    <i class="fas fa-archive content-card-icon"></i>
+                    <h3>アーカイブ動画</h3>
+                    <p>
+                        過去の講義動画をアーカイブとして視聴できます。
+                        ライブ講義の録画をいつでも復習でき、重要なポイントを繰り返し確認できます。
+                    </p>
+                </div>
+
+                <!-- PDF資料 -->
+                <div class="content-card">
+                    <i class="fas fa-file-pdf content-card-icon"></i>
+                    <h3>PDF資料</h3>
+                    <p>
+                        臨床で即座に活用できる運動器超音波の講義資料をPDF形式で提供します。
+                        印刷して手元に置きながら実習に活用できる、実践的な資料です。
+                    </p>
+                </div>
+
+                <!-- エコー動画 -->
+                <div class="content-card">
+                    <i class="fas fa-video content-card-icon"></i>
+                    <h3>エコー動画</h3>
+                    <p>
+                        運動器エコーの観察動画と動態動画を視聴できます。
+                        全67本の動画から、必要な動画を選択して学習できます。
+                        <strong>（2980円プラン会員は全動画視聴可能）</strong>
+                    </p>
+                </div>
+
+                <!-- エコークイズアプリ -->
+                <div class="content-card">
+                    <i class="fas fa-brain content-card-icon"></i>
+                    <h3>エコークイズアプリ</h3>
+                    <p>
+                        運動器超音波の知識をクイズ形式で楽しく学習できるアプリです。
+                        画像診断の理解度を確認し、臨床での診断精度向上につながります。
+                    </p>
+                </div>
+            </div>
+
+            <!-- プラン紹介 -->
+            <div class="plan-section">
+                <h2><i class="fas fa-crown"></i> プランについて</h2>
+                <p>
+                    オンラインサロンには、<strong>1980円プラン</strong>と<strong>2980円プラン</strong>の2つのプランをご用意しています。<br>
+                    ご自身の学習スタイルに合わせて、最適なプランをお選びください。
+                </p>
+                <div class="plan-buttons">
+                    <a href="plans.html" class="plan-btn primary">
+                        <i class="fas fa-crown"></i>
+                        プランを確認する
+                    </a>
+                    <span class="plan-btn secondary" style="cursor: not-allowed; opacity: 0.6;">
+                        <i class="fas fa-clock"></i>
+                        サンプルを見る（準備中）
+                    </span>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="cta-section">
+                <a href="index.html" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    ホームに戻る
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

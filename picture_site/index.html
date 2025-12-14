@@ -402,143 +402,6 @@
             border-radius: 12px;
         }
 
-        /* --- Echo Quiz App Section --- */
-        #echo-quiz-app {
-            background-color: #1a1a1a; /* Seminar背景色(#121212)より少し明るめ */
-        }
-        .quiz-app-grid {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .quiz-app-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-        .quiz-app-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        .quiz-app-header h3 {
-            font-size: 1.8rem;
-            margin: 0;
-            color: var(--text-color);
-        }
-        .quiz-app-badge {
-            background: var(--primary-color);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-        .quiz-features {
-            margin-bottom: 40px;
-        }
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-        .feature-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-right: 20px;
-            width: 30px;
-            text-align: center;
-        }
-        .feature-item h4 {
-            font-size: 1.2rem;
-            margin: 0 0 5px 0;
-            color: var(--text-color);
-        }
-        .feature-item p {
-            margin: 0;
-            color: var(--secondary-color);
-            font-size: 1rem;
-        }
-        .quiz-plans h4 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: var(--text-color);
-            text-align: center;
-        }
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-        .plan-item {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .plan-item:hover {
-            border-color: var(--primary-color);
-            background: rgba(0, 123, 255, 0.1);
-            transform: translateY(-5px);
-        }
-        .plan-name {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 10px;
-        }
-        .plan-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 10px;
-        }
-        .plan-price span {
-            font-size: 1rem;
-            color: var(--secondary-color);
-        }
-        .plan-features {
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-        }
-        .quiz-cta {
-            text-align: center;
-        }
-        .quiz-btn-main {
-            display: inline-flex;
-            align-items: center;
-            background: var(--primary-color);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 50px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 123, 255, 0.3);
-            margin-bottom: 15px;
-        }
-        .quiz-btn-main:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.4);
-        }
-        .quiz-btn-main i {
-            margin-right: 10px;
-        }
-        .quiz-note {
-            font-size: 0.9rem;
-            color: var(--secondary-color);
-            margin: 0;
-            font-style: italic;
-        }
-
         /* --- Gallery Section (New) --- */
         #gallery {
             text-align: center;
@@ -848,8 +711,6 @@
             .seminar-card h3 { font-size: 1.5rem; }
             .faq-grid, .access-grid { grid-template-columns: 1fr; gap: 20px; }
             .faq-item, .access-card { padding: 20px; }
-            .quiz-app-card { padding: 25px; }
-            .quiz-app-header { flex-direction: column; align-items: flex-start; gap: 15px; }
         }
     </style>
 </head>
@@ -860,7 +721,6 @@
             <a href="#home" class="logo">運動器超音波Lab</a>
             <nav class="main-nav">
                 <a href="#about">団体について</a>
-                <a href="#echo-quiz-app">クイズアプリ</a>
                 <a href="#seminars">セミナー</a>
                 <a href="#gallery">セミナー風景</a>
                 <a href="#instructors">講師紹介</a>
@@ -889,8 +749,6 @@
                     <h1>「リハビリテーション × エコー」で、<br>もっと"見える"臨床へ。</h1>
                     <p>運動器超音波Labは、多職種でエコーを学び合う実践的なスキルアップセミナーです。</p>
                     <a href="#seminars" class="hero-btn">最新セミナーを見る</a>
-                    <br>
-                    <a href="#echo-quiz-app" class="hero-btn" style="margin-top: 25px; background-color: var(--accent-green);">エコークイズアプリを見る</a>
                 </div>
             </div>
         </section>
@@ -914,85 +772,6 @@
                         <!-- 画像出典: https://unsplash.com/photos/group-of-people-in-a-room-nF8xhLMmg0c -->
                         <img src="picture_site/waiting-room.jpg" alt="セミナー風景">
                     </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Echo Quiz App Section -->
-        <section id="echo-quiz-app">
-            <div class="container">
-                <h2 class="section-title">エコークイズアプリ</h2>
-                <p class="section-intro">運動器超音波の知識を効率的に学べる<strong>オンライン学習ツール</strong>をご紹介します。<br>セミナーでの学びをさらに深め、いつでもどこでも復習できます。</p>
-                
-                <div class="quiz-app-grid">
-                    <div class="quiz-app-content">
-                        <div class="quiz-app-card">
-                            <div class="quiz-app-header">
-                                <h3>運動器超音波 学習クイズアプリ</h3>
-                                <div class="quiz-app-badge">Web版対応</div>
-                            </div>
-                            
-                            <div class="quiz-features">
-                                <div class="feature-item">
-                                    <i class="fa-solid fa-brain"></i>
-                                    <div>
-                                        <h4>体系的な学習</h4>
-                                        <p>上肢・下肢・体幹の部位別クイズで効率的に学習</p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fa-solid fa-video"></i>
-                                    <div>
-                                        <h4>動画解説付き</h4>
-                                        <p>20本以上の詳細動画で理解を深める<br><small style="color: var(--secondary-color);">（毎月3〜5本追加予定）</small></p>
-                                    </div>
-                                </div>
-                                <div class="feature-item">
-                                    <i class="fa-solid fa-mobile-alt"></i>
-                                    <div>
-                                        <h4>いつでもどこでも</h4>
-                                        <p>スマホ・タブレット・PCで学習可能</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="quiz-plans">
-                                <h4>料金プラン</h4>
-                                <div class="plans-grid">
-                                    <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                                        <div class="plan-item">
-                                            <div class="plan-name">無料プラン</div>
-                                            <div class="plan-price">¥0</div>
-                                            <div class="plan-features">基本問題20問</div>
-                                        </div>
-                                    </a>
-                                    <a href="https://buy.stripe.com/dRmeVd2DL2AYdG27bMeME00?success_url=https://echo-quiz-app.web.app/?payment=success&plan=basic&cancel_url=https://echo-quiz-app.web.app/?payment=cancel" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                                        <div class="plan-item">
-                                            <div class="plan-name">ベーシック</div>
-                                            <div class="plan-price">¥1,500<span>/月</span></div>
-                                            <div class="plan-features">100問以上 + 詳細解説</div>
-                                        </div>
-                                    </a>
-                                    <a href="https://buy.stripe.com/dRm14na6d5Na6dAcw6eME01?success_url=https://echo-quiz-app.web.app/?payment=success&plan=pro&cancel_url=https://echo-quiz-app.web.app/?payment=cancel" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-                                        <div class="plan-item">
-                                            <div class="plan-name">プレミアム</div>
-                                            <div class="plan-price">¥3,000<span>/月</span></div>
-                                            <div class="plan-features">全機能 + 動画解説20本以上</div>
-                                        </div>
-                                    </a>
-                                </div>
-                            </div>
-                            
-                            <div class="quiz-cta">
-                                <a href="https://echo-quiz-app.web.app/" target="_blank" rel="noopener noreferrer" class="quiz-btn-main">
-                                    <i class="fa-solid fa-external-link-alt"></i>
-                                    アプリを試してみる
-                                </a>
-                                <p class="quiz-note">※ まずは無料プランでお試しください</p>
-                            </div>
-                        </div>
-                    </div>
-                    
                 </div>
             </div>
         </section>

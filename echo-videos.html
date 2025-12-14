@@ -645,15 +645,19 @@
                 <!-- Premium Banner -->
                 <div id="premiumBanner" class="premium-banner" style="display: none;">
                     <h3><i class="fas fa-crown"></i> プレミアムプラン会員特典</h3>
-                    <p>すべてのエコー動画（67本）を無料で視聴できます！</p>
-                    <a href="plans.html"><i class="fas fa-info-circle"></i> プランを確認する</a>
+                    <p>すべてのエコー動画（67本）を視聴できます！</p>
+                    <span style="background: rgba(255, 255, 255, 0.3); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; display: inline-block; cursor: not-allowed; opacity: 0.7;">
+                        <i class="fas fa-clock"></i> プランを確認する（準備中）
+                    </span>
                 </div>
 
                 <!-- Non-Premium Banner -->
                 <div id="nonPremiumBanner" class="non-premium-banner" style="display: none;">
-                    <h3><i class="fas fa-star"></i> プレミアムプランで全動画無料視聴！</h3>
-                    <p>2980円プランにご登録いただくと、すべてのエコー動画（67本）を無料で視聴できます。</p>
-                    <a href="plans.html"><i class="fas fa-arrow-right"></i> プレミアムプランを確認する</a>
+                    <h3><i class="fas fa-star"></i> プレミアムプランで全動画視聴可能！</h3>
+                    <p>2980円プランにご登録いただくと、すべてのエコー動画（67本）を視聴できます。</p>
+                    <span style="background: rgba(102, 126, 234, 0.3); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; display: inline-block; cursor: not-allowed; opacity: 0.7;">
+                        <i class="fas fa-clock"></i> プレミアムプランを確認する（準備中）
+                    </span>
                 </div>
 
                 <!-- Stats Bar -->
@@ -1668,7 +1672,7 @@
                     if (!videoId) return;
                     
                     if (isPremium) {
-                        button.textContent = '無料で視聴';
+                        button.textContent = '視聴可能';
                         button.classList.add('free-btn');
                         button.onclick = function(e) {
                             e.preventDefault();
@@ -1697,8 +1701,8 @@
                 const videoId = match[1];
 
                 if (isPremium) {
-                    // premiumプランの場合：無料視聴可能にする（購入済みより優先）
-                    button.textContent = '無料で視聴';
+                    // premiumプランの場合：視聴可能にする（購入済みより優先）
+                    button.textContent = '視聴可能';
                     button.style.backgroundColor = ''; // リセット
                     button.classList.add('free-btn');
                     button.onclick = function(e) {

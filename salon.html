@@ -720,39 +720,20 @@
 
                 // URLがない場合の表示
                 let urlStatus = '';
-                if (!content.url || content.url.trim() === '') {
-                    // エコー動画でプレミアムプラン会員の場合は、vimeo-mapping.jsから取得可能かチェック
-                    if (content.category === 'エコー動画' && userPlan === 'premium') {
-                        console.log(`🔍 Checking premium access for: ${content.title}`);
-                        console.log(`📊 VIDEO_TITLES available:`, typeof VIDEO_TITLES !== 'undefined');
-                        console.log(`📊 VIDEO_VIMEO_URLS available:`, typeof VIDEO_VIMEO_URLS !== 'undefined');
-                        
-                        if (typeof VIDEO_TITLES !== 'undefined' && typeof VIDEO_VIMEO_URLS !== 'undefined') {
-                            const videoId = findVideoIdByTitle(content.title);
-                            console.log(`🎬 Found videoId:`, videoId);
-                            
-                            if (videoId && VIDEO_VIMEO_URLS[videoId]) {
-                                // プレミアムプラン会員は無料で視聴可能
-                                console.log(`✅ Premium access granted for: ${content.title}`);
-                                urlStatus = '<span style="background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;"><i class="fas fa-crown"></i> 無料で視聴可能</span>';
-                            } else {
-                                console.warn(`⚠️ Video not found in mapping for: ${content.title}`);
-                                urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
-                            }
-                        } else {
-                            console.warn('⚠️ VIDEO_TITLES or VIDEO_VIMEO_URLS not loaded');
-                            urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
-                        }
-                    } else {
+                // エコー動画カテゴリの場合の特別処理
+                if (content.category === 'エコー動画') {
+                    if (userPlan === 'premium') {
+                        // プレミアムプラン会員は視聴可能（echo-videos.htmlで全動画視聴可能）
+                        urlStatus = '<span style="background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;"><i class="fas fa-crown"></i> 視聴可能</span>';
+                    } else if (!content.url || content.url.trim() === '') {
                         urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
                     }
-                } else if (content.category === 'エコー動画' && userPlan === 'premium') {
-                    // URLがある場合でも、プレミアムプラン会員の場合は無料で視聴可能であることを表示
-                    urlStatus = '<span style="background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;"><i class="fas fa-crown"></i> 無料で視聴可能</span>';
+                } else if (!content.url || content.url.trim() === '') {
+                    urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
                 }
 
                 return `
-                    <div class="content-card" data-content-id="${content.id}" data-content-type="${content.type}" data-content-url="${content.url || ''}" data-content-title="${content.title}">
+                    <div class="content-card" data-content-id="${content.id}" data-content-type="${content.type}" data-content-url="${content.url || ''}" data-content-title="${content.title}" data-content-category="${content.category}">
                         <div class="content-card-header">
                             <i class="${icon} content-card-icon"></i>
                             <h3 class="content-card-title">
@@ -777,43 +758,30 @@
                     const url = card.dataset.contentUrl;
                     const contentId = card.dataset.contentId;
                     const title = card.dataset.contentTitle || card.querySelector('.content-card-title').textContent.trim();
-                    const category = currentCategory;
+                    const contentCategory = card.dataset.contentCategory; // コンテンツ自体のカテゴリ
+                    const currentCategoryFilter = currentCategory; // 現在選択されているフィルタ
 
-                    // エコー動画カテゴリで、プレミアムプラン会員の場合
-                    if (type === 'video' && category === 'エコー動画' && userPlan === 'premium') {
-                        // vimeo-mapping.jsから動画IDを取得
-                        const videoId = findVideoIdByTitle(title);
-                        if (videoId && VIDEO_VIMEO_URLS && VIDEO_VIMEO_URLS[videoId]) {
-                            // プレミアムプラン会員は無料で視聴可能
-                            const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
-                            openVideoModal(vimeoUrl);
-                            return;
-                        }
+                    console.log('🔍 Card clicked:', {
+                        title: title,
+                        contentCategory: contentCategory,
+                        currentCategoryFilter: currentCategoryFilter,
+                        type: type,
+                        url: url
+                    });
+
+                    // エコー動画カテゴリのコンテンツの場合、echo-videos.htmlにリダイレクト
+                    if (contentCategory === 'エコー動画') {
+                        console.log('✅ Redirecting to echo-videos.html');
+                        // プレミアムプラン会員も含めて、echo-videos.htmlにリダイレクト
+                        // echo-videos.htmlでプレミアムプラン会員は視聴可能
+                        window.location.href = 'echo-videos.html';
+                        return;
                     }
 
                     // URLがない場合はメッセージを表示
                     if (!url || url.trim() === '') {
-                        // エコー動画でプレミアムプラン会員の場合は、vimeo-mapping.jsから取得を試みる
-                        if (type === 'video' && category === 'エコー動画' && userPlan === 'premium') {
-                            const videoId = findVideoIdByTitle(title);
-                            if (videoId && VIDEO_VIMEO_URLS && VIDEO_VIMEO_URLS[videoId]) {
-                                const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
-                                openVideoModal(vimeoUrl);
-                                return;
-                            }
-                        }
                         alert('このコンテンツは現在準備中です。\n公開までしばらくお待ちください。');
                         return;
-                    }
-
-                    // URLがある場合でも、エコー動画でプレミアムプラン会員の場合はvimeo-mapping.jsを優先
-                    if (type === 'video' && category === 'エコー動画' && userPlan === 'premium') {
-                        const videoId = findVideoIdByTitle(title);
-                        if (videoId && VIDEO_VIMEO_URLS && VIDEO_VIMEO_URLS[videoId]) {
-                            const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
-                            openVideoModal(vimeoUrl);
-                            return;
-                        }
                     }
 
                     if (type === 'video' || type === 'archive') {

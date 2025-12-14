@@ -391,7 +391,7 @@
                 <nav class="nav-links">
                     <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
                     <a href="member.html"><i class="fas fa-user"></i> マイページ</a>
-                    <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
+                    <span style="cursor: not-allowed; opacity: 0.6; color: #999;"><i class="fas fa-clock"></i> オンラインサロン（準備中）</span>
                     <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
                     <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
                 </nav>
@@ -668,10 +668,10 @@
                 displayCurrentPlan(plan);
                 showMessage(`プランが${plan === 'basic' ? '1980円プラン' : '2980円プラン'}に更新されました。`, 'success');
                 
-                // 3秒後にsalon.htmlにリダイレクト
-                setTimeout(() => {
-                    window.location.href = 'salon.html';
-                }, 3000);
+                // 3秒後にsalon.htmlにリダイレクト（準備中のため無効化）
+                // setTimeout(() => {
+                //     window.location.href = 'salon.html';
+                // }, 3000);
             } catch (error) {
                 console.error('プラン更新エラー:', error);
                 showMessage('プランの更新に失敗しました。', 'error');
