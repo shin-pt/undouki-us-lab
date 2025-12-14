@@ -245,6 +245,77 @@
     <!-- Video Mapping Data -->
     <script src="vimeo-mapping.js"></script>
     <script src="video-payment-config.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            serverTimestamp,
+            query,
+            where,
+            getDocs
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Firestoreに購入履歴を保存する関数
+        async function savePurchaseToFirestore(videoId, price, videoTitle) {
+            const user = auth.currentUser;
+            if (!user) {
+                console.warn('⚠️ ユーザーがログインしていないため、Firestoreに保存できません');
+                return;
+            }
+
+            try {
+                // 既に同じ動画を購入しているかチェック
+                const purchasesQuery = query(
+                    collection(db, 'purchases'),
+                    where('userId', '==', user.uid),
+                    where('videoId', '==', videoId)
+                );
+                const existingPurchases = await getDocs(purchasesQuery);
+
+                if (!existingPurchases.empty) {
+                    console.log(`ℹ️ 動画 ${videoId} は既に購入済みです`);
+                    return;
+                }
+
+                // 購入履歴をFirestoreに保存
+                await addDoc(collection(db, 'purchases'), {
+                    userId: user.uid,
+                    videoId: videoId,
+                    videoTitle: videoTitle || `動画ID: ${videoId}`,
+                    price: price,
+                    purchasedAt: serverTimestamp()
+                });
+
+                console.log(`✅ 購入履歴をFirestoreに保存しました: ${videoId}`);
+            } catch (error) {
+                console.error('❌ Firestoreへの保存に失敗:', error);
+            }
+        }
+
+        // グローバルに公開（他のスクリプトから使用可能にする）
+        window.savePurchaseToFirestore = savePurchaseToFirestore;
+        window.firebaseAuth = auth;
+    </script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             console.log('💳 Processing payment success...');
@@ -263,15 +334,9 @@
             const actionButtons = document.getElementById('actionButtons');
 
             // 少し遅延させて処理を実行（アニメーション効果のため）
-            setTimeout(function() {
+            setTimeout(async function() {
                 if (videoId) {
-                    // 動画を購入済みとしてマーク
-                    if (typeof markAsPurchased === 'function') {
-                        markAsPurchased(videoId);
-                        console.log(`✅ Marked video as purchased: ${videoId}`);
-                    }
-
-                    // 購入動画情報を表示
+                    // 購入動画情報を取得
                     const price = typeof getVideoPrice === 'function'
                         ? getVideoPrice(videoId)
                         : 800;
@@ -280,6 +345,17 @@
                     const videoTitle = (typeof VIDEO_TITLES !== 'undefined' && VIDEO_TITLES[videoId])
                         ? VIDEO_TITLES[videoId]
                         : `動画ID: ${videoId}`;
+
+                    // localStorageにも保存（後方互換性のため）
+                    if (typeof markAsPurchased === 'function') {
+                        markAsPurchased(videoId);
+                        console.log(`✅ Marked video as purchased (localStorage): ${videoId}`);
+                    }
+
+                    // Firestoreに購入履歴を保存
+                    if (typeof window.savePurchaseToFirestore === 'function') {
+                        await window.savePurchaseToFirestore(videoId, price, videoTitle);
+                    }
 
                     document.getElementById('videoTitle').textContent = videoTitle;
                     document.getElementById('videoPrice').textContent = `価格: ¥${price}`;

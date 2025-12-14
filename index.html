@@ -1075,6 +1075,8 @@
                 <a href="#faq">よくある質問</a>
                 <a href="#access">アクセス</a>
                 <a href="#contact">お問い合わせ</a>
+                <a href="salon.html" id="salonLink" style="display: none;"><i class="fas fa-users"></i> オンラインサロン</a>
+                <a href="auth.html" id="authLink">ログイン</a>
             </nav>
         </div>
     </header>
@@ -1600,6 +1602,49 @@
             }
         });
 
+    </script>
+    
+    <!-- Firebase SDK for Authentication -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // 認証状態に応じてナビゲーションを更新
+        onAuthStateChanged(auth, (user) => {
+            const authLink = document.getElementById('authLink');
+            const salonLink = document.getElementById('salonLink');
+            
+            if (authLink) {
+                if (user) {
+                    authLink.textContent = 'マイページ';
+                    authLink.href = 'member.html';
+                    // オンラインサロンリンクを表示
+                    if (salonLink) {
+                        salonLink.style.display = 'inline-block';
+                    }
+                } else {
+                    authLink.textContent = 'ログイン';
+                    authLink.href = 'auth.html';
+                    // オンラインサロンリンクを非表示
+                    if (salonLink) {
+                        salonLink.style.display = 'none';
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>

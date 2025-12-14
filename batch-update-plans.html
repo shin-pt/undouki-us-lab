@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プラン一括設定ツール</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .warning {
+            background: rgba(255, 193, 7, 0.2);
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .warning h2 {
+            color: #ffc107;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .content-list {
+            margin-bottom: 30px;
+        }
+
+        .content-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .content-item h3 {
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .content-item p {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .plan-select {
+            margin-top: 10px;
+        }
+
+        .plan-select label {
+            display: inline-block;
+            margin-right: 15px;
+            color: #e0e0e0;
+        }
+
+        .plan-select select {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .plan-select select option {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #81c784;
+            display: block;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #e57373;
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-tools"></i> プラン一括設定ツール</h1>
+
+        <div class="warning">
+            <h2><i class="fas fa-exclamation-triangle"></i> 注意事項</h2>
+            <p>このツールは、Firestoreの`salon_content`コレクション内のすべてのドキュメントに`requiredPlan`フィールドを一括で追加・更新します。</p>
+            <p style="margin-top: 10px;"><strong>実行前に必ずFirestoreのバックアップを取ってください。</strong></p>
+        </div>
+
+        <div id="contentList" class="content-list">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>コンテンツを読み込み中...</p>
+            </div>
+        </div>
+
+        <button id="updateBtn" class="btn" disabled>
+            <i class="fas fa-save"></i> 一括更新を実行
+        </button>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signInWithEmailAndPassword
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection, 
+            getDocs,
+            doc,
+            updateDoc
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const contentList = document.getElementById('contentList');
+        const updateBtn = document.getElementById('updateBtn');
+        const message = document.getElementById('message');
+        const loading = document.getElementById('loading');
+
+        let allContents = [];
+
+        // 認証チェック
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                alert('このツールを使用するにはログインが必要です。\n認証ページにリダイレクトします。');
+                window.location.href = 'auth.html';
+                return;
+            }
+
+            await loadContents();
+        });
+
+        // コンテンツを読み込む
+        async function loadContents() {
+            loading.style.display = 'block';
+            contentList.innerHTML = '';
+
+            try {
+                const querySnapshot = await getDocs(collection(db, 'salon_content'));
+                allContents = [];
+
+                querySnapshot.forEach((docSnapshot) => {
+                    const data = docSnapshot.data();
+                    allContents.push({
+                        id: docSnapshot.id,
+                        title: data.title || 'タイトルなし',
+                        category: data.category || 'その他',
+                        type: data.type || 'video',
+                        currentPlan: data.requiredPlan || null
+                    });
+                });
+
+                // コンテンツリストを表示
+                if (allContents.length === 0) {
+                    contentList.innerHTML = '<p style="text-align: center; color: #999;">コンテンツが見つかりませんでした。</p>';
+                } else {
+                    contentList.innerHTML = allContents.map((content, index) => {
+                        // カテゴリに基づいてデフォルトプランを設定
+                        let defaultPlan = '';
+                        if (content.category === 'PDF資料' || content.category === 'エコー動画') {
+                            defaultPlan = 'premium';
+                        } else if (content.category === 'Note記事' || content.category === 'アーカイブ動画' || content.category === 'エコークイズアプリ') {
+                            defaultPlan = 'basic';
+                        }
+
+                        const selectedPlan = content.currentPlan || defaultPlan || '';
+
+                        return `
+                            <div class="content-item">
+                                <h3>${content.title}</h3>
+                                <p><strong>カテゴリ:</strong> ${content.category}</p>
+                                <p><strong>タイプ:</strong> ${content.type}</p>
+                                <p><strong>現在のプラン:</strong> ${content.currentPlan || '未設定'}</p>
+                                <div class="plan-select">
+                                    <label for="plan-${index}">設定するプラン:</label>
+                                    <select id="plan-${index}" data-content-id="${content.id}">
+                                        <option value="">全員が見れる（フィールド削除）</option>
+                                        <option value="basic" ${selectedPlan === 'basic' ? 'selected' : ''}>1980円プラン以上 (basic)</option>
+                                        <option value="premium" ${selectedPlan === 'premium' ? 'selected' : ''}>2980円プラン以上 (premium)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    updateBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error('コンテンツ読み込みエラー:', error);
+                contentList.innerHTML = `<p style="color: #e57373;">エラー: ${error.message}</p>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // 一括更新を実行
+        updateBtn.addEventListener('click', async () => {
+            if (!confirm('すべてのコンテンツのプラン設定を更新しますか？\nこの操作は取り消せません。')) {
+                return;
+            }
+
+            updateBtn.disabled = true;
+            loading.style.display = 'block';
+            message.className = 'message';
+            message.style.display = 'none';
+
+            let successCount = 0;
+            let errorCount = 0;
+            const errors = [];
+
+            try {
+                for (let i = 0; i < allContents.length; i++) {
+                    const select = document.getElementById(`plan-${i}`);
+                    const contentId = select.dataset.contentId;
+                    const selectedPlan = select.value;
+
+                    try {
+                        const contentRef = doc(db, 'salon_content', contentId);
+                        
+                        if (selectedPlan === '') {
+                            // フィールドを削除（nullに設定）
+                            await updateDoc(contentRef, {
+                                requiredPlan: null
+                            });
+                        } else {
+                            // フィールドを追加・更新
+                            await updateDoc(contentRef, {
+                                requiredPlan: selectedPlan
+                            });
+                        }
+                        successCount++;
+                    } catch (error) {
+                        errorCount++;
+                        errors.push(`${allContents[i].title}: ${error.message}`);
+                        console.error(`更新エラー (${contentId}):`, error);
+                    }
+                }
+
+                // 結果を表示
+                message.className = 'message success';
+                message.innerHTML = `
+                    <h3><i class="fas fa-check-circle"></i> 更新完了</h3>
+                    <p>成功: ${successCount}件</p>
+                    ${errorCount > 0 ? `<p style="color: #e57373;">エラー: ${errorCount}件</p>` : ''}
+                    ${errors.length > 0 ? `<details style="margin-top: 10px;"><summary>エラー詳細</summary><pre style="margin-top: 10px; font-size: 0.8rem;">${errors.join('\n')}</pre></details>` : ''}
+                `;
+                message.style.display = 'block';
+
+                // コンテンツを再読み込み
+                await loadContents();
+            } catch (error) {
+                message.className = 'message error';
+                message.innerHTML = `<h3><i class="fas fa-exclamation-circle"></i> エラー</h3><p>${error.message}</p>`;
+                message.style.display = 'block';
+            } finally {
+                updateBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+</html>
+

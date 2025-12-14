@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コンテンツ追加ツール</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 1rem;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .form-group select option {
+            background: #1a1a2e;
+            color: #e0e0e0;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #81c784;
+            display: block;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #e57373;
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-plus-circle"></i> コンテンツ追加ツール</h1>
+
+        <form id="contentForm">
+            <div class="form-group">
+                <label for="title">タイトル <span style="color: #e57373;">*</span></label>
+                <input type="text" id="title" required placeholder="例: サンプルエコー動画">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="category">カテゴリ <span style="color: #e57373;">*</span></label>
+                    <select id="category" required>
+                        <option value="">選択してください</option>
+                        <option value="エコーアプリ">エコーアプリ</option>
+                        <option value="Note記事">Note記事</option>
+                        <option value="アーカイブ動画">アーカイブ動画</option>
+                        <option value="PDF資料">PDF資料</option>
+                        <option value="エコー動画">エコー動画</option>
+                        <option value="エコークイズアプリ">エコークイズアプリ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="type">タイプ <span style="color: #e57373;">*</span></label>
+                    <select id="type" required>
+                        <option value="">選択してください</option>
+                        <option value="video">video</option>
+                        <option value="pdf">pdf</option>
+                        <option value="archive">archive</option>
+                        <option value="quiz">quiz</option>
+                        <option value="note">note</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">説明</label>
+                <textarea id="description" placeholder="コンテンツの説明を入力してください"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="url">URL</label>
+                <input type="url" id="url" placeholder="例: https://vimeo.com/123456789（未準備の場合は空欄のまま）">
+                <div class="help-text">Vimeo動画URL、PDFファイルURLなどを入力してください。未準備の場合は空欄のまま保存できます。</div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="order">表示順</label>
+                    <input type="number" id="order" value="1" min="0">
+                    <div class="help-text">数値が小さいほど上に表示されます</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="requiredPlan">プラン制限</label>
+                    <select id="requiredPlan">
+                        <option value="">全員が見れる（プラン制限なし）</option>
+                        <option value="basic">1980円プラン以上 (basic)</option>
+                        <option value="premium">2980円プラン以上 (premium)</option>
+                    </select>
+                    <div class="help-text">カテゴリに応じて自動設定されます</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="isActive" style="width: auto; margin-right: 8px;">
+                    アクティブ（公開する）
+                </label>
+                <div class="help-text">チェックを外すと非公開になります。コンテンツが完成したら公開してください。</div>
+            </div>
+
+            <button type="submit" class="btn" id="submitBtn">
+                <i class="fas fa-save"></i> コンテンツを追加
+            </button>
+        </form>
+
+        <div id="message" class="message"></div>
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>保存中...</p>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection,
+            addDoc,
+            serverTimestamp
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const contentForm = document.getElementById('contentForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const message = document.getElementById('message');
+        const loading = document.getElementById('loading');
+        const categorySelect = document.getElementById('category');
+        const requiredPlanSelect = document.getElementById('requiredPlan');
+
+        // カテゴリに応じてプランを自動設定
+        categorySelect.addEventListener('change', (e) => {
+            const category = e.target.value;
+            if (category === 'PDF資料' || category === 'エコー動画') {
+                requiredPlanSelect.value = 'premium';
+            } else if (category === 'Note記事' || category === 'アーカイブ動画' || category === 'エコーアプリ' || category === 'エコークイズアプリ') {
+                requiredPlanSelect.value = 'basic';
+            }
+        });
+
+        // 認証チェック
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                alert('このツールを使用するにはログインが必要です。\n認証ページにリダイレクトします。');
+                window.location.href = 'auth.html';
+                return;
+            }
+        });
+
+        // フォーム送信
+        contentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            message.className = 'message';
+            message.style.display = 'none';
+
+            try {
+                const title = document.getElementById('title').value;
+                const category = document.getElementById('category').value;
+                const type = document.getElementById('type').value;
+                const description = document.getElementById('description').value;
+                const url = document.getElementById('url').value;
+                const order = parseInt(document.getElementById('order').value) || 1;
+                const requiredPlan = document.getElementById('requiredPlan').value || null;
+                const isActive = document.getElementById('isActive').checked;
+
+                const contentData = {
+                    title: title,
+                    category: category,
+                    type: type,
+                    description: description,
+                    order: order,
+                    isActive: isActive,
+                    publishedAt: serverTimestamp()
+                };
+
+                // URLがある場合のみ追加
+                if (url && url.trim() !== '') {
+                    contentData.url = url.trim();
+                }
+
+                if (requiredPlan) {
+                    contentData.requiredPlan = requiredPlan;
+                }
+
+                await addDoc(collection(db, 'salon_content'), contentData);
+
+                message.className = 'message success';
+                message.innerHTML = `
+                    <h3><i class="fas fa-check-circle"></i> 追加完了</h3>
+                    <p>コンテンツ「${title}」が正常に追加されました。</p>
+                `;
+                message.style.display = 'block';
+
+                // フォームをリセット
+                contentForm.reset();
+                document.getElementById('order').value = 1;
+                document.getElementById('isActive').checked = false; // デフォルトは非公開
+            } catch (error) {
+                console.error('追加エラー:', error);
+                message.className = 'message error';
+                message.innerHTML = `
+                    <h3><i class="fas fa-exclamation-circle"></i> エラー</h3>
+                    <p>${error.message}</p>
+                `;
+                message.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+</html>
+

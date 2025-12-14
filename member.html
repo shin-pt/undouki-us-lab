@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マイページ - 運動器超音波Lab</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            color: #e0e0e0;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .member-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-item i {
+            font-size: 1.2rem;
+            color: #007bff;
+            width: 25px;
+        }
+
+        .info-item label {
+            font-weight: 600;
+            min-width: 120px;
+            color: #999;
+        }
+
+        .info-item span {
+            color: #e0e0e0;
+        }
+
+        .purchases-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .purchases-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #007bff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .purchase-list {
+            list-style: none;
+        }
+
+        .purchase-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .purchase-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .purchase-item.empty {
+            text-align: center;
+            color: #999;
+            padding: 40px 20px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f5576c, #f093fb);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .member-container {
+                padding: 30px 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>運動器超音波Lab</h1>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+                    <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
+                    <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Member Content -->
+        <div class="member-container">
+            <h1 class="page-title">マイページ</h1>
+
+            <div id="loadingSection" class="loading">
+                <div class="spinner"></div>
+                <p>読み込み中...</p>
+            </div>
+
+            <div id="contentSection" style="display: none;">
+                <!-- ユーザー情報 -->
+                <div class="user-info-section">
+                    <h2><i class="fas fa-user"></i> アカウント情報</h2>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <label>メールアドレス:</label>
+                        <span id="userEmail">-</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar"></i>
+                        <label>登録日:</label>
+                        <span id="userCreatedAt">-</span>
+                    </div>
+                </div>
+
+                <!-- 購入履歴 -->
+                <div class="purchases-section">
+                    <h2><i class="fas fa-shopping-bag"></i> 購入履歴</h2>
+                    <ul class="purchase-list" id="purchaseList">
+                        <!-- 購入履歴がここに表示されます -->
+                    </ul>
+                </div>
+
+                <!-- パスワード変更セクション -->
+                <div class="user-info-section">
+                    <h2><i class="fas fa-key"></i> パスワード変更</h2>
+                    <form id="passwordChangeForm">
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="currentPassword" style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 600; font-size: 0.9rem;">現在のパスワード</label>
+                            <input type="password" id="currentPassword" required style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="newPassword" style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 600; font-size: 0.9rem;">新しいパスワード（8文字以上）</label>
+                            <input type="password" id="newPassword" required minlength="8" style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label for="confirmPassword" style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 600; font-size: 0.9rem;">新しいパスワード（確認）</label>
+                            <input type="password" id="confirmPassword" required minlength="8" style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
+                        </div>
+                        <div id="passwordChangeMessage" style="display: none; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem;"></div>
+                        <div class="loading" id="passwordChangeLoading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="passwordChangeBtn" style="width: 100%;">
+                            <i class="fas fa-key"></i> パスワードを変更
+                        </button>
+                    </form>
+                </div>
+
+                <!-- アクションボタン -->
+                <div class="btn-group">
+                    <a href="echo-videos.html" class="btn btn-primary">
+                        <i class="fas fa-video"></i>
+                        エコー動画を見る
+                    </a>
+                    <a href="index.html" class="btn btn-secondary">
+                        <i class="fas fa-home"></i>
+                        ホームに戻る
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut,
+            updatePassword,
+            reauthenticateWithCredential,
+            EmailAuthProvider
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection, 
+            query, 
+            where, 
+            getDocs, 
+            orderBy 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        // Firebase初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // UI要素
+        const loadingSection = document.getElementById('loadingSection');
+        const contentSection = document.getElementById('contentSection');
+        const userEmail = document.getElementById('userEmail');
+        const userCreatedAt = document.getElementById('userCreatedAt');
+        const purchaseList = document.getElementById('purchaseList');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const passwordChangeForm = document.getElementById('passwordChangeForm');
+        const passwordChangeMessage = document.getElementById('passwordChangeMessage');
+        const passwordChangeLoading = document.getElementById('passwordChangeLoading');
+        const passwordChangeBtn = document.getElementById('passwordChangeBtn');
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // ログインしている場合
+                try {
+                    displayUserInfo(user);
+                    await displayPurchaseHistory(user);
+                    loadingSection.style.display = 'none';
+                    contentSection.style.display = 'block';
+                } catch (error) {
+                    console.error('ページ読み込みエラー:', error);
+                    loadingSection.innerHTML = `
+                        <div class="spinner"></div>
+                        <p>エラーが発生しました。ページを再読み込みしてください。</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">エラー: ${error.message}</p>
+                    `;
+                }
+            } else {
+                // ログインしていない場合、ログインページにリダイレクト
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // ユーザー情報を表示
+        function displayUserInfo(user) {
+            userEmail.textContent = user.email || '-';
+            
+            // 登録日の表示
+            if (user.metadata && user.metadata.creationTime) {
+                const date = new Date(user.metadata.creationTime);
+                const formattedDate = date.toLocaleDateString('ja-JP', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                userCreatedAt.textContent = formattedDate;
+            } else {
+                userCreatedAt.textContent = '-';
+            }
+        }
+
+        // 購入履歴を表示（Firestoreから取得）
+        async function displayPurchaseHistory(user) {
+            try {
+                // Firestoreから購入履歴を取得
+                const purchasesQuery = query(
+                    collection(db, 'purchases'),
+                    where('userId', '==', user.uid),
+                    orderBy('purchasedAt', 'desc')
+                );
+
+                const querySnapshot = await getDocs(purchasesQuery);
+                
+                if (querySnapshot.empty) {
+                    // 購入履歴がない場合、localStorageも確認（後方互換性）
+                    const purchasedVideos = JSON.parse(localStorage.getItem('purchased_videos') || '[]');
+                    
+                    if (purchasedVideos.length === 0) {
+                        purchaseList.innerHTML = `
+                            <li class="purchase-item empty">
+                                <i class="fas fa-inbox" style="font-size: 3rem; color: #666; margin-bottom: 15px;"></i>
+                                <p>購入履歴がありません</p>
+                                <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
+                                    <a href="echo-videos.html" style="color: #007bff; text-decoration: none;">エコー動画を見る</a> から動画を購入できます
+                                </p>
+                            </li>
+                        `;
+                    } else {
+                        // localStorageから表示（移行期間中）
+                        purchaseList.innerHTML = purchasedVideos.map(videoId => `
+                            <li class="purchase-item">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <i class="fas fa-video" style="color: #007bff; margin-right: 10px;"></i>
+                                        <strong>動画ID: ${videoId}</strong>
+                                    </div>
+                                    <a href="echo-videos.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
+                                        <i class="fas fa-play"></i> 視聴する
+                                    </a>
+                                </div>
+                            </li>
+                        `).join('');
+                    }
+                } else {
+                    // Firestoreから取得した購入履歴を表示
+                    const purchases = [];
+                    querySnapshot.forEach((doc) => {
+                        const data = doc.data();
+                        purchases.push({
+                            id: doc.id,
+                            videoId: data.videoId,
+                            videoTitle: data.videoTitle || `動画ID: ${data.videoId}`,
+                            price: data.price || 0,
+                            purchasedAt: data.purchasedAt ? data.purchasedAt.toDate() : null
+                        });
+                    });
+
+                    purchaseList.innerHTML = purchases.map(purchase => {
+                        const dateStr = purchase.purchasedAt 
+                            ? purchase.purchasedAt.toLocaleDateString('ja-JP', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            })
+                            : '-';
+
+                        return `
+                            <li class="purchase-item">
+                                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                                    <div style="flex: 1;">
+                                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                            <i class="fas fa-video" style="color: #007bff; margin-right: 10px;"></i>
+                                            <strong>${purchase.videoTitle}</strong>
+                                        </div>
+                                        <div style="font-size: 0.9rem; color: #999;">
+                                            <span style="margin-right: 15px;">価格: ¥${purchase.price}</span>
+                                            <span>購入日: ${dateStr}</span>
+                                        </div>
+                                    </div>
+                                    <a href="echo-videos.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
+                                        <i class="fas fa-play"></i> 視聴する
+                                    </a>
+                                </div>
+                            </li>
+                        `;
+                    }).join('');
+                }
+            } catch (error) {
+                console.error('購入履歴の取得に失敗:', error);
+                purchaseList.innerHTML = `
+                    <li class="purchase-item empty">
+                        <p>購入履歴の読み込みに失敗しました</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
+                            エラー: ${error.message}
+                        </p>
+                    </li>
+                `;
+            }
+        }
+
+        // パスワード変更処理
+        passwordChangeForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            // パスワード確認
+            if (newPassword !== confirmPassword) {
+                showPasswordMessage('新しいパスワードが一致しません。', 'error');
+                return;
+            }
+
+            if (newPassword.length < 8) {
+                showPasswordMessage('パスワードは8文字以上で入力してください。', 'error');
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) {
+                showPasswordMessage('ログインしていません。', 'error');
+                return;
+            }
+
+            passwordChangeBtn.disabled = true;
+            passwordChangeLoading.style.display = 'block';
+            passwordChangeMessage.style.display = 'none';
+
+            try {
+                // 現在のパスワードで再認証
+                const credential = EmailAuthProvider.credential(user.email, currentPassword);
+                await reauthenticateWithCredential(user, credential);
+
+                // パスワードを更新
+                await updatePassword(user, newPassword);
+
+                showPasswordMessage('パスワードが正常に変更されました。', 'success');
+                // フォームをクリア
+                document.getElementById('currentPassword').value = '';
+                document.getElementById('newPassword').value = '';
+                document.getElementById('confirmPassword').value = '';
+            } catch (error) {
+                let errorMsg = 'パスワードの変更に失敗しました。';
+                if (error.code === 'auth/wrong-password') {
+                    errorMsg = '現在のパスワードが正しくありません。';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg = 'パスワードが弱すぎます。8文字以上で入力してください。';
+                } else if (error.code === 'auth/requires-recent-login') {
+                    errorMsg = 'セキュリティのため、再度ログインしてからパスワードを変更してください。';
+                }
+                showPasswordMessage(errorMsg, 'error');
+                console.error('パスワード変更エラー:', error);
+            } finally {
+                passwordChangeBtn.disabled = false;
+                passwordChangeLoading.style.display = 'none';
+            }
+        });
+
+        // パスワード変更メッセージを表示
+        function showPasswordMessage(message, type) {
+            passwordChangeMessage.textContent = message;
+            passwordChangeMessage.style.display = 'block';
+            if (type === 'success') {
+                passwordChangeMessage.style.background = 'rgba(40, 167, 69, 0.2)';
+                passwordChangeMessage.style.color = '#72f29a';
+                passwordChangeMessage.style.border = '1px solid rgba(40, 167, 69, 0.3)';
+            } else {
+                passwordChangeMessage.style.background = 'rgba(220, 53, 69, 0.2)';
+                passwordChangeMessage.style.color = '#ff6b6b';
+                passwordChangeMessage.style.border = '1px solid rgba(220, 53, 69, 0.3)';
+            }
+        }
+
+        // ログアウト処理
+        logoutBtn.addEventListener('click', async () => {
+            if (confirm('ログアウトしますか？')) {
+                try {
+                    await signOut(auth);
+                    // ログアウト後、ログインページにリダイレクト
+                    window.location.href = 'auth.html';
+                } catch (error) {
+                    console.error('ログアウトエラー:', error);
+                    alert('ログアウトに失敗しました。もう一度お試しください。');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

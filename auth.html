@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会員登録・ログイン - 運動器超音波Lab</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 100%;
+            padding: 50px 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .logo-section p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab.active {
+            color: #667eea;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-family: 'Noto Sans JP', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .back-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            .auth-container {
+                padding: 40px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="logo-section">
+            <h1>運動器超音波Lab</h1>
+            <p>会員登録・ログイン</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" id="loginTab">ログイン</button>
+            <button class="tab" id="signupTab">会員登録</button>
+            <button class="tab" id="resetTab">パスワードリセット</button>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <!-- ログインフォーム -->
+        <form id="loginForm" style="display: block;">
+            <div class="form-group">
+                <label for="loginEmail">メールアドレス</label>
+                <input type="email" id="loginEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">パスワード</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <div class="loading" id="loginLoading">
+                <div class="spinner"></div>
+            </div>
+            <button type="submit" class="btn" id="loginBtn">ログイン</button>
+        </form>
+
+        <!-- 会員登録フォーム -->
+        <form id="signupForm" style="display: none;">
+            <div class="form-group">
+                <label for="signupEmail">メールアドレス</label>
+                <input type="email" id="signupEmail" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword">パスワード（8文字以上）</label>
+                <input type="password" id="signupPassword" required minlength="8">
+            </div>
+            <div class="form-group">
+                <label for="signupPasswordConfirm">パスワード（確認）</label>
+                <input type="password" id="signupPasswordConfirm" required minlength="8">
+            </div>
+            <div class="loading" id="signupLoading">
+                <div class="spinner"></div>
+            </div>
+            <button type="submit" class="btn" id="signupBtn">会員登録</button>
+        </form>
+
+        <!-- パスワードリセットフォーム -->
+        <form id="resetForm" style="display: none;">
+            <div class="form-group">
+                <label for="resetEmail">メールアドレス</label>
+                <input type="email" id="resetEmail" required placeholder="登録済みのメールアドレスを入力">
+                <p style="font-size: 0.85rem; color: #666; margin-top: 8px;">
+                    登録済みのメールアドレスを入力してください。パスワードリセット用のリンクを送信します。
+                </p>
+            </div>
+            <div class="loading" id="resetLoading">
+                <div class="spinner"></div>
+            </div>
+            <button type="submit" class="btn" id="resetBtn">リセットメールを送信</button>
+        </form>
+
+        <div class="back-link">
+            <a href="index.html"><i class="fas fa-arrow-left"></i> ホームに戻る</a>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword,
+            onAuthStateChanged,
+            sendPasswordResetEmail
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection, 
+            doc, 
+            setDoc, 
+            serverTimestamp 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        // Firebase初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // UI要素
+        const loginTab = document.getElementById('loginTab');
+        const signupTab = document.getElementById('signupTab');
+        const resetTab = document.getElementById('resetTab');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const resetForm = document.getElementById('resetForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+
+        // タブ切り替え
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+            resetTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            resetForm.style.display = 'none';
+            clearMessages();
+        });
+
+        signupTab.addEventListener('click', () => {
+            signupTab.classList.add('active');
+            loginTab.classList.remove('active');
+            resetTab.classList.remove('active');
+            signupForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            resetForm.style.display = 'none';
+            clearMessages();
+        });
+
+        resetTab.addEventListener('click', () => {
+            resetTab.classList.add('active');
+            loginTab.classList.remove('active');
+            signupTab.classList.remove('active');
+            resetForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            signupForm.style.display = 'none';
+            clearMessages();
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+            successMessage.classList.remove('show');
+        }
+
+        function showSuccess(message) {
+            successMessage.textContent = message;
+            successMessage.classList.add('show');
+            errorMessage.classList.remove('show');
+        }
+
+        function clearMessages() {
+            errorMessage.classList.remove('show');
+            successMessage.classList.remove('show');
+        }
+
+        // ログイン処理
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginLoading = document.getElementById('loginLoading');
+
+            loginBtn.disabled = true;
+            loginLoading.classList.add('active');
+            clearMessages();
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showSuccess('ログインに成功しました！');
+                // ログイン成功後、メンバーページにリダイレクト
+                setTimeout(() => {
+                    window.location.href = 'member.html';
+                }, 1000);
+            } catch (error) {
+                let errorMsg = 'ログインに失敗しました。';
+                if (error.code === 'auth/user-not-found') {
+                    errorMsg = 'このメールアドレスは登録されていません。';
+                } else if (error.code === 'auth/wrong-password') {
+                    errorMsg = 'パスワードが正しくありません。';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg = 'メールアドレスの形式が正しくありません。';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMsg = 'ログイン試行回数が多すぎます。しばらくしてから再度お試しください。';
+                } else if (error.code === 'auth/user-disabled') {
+                    errorMsg = 'このアカウントは無効化されています。';
+                }
+                showError(errorMsg);
+                console.error('ログインエラー:', error);
+            } finally {
+                loginBtn.disabled = false;
+                loginLoading.classList.remove('active');
+            }
+        });
+
+        // 会員登録処理
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const passwordConfirm = document.getElementById('signupPasswordConfirm').value;
+            const signupBtn = document.getElementById('signupBtn');
+            const signupLoading = document.getElementById('signupLoading');
+
+            // パスワード確認
+            if (password !== passwordConfirm) {
+                showError('パスワードが一致しません。');
+                return;
+            }
+
+            if (password.length < 8) {
+                showError('パスワードは8文字以上で入力してください。');
+                return;
+            }
+
+            signupBtn.disabled = true;
+            signupLoading.classList.add('active');
+            clearMessages();
+
+            try {
+                // ユーザーアカウントを作成
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                // Firestoreにユーザー情報を保存
+                await setDoc(doc(db, 'users', user.uid), {
+                    email: email,
+                    plan: null, // プラン未登録
+                    planStartDate: null,
+                    planEndDate: null,
+                    stripeCustomerId: null,
+                    stripeSubscriptionId: null,
+                    createdAt: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+                });
+
+                console.log('✅ ユーザー情報をFirestoreに保存しました:', user.uid);
+                showSuccess('会員登録が完了しました！');
+                // 登録成功後、メンバーページにリダイレクト
+                setTimeout(() => {
+                    window.location.href = 'member.html';
+                }, 1000);
+            } catch (error) {
+                let errorMsg = '会員登録に失敗しました。';
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMsg = 'このメールアドレスは既に登録されています。';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg = 'メールアドレスの形式が正しくありません。';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMsg = 'パスワードが弱すぎます。8文字以上で入力してください。';
+                } else if (error.code === 'auth/operation-not-allowed') {
+                    errorMsg = 'この認証方法は有効になっていません。管理者にお問い合わせください。';
+                }
+                showError(errorMsg);
+                console.error('会員登録エラー:', error);
+            } finally {
+                signupBtn.disabled = false;
+                signupLoading.classList.remove('active');
+            }
+        });
+
+        // パスワードリセット処理
+        resetForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('resetEmail').value;
+            const resetBtn = document.getElementById('resetBtn');
+            const resetLoading = document.getElementById('resetLoading');
+
+            resetBtn.disabled = true;
+            resetLoading.classList.add('active');
+            clearMessages();
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showSuccess('パスワードリセット用のメールを送信しました。メールボックスをご確認ください。');
+                // フォームをクリア
+                document.getElementById('resetEmail').value = '';
+            } catch (error) {
+                let errorMsg = 'パスワードリセットメールの送信に失敗しました。';
+                if (error.code === 'auth/user-not-found') {
+                    errorMsg = 'このメールアドレスは登録されていません。';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMsg = 'メールアドレスの形式が正しくありません。';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMsg = 'リクエストが多すぎます。しばらくしてから再度お試しください。';
+                }
+                showError(errorMsg);
+                console.error('パスワードリセットエラー:', error);
+            } finally {
+                resetBtn.disabled = false;
+                resetLoading.classList.remove('active');
+            }
+        });
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log('ユーザーがログインしています:', user.email);
+                // 既にログインしている場合はメンバーページにリダイレクト
+                if (window.location.pathname.includes('auth.html')) {
+                    setTimeout(() => {
+                        window.location.href = 'member.html';
+                    }, 500);
+                }
+            } else {
+                console.log('ユーザーはログインしていません');
+            }
+        });
+    </script>
+</body>
+</html>
+

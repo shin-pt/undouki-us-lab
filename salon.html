@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オンラインサロン - 運動器超音波Lab</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1140px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-section h1 {
+            font-size: 1.8rem;
+            color: #e0e0e0;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .salon-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .category-tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        .category-tab.active {
+            color: #007bff;
+        }
+
+        .category-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #007bff;
+        }
+
+        .category-tab:hover {
+            color: #007bff;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .content-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2);
+        }
+
+        .content-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .content-card-icon {
+            font-size: 1.5rem;
+            color: #007bff;
+        }
+
+        .content-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #e0e0e0;
+            margin: 0;
+        }
+
+        .content-card-description {
+            color: #999;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .content-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .content-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .content-empty i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .content-empty p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .video-modal-content {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #e0e0e0;
+            font-size: 2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .video-modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .salon-container {
+                padding: 30px 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-tabs {
+                flex-direction: column;
+            }
+
+            .category-tab {
+                width: 100%;
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1>運動器超音波Lab</h1>
+                </div>
+                <nav class="nav-links">
+                    <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+                    <a href="member.html"><i class="fas fa-user"></i> マイページ</a>
+                    <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Salon Content -->
+        <div class="salon-container">
+            <h1 class="page-title">オンラインサロン</h1>
+
+            <!-- プラン情報表示 -->
+            <div id="planInfoSection" style="display: none; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h3 style="font-size: 1.2rem; margin-bottom: 8px; color: #e0e0e0;">
+                            <i class="fas fa-crown" style="color: #ffc107; margin-right: 8px;"></i>
+                            現在のプラン: <span id="currentPlanDisplay">未登録</span>
+                        </h3>
+                        <p style="color: #999; font-size: 0.9rem; margin: 0;">
+                            <span id="planDescription">プランに登録すると、より多くのコンテンツにアクセスできます</span>
+                        </p>
+                    </div>
+                    <a href="plans.html" class="btn btn-primary" id="planManageBtn" style="display: none;">
+                        <i class="fas fa-crown"></i> プランを管理
+                    </a>
+                </div>
+            </div>
+
+            <div id="loadingSection" class="loading">
+                <div class="spinner"></div>
+                <p>読み込み中...</p>
+            </div>
+
+            <div id="contentSection" style="display: none;">
+                <!-- カテゴリタブ -->
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all">
+                        <i class="fas fa-th"></i> すべて
+                    </button>
+                    <button class="category-tab" data-category="エコー動画">
+                        <i class="fas fa-video"></i> エコー動画
+                    </button>
+                    <button class="category-tab" data-category="PDF資料">
+                        <i class="fas fa-file-pdf"></i> PDF資料
+                    </button>
+                    <button class="category-tab" data-category="アーカイブ動画">
+                        <i class="fas fa-archive"></i> アーカイブ動画
+                    </button>
+                    <button class="category-tab" data-category="エコークイズアプリ">
+                        <i class="fas fa-brain"></i> エコークイズアプリ
+                    </button>
+                </div>
+
+                <!-- コンテンツ表示エリア -->
+                <div class="content-grid" id="contentGrid">
+                    <!-- コンテンツがここに表示されます -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 動画モーダル -->
+    <div class="video-modal" id="videoModal">
+        <div class="video-modal-content">
+            <button class="video-modal-close" id="closeVideoModal">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="video-container" id="videoContainer">
+                <!-- 動画がここに埋め込まれます -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Vimeo Mapping -->
+    <script src="vimeo-mapping.js"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection, 
+            query, 
+            where, 
+            getDocs, 
+            orderBy,
+            doc,
+            getDoc
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        // Firebase初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // UI要素
+        const loadingSection = document.getElementById('loadingSection');
+        const contentSection = document.getElementById('contentSection');
+        const contentGrid = document.getElementById('contentGrid');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const categoryTabs = document.querySelectorAll('.category-tab');
+        const videoModal = document.getElementById('videoModal');
+        const videoContainer = document.getElementById('videoContainer');
+        const closeVideoModal = document.getElementById('closeVideoModal');
+        const planInfoSection = document.getElementById('planInfoSection');
+        const currentPlanDisplay = document.getElementById('currentPlanDisplay');
+        const planDescription = document.getElementById('planDescription');
+        const planManageBtn = document.getElementById('planManageBtn');
+
+        let allContent = [];
+        let currentCategory = 'all';
+        let userPlan = null; // ユーザーのプラン情報
+
+        // ユーザーのプラン情報を取得
+        async function getUserPlan(user) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    return userData.plan || null;
+                }
+                return null;
+            } catch (error) {
+                console.error('プラン情報取得エラー:', error);
+                return null;
+            }
+        }
+
+        // プラン情報を表示
+        function displayPlanInfo() {
+            planInfoSection.style.display = 'block';
+            
+            if (!userPlan) {
+                currentPlanDisplay.textContent = '未登録';
+                currentPlanDisplay.style.color = '#999';
+                planDescription.textContent = 'プランに登録すると、より多くのコンテンツにアクセスできます';
+                planManageBtn.textContent = 'プランを登録する';
+                planManageBtn.style.display = 'inline-flex';
+            } else if (userPlan === 'basic') {
+                currentPlanDisplay.textContent = '1980円プラン';
+                currentPlanDisplay.style.color = '#66b2ff';
+                planDescription.textContent = 'エコーアプリ、Note記事、アーカイブ動画にアクセス可能';
+                planManageBtn.textContent = 'プランを変更する';
+                planManageBtn.style.display = 'inline-flex';
+            } else if (userPlan === 'premium') {
+                currentPlanDisplay.textContent = '2980円プラン';
+                currentPlanDisplay.style.color = '#ffc107';
+                planDescription.textContent = 'すべてのコンテンツにアクセス可能';
+                planManageBtn.textContent = 'プランを管理する';
+                planManageBtn.style.display = 'inline-flex';
+            }
+        }
+
+        // プランでコンテンツにアクセス可能かチェック
+        function canAccessContent(contentRequiredPlan) {
+            if (!contentRequiredPlan) return true; // プラン制限なし
+            
+            if (contentRequiredPlan === 'basic') {
+                return userPlan === 'basic' || userPlan === 'premium';
+            }
+            
+            if (contentRequiredPlan === 'premium') {
+                return userPlan === 'premium';
+            }
+            
+            return false;
+        }
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // ログインしている場合
+                try {
+                    // ユーザーのプラン情報を取得
+                    userPlan = await getUserPlan(user);
+                    console.log('ユーザーのプラン:', userPlan);
+                    
+                    // プラン情報を表示
+                    displayPlanInfo();
+                    
+                    await loadContent();
+                    loadingSection.style.display = 'none';
+                    contentSection.style.display = 'block';
+                } catch (error) {
+                    console.error('コンテンツ読み込みエラー:', error);
+                    loadingSection.innerHTML = `
+                        <div class="spinner"></div>
+                        <p>エラーが発生しました。ページを再読み込みしてください。</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">エラー: ${error.message}</p>
+                    `;
+                }
+            } else {
+                // ログインしていない場合、ログインページにリダイレクト
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Firestoreからコンテンツを取得
+        async function loadContent() {
+            try {
+                const contentQuery = query(
+                    collection(db, 'salon_content'),
+                    where('isActive', '==', true),
+                    orderBy('order', 'asc'),
+                    orderBy('publishedAt', 'desc')
+                );
+
+                const querySnapshot = await getDocs(contentQuery);
+                allContent = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allContent.push({
+                        id: doc.id,
+                        type: data.type || 'video',
+                        title: data.title || 'タイトルなし',
+                        description: data.description || '',
+                        category: data.category || 'その他',
+                        url: data.url || '',
+                        thumbnail: data.thumbnail || '',
+                        requiredPlan: data.requiredPlan || null, // プラン制限
+                        publishedAt: data.publishedAt ? data.publishedAt.toDate() : null
+                    });
+                });
+
+                displayContent();
+            } catch (error) {
+                console.error('コンテンツ取得エラー:', error);
+                // インデックスが必要な場合のエラーハンドリング
+                if (error.message.includes('index')) {
+                    contentGrid.innerHTML = `
+                        <div class="content-empty">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>データベースのインデックス設定が必要です</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">
+                                エラーメッセージのリンクからインデックスを作成してください
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    throw error;
+                }
+            }
+        }
+
+        // タイトルから動画IDを検索する関数
+        function findVideoIdByTitle(title) {
+            if (typeof VIDEO_TITLES === 'undefined') {
+                console.warn('⚠️ VIDEO_TITLES is not defined');
+                return null;
+            }
+            
+            // タイトルからプランバッジやその他のHTMLタグを除去
+            const cleanTitle = title.replace(/<[^>]*>/g, '').trim();
+            
+            console.log('🔍 Searching for video ID with title:', cleanTitle);
+            console.log('📋 Available VIDEO_TITLES:', Object.keys(VIDEO_TITLES).length, 'videos');
+            
+            // VIDEO_TITLESからタイトルが一致する動画IDを検索
+            for (const [videoId, videoTitle] of Object.entries(VIDEO_TITLES)) {
+                // 完全一致
+                if (videoTitle === cleanTitle) {
+                    console.log(`✅ Exact match found: ${videoId} -> ${videoTitle}`);
+                    return videoId;
+                }
+                // 部分一致（タイトルに動画タイトルが含まれる）
+                if (cleanTitle.includes(videoTitle)) {
+                    console.log(`✅ Partial match found: ${videoId} -> ${videoTitle}`);
+                    return videoId;
+                }
+                // 逆方向の部分一致（動画タイトルにタイトルが含まれる）
+                if (videoTitle.includes(cleanTitle)) {
+                    console.log(`✅ Reverse partial match found: ${videoId} -> ${videoTitle}`);
+                    return videoId;
+                }
+            }
+            
+            console.warn(`⚠️ No match found for title: "${cleanTitle}"`);
+            return null;
+        }
+
+        // コンテンツを表示
+        function displayContent() {
+            // カテゴリでフィルタリング
+            let filteredContent = currentCategory === 'all' 
+                ? allContent 
+                : allContent.filter(item => item.category === currentCategory);
+
+            // プランでフィルタリング（アクセス可能なコンテンツのみ表示）
+            filteredContent = filteredContent.filter(item => canAccessContent(item.requiredPlan));
+
+            if (filteredContent.length === 0) {
+                // プラン制限で見れないコンテンツがあるかチェック
+                const restrictedContent = currentCategory === 'all' 
+                    ? allContent.filter(item => !canAccessContent(item.requiredPlan))
+                    : allContent.filter(item => 
+                        item.category === currentCategory && !canAccessContent(item.requiredPlan)
+                    );
+
+                if (restrictedContent.length > 0) {
+                    // プラン制限で見れないコンテンツがある場合
+                    const requiredPlan = restrictedContent[0].requiredPlan;
+                    contentGrid.innerHTML = `
+                        <div class="content-empty">
+                            <i class="fas fa-lock" style="font-size: 3rem; color: #666; margin-bottom: 15px;"></i>
+                            <p>このコンテンツはプラン登録が必要です</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
+                                ${requiredPlan === 'basic' ? '1980円プラン' : '2980円プラン'}以上でご覧いただけます
+                            </p>
+                            <a href="plans.html" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">
+                                <i class="fas fa-crown"></i> プランを確認する
+                            </a>
+                        </div>
+                    `;
+                } else {
+                    // 単純にコンテンツがない場合
+                    contentGrid.innerHTML = `
+                        <div class="content-empty">
+                            <i class="fas fa-inbox"></i>
+                            <p>コンテンツがありません</p>
+                            <p style="font-size: 0.9rem; margin-top: 10px;">
+                                新しいコンテンツが追加されるまでお待ちください
+                            </p>
+                        </div>
+                    `;
+                }
+                return;
+            }
+
+            contentGrid.innerHTML = filteredContent.map(content => {
+                const iconMap = {
+                    'video': 'fas fa-video',
+                    'pdf': 'fas fa-file-pdf',
+                    'archive': 'fas fa-archive',
+                    'quiz': 'fas fa-brain'
+                };
+
+                const icon = iconMap[content.type] || 'fas fa-file';
+
+                const dateStr = content.publishedAt 
+                    ? content.publishedAt.toLocaleDateString('ja-JP', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })
+                    : '-';
+
+                // プランバッジの表示
+                let planBadge = '';
+                if (content.requiredPlan === 'basic') {
+                    planBadge = '<span style="background: rgba(0, 123, 255, 0.2); color: #66b2ff; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">1980円プラン</span>';
+                } else if (content.requiredPlan === 'premium') {
+                    planBadge = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">2980円プラン</span>';
+                }
+
+                // URLがない場合の表示
+                let urlStatus = '';
+                if (!content.url || content.url.trim() === '') {
+                    // エコー動画でプレミアムプラン会員の場合は、vimeo-mapping.jsから取得可能かチェック
+                    if (content.category === 'エコー動画' && userPlan === 'premium') {
+                        console.log(`🔍 Checking premium access for: ${content.title}`);
+                        console.log(`📊 VIDEO_TITLES available:`, typeof VIDEO_TITLES !== 'undefined');
+                        console.log(`📊 VIDEO_VIMEO_URLS available:`, typeof VIDEO_VIMEO_URLS !== 'undefined');
+                        
+                        if (typeof VIDEO_TITLES !== 'undefined' && typeof VIDEO_VIMEO_URLS !== 'undefined') {
+                            const videoId = findVideoIdByTitle(content.title);
+                            console.log(`🎬 Found videoId:`, videoId);
+                            
+                            if (videoId && VIDEO_VIMEO_URLS[videoId]) {
+                                // プレミアムプラン会員は無料で視聴可能
+                                console.log(`✅ Premium access granted for: ${content.title}`);
+                                urlStatus = '<span style="background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;"><i class="fas fa-crown"></i> 無料で視聴可能</span>';
+                            } else {
+                                console.warn(`⚠️ Video not found in mapping for: ${content.title}`);
+                                urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
+                            }
+                        } else {
+                            console.warn('⚠️ VIDEO_TITLES or VIDEO_VIMEO_URLS not loaded');
+                            urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
+                        }
+                    } else {
+                        urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
+                    }
+                } else if (content.category === 'エコー動画' && userPlan === 'premium') {
+                    // URLがある場合でも、プレミアムプラン会員の場合は無料で視聴可能であることを表示
+                    urlStatus = '<span style="background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;"><i class="fas fa-crown"></i> 無料で視聴可能</span>';
+                }
+
+                return `
+                    <div class="content-card" data-content-id="${content.id}" data-content-type="${content.type}" data-content-url="${content.url || ''}" data-content-title="${content.title}">
+                        <div class="content-card-header">
+                            <i class="${icon} content-card-icon"></i>
+                            <h3 class="content-card-title">
+                                ${content.title}
+                                ${planBadge}
+                                ${urlStatus}
+                            </h3>
+                        </div>
+                        <p class="content-card-description">${content.description || '説明はありません'}</p>
+                        <div class="content-card-footer">
+                            <span>${content.category}</span>
+                            <span>${dateStr}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            // カードクリックイベント
+            document.querySelectorAll('.content-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const type = card.dataset.contentType;
+                    const url = card.dataset.contentUrl;
+                    const contentId = card.dataset.contentId;
+                    const title = card.dataset.contentTitle || card.querySelector('.content-card-title').textContent.trim();
+                    const category = currentCategory;
+
+                    // エコー動画カテゴリで、プレミアムプラン会員の場合
+                    if (type === 'video' && category === 'エコー動画' && userPlan === 'premium') {
+                        // vimeo-mapping.jsから動画IDを取得
+                        const videoId = findVideoIdByTitle(title);
+                        if (videoId && VIDEO_VIMEO_URLS && VIDEO_VIMEO_URLS[videoId]) {
+                            // プレミアムプラン会員は無料で視聴可能
+                            const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
+                            openVideoModal(vimeoUrl);
+                            return;
+                        }
+                    }
+
+                    // URLがない場合はメッセージを表示
+                    if (!url || url.trim() === '') {
+                        // エコー動画でプレミアムプラン会員の場合は、vimeo-mapping.jsから取得を試みる
+                        if (type === 'video' && category === 'エコー動画' && userPlan === 'premium') {
+                            const videoId = findVideoIdByTitle(title);
+                            if (videoId && VIDEO_VIMEO_URLS && VIDEO_VIMEO_URLS[videoId]) {
+                                const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
+                                openVideoModal(vimeoUrl);
+                                return;
+                            }
+                        }
+                        alert('このコンテンツは現在準備中です。\n公開までしばらくお待ちください。');
+                        return;
+                    }
+
+                    // URLがある場合でも、エコー動画でプレミアムプラン会員の場合はvimeo-mapping.jsを優先
+                    if (type === 'video' && category === 'エコー動画' && userPlan === 'premium') {
+                        const videoId = findVideoIdByTitle(title);
+                        if (videoId && VIDEO_VIMEO_URLS && VIDEO_VIMEO_URLS[videoId]) {
+                            const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
+                            openVideoModal(vimeoUrl);
+                            return;
+                        }
+                    }
+
+                    if (type === 'video' || type === 'archive') {
+                        openVideoModal(url);
+                    } else if (type === 'pdf') {
+                        window.open(url, '_blank');
+                    } else if (type === 'quiz') {
+                        window.open(url, '_blank');
+                    }
+                });
+            });
+        }
+
+        // 動画モーダルを開く
+        function openVideoModal(vimeoUrl) {
+            if (!vimeoUrl) return;
+            
+            const vimeoId = vimeoUrl.includes('vimeo.com') 
+                ? vimeoUrl.split('/').pop().split('?')[0]
+                : vimeoUrl;
+
+            videoContainer.innerHTML = `
+                <iframe
+                    src="https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479"
+                    frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
+                    style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                    title="動画プレーヤー">
+                </iframe>
+            `;
+
+            videoModal.classList.add('active');
+        }
+
+        // 動画モーダルを閉じる
+        closeVideoModal.addEventListener('click', () => {
+            videoModal.classList.remove('active');
+            videoContainer.innerHTML = '';
+        });
+
+        videoModal.addEventListener('click', (e) => {
+            if (e.target === videoModal) {
+                videoModal.classList.remove('active');
+                videoContainer.innerHTML = '';
+            }
+        });
+
+        // カテゴリタブの切り替え
+        categoryTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                categoryTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentCategory = tab.dataset.category;
+                displayContent();
+            });
+        });
+
+        // ログアウト処理
+        logoutBtn.addEventListener('click', async () => {
+            if (confirm('ログアウトしますか？')) {
+                try {
+                    await signOut(auth);
+                    window.location.href = 'auth.html';
+                } catch (error) {
+                    console.error('ログアウトエラー:', error);
+                    alert('ログアウトに失敗しました。もう一度お試しください。');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

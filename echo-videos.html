@@ -19,6 +19,8 @@
 
     <!-- Stripe Payment Configuration -->
     <script src="video-payment-config.js"></script>
+    <!-- Vimeo Mapping -->
+    <script src="vimeo-mapping.js"></script>
 
     <style>
         /* --- CSS Variables --- */
@@ -328,6 +330,172 @@
             box-shadow: none;
         }
 
+        .buy-btn.free-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .buy-btn.free-btn:hover {
+            background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+            box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Premium Banner */
+        .premium-banner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .premium-banner h3 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .premium-banner p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .premium-banner a {
+            background: white;
+            color: #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .premium-banner a:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Non-Premium Banner */
+        .non-premium-banner {
+            background: rgba(255, 193, 7, 0.1);
+            border: 2px solid rgba(255, 193, 7, 0.3);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .non-premium-banner h3 {
+            color: #ffc107;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .non-premium-banner p {
+            color: #e0e0e0;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .non-premium-banner a {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .non-premium-banner a:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Video Modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            animation: fadeIn 0.3s;
+        }
+
+        .video-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 30px;
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: #e0e0e0;
+            cursor: pointer;
+            transition: color 0.3s;
+            z-index: 10001;
+        }
+
+        .close-modal:hover {
+            color: #fff;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 1.5rem;
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
         /* --- Info Section --- */
         .info-section {
             background: rgba(255, 255, 255, 0.05);
@@ -473,6 +641,20 @@
                     臨床で役立つ運動器超音波の実践的な技術を、<strong>高品質な動画</strong>で学習できます。<br>
                     <strong style="color: #28a745;">購入したい動画を選択して、すぐに学習を開始できます。</strong>
                 </p>
+
+                <!-- Premium Banner -->
+                <div id="premiumBanner" class="premium-banner" style="display: none;">
+                    <h3><i class="fas fa-crown"></i> プレミアムプラン会員特典</h3>
+                    <p>すべてのエコー動画（67本）を無料で視聴できます！</p>
+                    <a href="plans.html"><i class="fas fa-info-circle"></i> プランを確認する</a>
+                </div>
+
+                <!-- Non-Premium Banner -->
+                <div id="nonPremiumBanner" class="non-premium-banner" style="display: none;">
+                    <h3><i class="fas fa-star"></i> プレミアムプランで全動画無料視聴！</h3>
+                    <p>2980円プランにご登録いただくと、すべてのエコー動画（67本）を無料で視聴できます。</p>
+                    <a href="plans.html"><i class="fas fa-arrow-right"></i> プレミアムプランを確認する</a>
+                </div>
 
                 <!-- Stats Bar -->
                 <div class="stats-bar">
@@ -1383,6 +1565,217 @@
         </div>
     </footer>
 
+    <!-- Video Modal -->
+    <div id="videoModal" class="video-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modalTitle">動画タイトル</h2>
+            <div class="video-wrapper">
+                <iframe id="vimeoPlayer" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK for Premium Plan Check -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            doc,
+            getDoc
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let userPlan = null; // ユーザーのプラン情報
+
+        // ユーザーのプラン情報を取得
+        async function getUserPlan(user) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    return userData.plan || null;
+                }
+                return null;
+            } catch (error) {
+                console.error('プラン情報取得エラー:', error);
+                return null;
+            }
+        }
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                userPlan = await getUserPlan(user);
+                console.log('ユーザーのプラン:', userPlan);
+                updateVideoDisplay(); // 動画表示を更新
+            } else {
+                userPlan = null;
+                updateVideoDisplay();
+            }
+        });
+
+        // 動画表示を更新（premiumプランの場合は無料視聴可能にする）
+        function updateVideoDisplay() {
+            const isPremium = userPlan === 'premium';
+            
+            // バナーの表示/非表示
+            const premiumBanner = document.getElementById('premiumBanner');
+            const nonPremiumBanner = document.getElementById('nonPremiumBanner');
+            
+            if (isPremium) {
+                if (premiumBanner) premiumBanner.style.display = 'block';
+                if (nonPremiumBanner) nonPremiumBanner.style.display = 'none';
+            } else {
+                if (premiumBanner) premiumBanner.style.display = 'none';
+                if (nonPremiumBanner) nonPremiumBanner.style.display = 'block';
+            }
+            
+            // すべての購入ボタンを取得
+            const buyButtons = document.querySelectorAll('.buy-btn');
+            
+            // LocalStorageから購入済み動画を取得
+            let purchasedVideos = [];
+            try {
+                purchasedVideos = JSON.parse(localStorage.getItem('purchased_videos') || '[]');
+            } catch (e) {
+                console.warn('購入済み動画の取得に失敗:', e);
+            }
+            
+            buyButtons.forEach(button => {
+                // onclick属性から動画IDを抽出
+                const onclickAttr = button.getAttribute('onclick');
+                if (!onclickAttr) {
+                    // 既に設定されているonclickがない場合、data属性から取得を試みる
+                    const videoId = button.getAttribute('data-video-id');
+                    if (!videoId) return;
+                    
+                    if (isPremium) {
+                        button.textContent = '無料で視聴';
+                        button.classList.add('free-btn');
+                        button.onclick = function(e) {
+                            e.preventDefault();
+                            playVideoFree(videoId);
+                        };
+                    } else if (purchasedVideos.includes(videoId)) {
+                        button.textContent = '購入済み';
+                        button.style.backgroundColor = '#28a745';
+                        button.onclick = function() {
+                            window.location.href = `payment-success.html?video_id=${videoId}`;
+                        };
+                    } else {
+                        button.textContent = '購入する';
+                        button.classList.remove('free-btn');
+                        button.onclick = function(e) {
+                            e.preventDefault();
+                            purchaseVideo(videoId);
+                        };
+                    }
+                    return;
+                }
+
+                const match = onclickAttr.match(/purchaseVideo\('(\w+)'\)/);
+                if (!match) return;
+
+                const videoId = match[1];
+
+                if (isPremium) {
+                    // premiumプランの場合：無料視聴可能にする（購入済みより優先）
+                    button.textContent = '無料で視聴';
+                    button.style.backgroundColor = ''; // リセット
+                    button.classList.add('free-btn');
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        playVideoFree(videoId);
+                    };
+                } else if (purchasedVideos.includes(videoId)) {
+                    // 購入済みの場合
+                    button.textContent = '購入済み';
+                    button.style.backgroundColor = '#28a745';
+                    button.classList.remove('free-btn');
+                    button.onclick = function() {
+                        window.location.href = `payment-success.html?video_id=${videoId}`;
+                    };
+                } else {
+                    // premiumプランでない場合：既存のStripe決済フローを使用
+                    button.textContent = '購入する';
+                    button.style.backgroundColor = ''; // リセット
+                    button.classList.remove('free-btn');
+                    button.onclick = function(e) {
+                        e.preventDefault();
+                        purchaseVideo(videoId);
+                    };
+                }
+            });
+        }
+
+        // premiumプラン会員が無料で動画を視聴する関数
+        function playVideoFree(videoId) {
+            const vimeoUrl = VIDEO_VIMEO_URLS[videoId];
+            if (!vimeoUrl) {
+                alert('動画が見つかりませんでした。');
+                return;
+            }
+            
+            // Vimeo URLからIDを抽出
+            const vimeoId = vimeoUrl.split('/').pop();
+            const title = VIDEO_TITLES[videoId] || '動画';
+            
+            // 動画モーダルを開く
+            openVideoModal(vimeoId, title);
+        }
+
+        // 動画モーダルを開く関数
+        function openVideoModal(vimeoId, title) {
+            const modal = document.getElementById('videoModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const vimeoPlayer = document.getElementById('vimeoPlayer');
+            
+            modalTitle.textContent = title;
+            vimeoPlayer.src = `https://player.vimeo.com/video/${vimeoId}?autoplay=1`;
+            modal.classList.add('active');
+            
+            // モーダルを閉じる
+            const closeBtn = modal.querySelector('.close-modal');
+            closeBtn.onclick = () => {
+                vimeoPlayer.src = ''; // 動画を停止
+                modal.classList.remove('active');
+            };
+            
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    vimeoPlayer.src = ''; // 動画を停止
+                    modal.classList.remove('active');
+                }
+            };
+        }
+
+        // グローバルに公開（既存のコードから呼び出せるように）
+        window.checkPremiumAccess = function(videoId) {
+            return userPlan === 'premium';
+        };
+
+        window.playVideoFree = playVideoFree;
+        window.openVideoModal = openVideoModal;
+    </script>
+
     <script>
         // フィルター機能
         const filterButtons = document.querySelectorAll('.filter-btn');
@@ -1470,15 +1863,30 @@
         console.log('📋 エコー動画販売ページ');
 
         // ページロード時に購入済み動画のボタンを更新
+        // 注意: premiumプランの場合はupdateVideoDisplay()が優先されるため、
+        // この関数はpremiumプランでない場合のみ実行される
         document.addEventListener('DOMContentLoaded', function() {
-            updatePurchasedButtons();
+            // Firebase認証が完了するまで少し待つ
+            setTimeout(() => {
+                // premiumプランでない場合のみ購入済み動画を更新
+                if (typeof userPlan === 'undefined' || userPlan !== 'premium') {
+                    updatePurchasedButtons();
+                }
+            }, 1000);
         });
 
         /**
          * 購入済み動画のボタンを更新する関数
+         * 注意: premiumプランの場合はupdateVideoDisplay()が優先される
          */
         function updatePurchasedButtons() {
             try {
+                // premiumプランの場合はスキップ（updateVideoDisplay()が処理する）
+                if (typeof userPlan !== 'undefined' && userPlan === 'premium') {
+                    console.log('📝 Premium plan detected, skipping purchased buttons update');
+                    return;
+                }
+
                 // LocalStorageから購入済み動画を取得
                 const purchasedVideos = JSON.parse(localStorage.getItem('purchased_videos') || '[]');
 
@@ -1508,6 +1916,7 @@
                         button.textContent = '購入済み';
                         button.style.backgroundColor = '#28a745';
                         button.style.cursor = 'pointer';
+                        button.classList.remove('free-btn');
 
                         // クリック時は動画閲覧ページに遷移
                         button.onclick = function() {

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プラン登録完了 - 運動器超音波Lab</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .success-icon i {
+            font-size: 3rem;
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .plan-badge {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        .plan-badge.basic {
+            background: rgba(0, 123, 255, 0.2);
+            color: #66b2ff;
+        }
+
+        .plan-badge.premium {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #ccc;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #e57373;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loadingSection" class="loading">
+            <div class="spinner"></div>
+            <p>プラン登録を処理中...</p>
+        </div>
+
+        <div id="successSection" style="display: none;">
+            <div class="success-icon">
+                <i class="fas fa-check"></i>
+            </div>
+            <h1>プラン登録が完了しました！</h1>
+            <div id="planBadge" class="plan-badge"></div>
+            <p id="successMessage"></p>
+            <a href="salon.html" class="btn">
+                <i class="fas fa-users"></i> オンラインサロンへ
+            </a>
+            <a href="member.html" class="btn" style="background: rgba(255, 255, 255, 0.1);">
+                <i class="fas fa-user"></i> マイページへ
+            </a>
+        </div>
+
+        <div id="errorSection" style="display: none;">
+            <div class="error-message">
+                <h2><i class="fas fa-exclamation-circle"></i> エラー</h2>
+                <p id="errorMessage"></p>
+            </div>
+            <a href="plans.html" class="btn">
+                <i class="fas fa-arrow-left"></i> プランページに戻る
+            </a>
+        </div>
+    </div>
+
+    <!-- Stripe Payment Links設定 -->
+    <script src="plan-payment-config.js"></script>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            doc,
+            updateDoc,
+            serverTimestamp
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const loadingSection = document.getElementById('loadingSection');
+        const successSection = document.getElementById('successSection');
+        const errorSection = document.getElementById('errorSection');
+        const planBadge = document.getElementById('planBadge');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // プラン登録を処理
+        async function processPlanRegistration() {
+            const user = auth.currentUser;
+            if (!user) {
+                showError('ログインしていません。');
+                return;
+            }
+
+            // 保留中のプラン登録情報を取得（LocalStorageから）
+            let pendingRegistration = null;
+            try {
+                const planId = localStorage.getItem('pending_plan_registration');
+                const userId = localStorage.getItem('pending_plan_user_id');
+                const userEmail = localStorage.getItem('pending_plan_user_email');
+                
+                console.log('📝 Checking LocalStorage:', { planId, userId, currentUserId: user.uid });
+                
+                if (planId && userId && userId === user.uid) {
+                    pendingRegistration = {
+                        planId: planId,
+                        userId: userId,
+                        userEmail: userEmail
+                    };
+                    console.log('✅ Found pending registration in LocalStorage:', pendingRegistration);
+                }
+            } catch (e) {
+                console.warn('⚠️ Failed to get pending plan registration from localStorage:', e);
+            }
+
+            // LocalStorageに情報がない場合、URLパラメータから取得（Stripeからのリダイレクト時）
+            if (!pendingRegistration) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const planId = urlParams.get('plan') || urlParams.get('plan_id');
+                
+                console.log('📝 Checking URL parameters:', { plan: planId });
+                
+                if (planId && (planId === 'basic' || planId === 'premium')) {
+                    pendingRegistration = {
+                        planId: planId,
+                        userId: user.uid,
+                        userEmail: user.email
+                    };
+                    console.log('✅ Found plan from URL parameters:', pendingRegistration);
+                } else {
+                    // LocalStorageにもURLパラメータにも情報がない場合
+                    // 手動でプランを選択できるようにする
+                    showError('プラン登録情報が見つかりませんでした。\n\nプランページから再度お試しください。\nまたは、ブラウザのコンソール（F12）で手動でプランを設定することもできます。');
+                    console.log('💡 Manual plan setting available in console');
+                    console.log('💡 Example: localStorage.setItem("pending_plan_registration", "basic"); location.reload();');
+                    return;
+                }
+            }
+
+            // ユーザーIDが一致するか確認
+            if (pendingRegistration.userId !== user.uid) {
+                showError('ユーザー情報が一致しません。');
+                return;
+            }
+
+            try {
+                // Firestoreにプラン情報を保存
+                const userRef = doc(db, 'users', user.uid);
+                await updateDoc(userRef, {
+                    plan: pendingRegistration.planId,
+                    planStartDate: serverTimestamp(),
+                    updatedAt: serverTimestamp()
+                });
+
+                // 成功画面を表示
+                const planName = pendingRegistration.planId === 'basic' ? '1980円プラン' : '2980円プラン';
+                planBadge.className = `plan-badge ${pendingRegistration.planId}`;
+                planBadge.textContent = planName;
+                successMessage.textContent = `${planName}への登録が完了しました。\nオンラインサロンでコンテンツをお楽しみください。`;
+
+                loadingSection.style.display = 'none';
+                successSection.style.display = 'block';
+
+                // 保留中の登録情報をクリア
+                if (typeof clearPendingPlanRegistration === 'function') {
+                    clearPendingPlanRegistration();
+                }
+            } catch (error) {
+                console.error('プラン登録エラー:', error);
+                showError('プランの登録に失敗しました。もう一度お試しください。');
+            }
+        }
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            loadingSection.style.display = 'none';
+            errorSection.style.display = 'block';
+        }
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await processPlanRegistration();
+            } else {
+                showError('ログインしていません。ログインページにリダイレクトします。');
+                setTimeout(() => {
+                    window.location.href = 'auth.html';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
+

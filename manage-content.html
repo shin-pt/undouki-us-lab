@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コンテンツ管理ツール</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .filter-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .filter-section label {
+            margin-right: 15px;
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        .filter-section select {
+            padding: 8px 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            margin-right: 20px;
+        }
+
+        .content-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .content-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .content-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .content-item.inactive {
+            opacity: 0.6;
+            border-color: rgba(244, 67, 54, 0.3);
+        }
+
+        .content-info {
+            flex: 1;
+        }
+
+        .content-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .content-meta {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .content-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge.active {
+            background: rgba(76, 175, 80, 0.2);
+            color: #81c784;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+
+        .badge.inactive {
+            background: rgba(244, 67, 54, 0.2);
+            color: #e57373;
+            border: 1px solid rgba(244, 67, 54, 0.5);
+        }
+
+        .badge.premium {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+        }
+
+        .badge.basic {
+            background: rgba(33, 150, 243, 0.2);
+            color: #64b5f6;
+            border: 1px solid rgba(33, 150, 243, 0.5);
+        }
+
+        .badge.no-url {
+            background: rgba(255, 152, 0, 0.2);
+            color: #ff9800;
+            border: 1px solid rgba(255, 152, 0, 0.5);
+        }
+
+        .content-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(244, 67, 54, 0.3);
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #fff;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: rgba(76, 175, 80, 0.5);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            color: #81c784;
+            display: block;
+        }
+
+        .message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.5);
+            color: #e57373;
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-cog"></i> コンテンツ管理ツール</h1>
+
+        <div class="filter-section">
+            <label for="statusFilter">表示状態:</label>
+            <select id="statusFilter">
+                <option value="all">すべて</option>
+                <option value="active">公開中のみ</option>
+                <option value="inactive">非公開のみ</option>
+            </select>
+
+            <label for="categoryFilter">カテゴリ:</label>
+            <select id="categoryFilter">
+                <option value="all">すべて</option>
+                <option value="エコー動画">エコー動画</option>
+                <option value="PDF資料">PDF資料</option>
+                <option value="アーカイブ動画">アーカイブ動画</option>
+                <option value="Note記事">Note記事</option>
+                <option value="エコークイズアプリ">エコークイズアプリ</option>
+            </select>
+        </div>
+
+        <div id="contentList" class="content-list">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>読み込み中...</p>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            collection,
+            query,
+            getDocs,
+            updateDoc,
+            doc,
+            orderBy
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const contentList = document.getElementById('contentList');
+        const statusFilter = document.getElementById('statusFilter');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const message = document.getElementById('message');
+        let allContent = [];
+
+        // 認証チェック
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) {
+                alert('このツールを使用するにはログインが必要です。\n認証ページにリダイレクトします。');
+                window.location.href = 'auth.html';
+                return;
+            }
+            await loadContent();
+        });
+
+        // コンテンツ読み込み
+        async function loadContent() {
+            try {
+                contentList.innerHTML = '<div class="loading"><div class="spinner"></div><p>読み込み中...</p></div>';
+                
+                const q = query(
+                    collection(db, 'salon_content'),
+                    orderBy('order', 'asc'),
+                    orderBy('publishedAt', 'desc')
+                );
+
+                const querySnapshot = await getDocs(q);
+                allContent = [];
+                
+                querySnapshot.forEach((docSnapshot) => {
+                    const data = docSnapshot.data();
+                    allContent.push({
+                        id: docSnapshot.id,
+                        title: data.title || 'タイトルなし',
+                        category: data.category || 'その他',
+                        type: data.type || 'video',
+                        isActive: data.isActive !== undefined ? data.isActive : true,
+                        requiredPlan: data.requiredPlan || null,
+                        url: data.url || '',
+                        publishedAt: data.publishedAt ? data.publishedAt.toDate() : null
+                    });
+                });
+
+                displayContent();
+            } catch (error) {
+                console.error('読み込みエラー:', error);
+                contentList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>コンテンツの読み込みに失敗しました</p>
+                        <p style="font-size: 0.9rem; margin-top: 10px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // コンテンツ表示
+        function displayContent() {
+            const statusValue = statusFilter.value;
+            const categoryValue = categoryFilter.value;
+
+            let filteredContent = allContent;
+
+            // ステータスフィルタ
+            if (statusValue === 'active') {
+                filteredContent = filteredContent.filter(c => c.isActive);
+            } else if (statusValue === 'inactive') {
+                filteredContent = filteredContent.filter(c => !c.isActive);
+            }
+
+            // カテゴリフィルタ
+            if (categoryValue !== 'all') {
+                filteredContent = filteredContent.filter(c => c.category === categoryValue);
+            }
+
+            if (filteredContent.length === 0) {
+                contentList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>該当するコンテンツがありません</p>
+                    </div>
+                `;
+                return;
+            }
+
+            contentList.innerHTML = filteredContent.map(content => {
+                const publishedDate = content.publishedAt 
+                    ? content.publishedAt.toLocaleDateString('ja-JP')
+                    : '日付なし';
+
+                return `
+                    <div class="content-item ${!content.isActive ? 'inactive' : ''}">
+                        <div class="content-info">
+                            <div class="content-title">${content.title}</div>
+                            <div class="content-meta">
+                                <span><i class="fas fa-folder"></i> ${content.category}</span>
+                                <span><i class="fas fa-calendar"></i> ${publishedDate}</span>
+                                ${content.requiredPlan ? `<span class="badge ${content.requiredPlan}">${content.requiredPlan === 'premium' ? '2980円プラン' : '1980円プラン'}</span>` : ''}
+                                ${!content.url ? '<span class="badge no-url">URL未設定</span>' : ''}
+                                <span class="badge ${content.isActive ? 'active' : 'inactive'}">
+                                    ${content.isActive ? '公開中' : '非公開'}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="content-actions">
+                            <label class="toggle-switch">
+                                <input type="checkbox" ${content.isActive ? 'checked' : ''} 
+                                       onchange="toggleContent('${content.id}', this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // コンテンツの公開/非公開を切り替え
+        window.toggleContent = async function(contentId, isActive) {
+            try {
+                const contentRef = doc(db, 'salon_content', contentId);
+                await updateDoc(contentRef, {
+                    isActive: isActive
+                });
+
+                // ローカルデータを更新
+                const content = allContent.find(c => c.id === contentId);
+                if (content) {
+                    content.isActive = isActive;
+                }
+
+                message.className = 'message success';
+                message.innerHTML = `
+                    <i class="fas fa-check-circle"></i> 
+                    ${isActive ? '公開' : '非公開'}に変更しました
+                `;
+                message.style.display = 'block';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+
+                displayContent();
+            } catch (error) {
+                console.error('更新エラー:', error);
+                message.className = 'message error';
+                message.innerHTML = `
+                    <i class="fas fa-exclamation-circle"></i> 
+                    更新に失敗しました: ${error.message}
+                `;
+                message.style.display = 'block';
+                
+                // エラー時は元に戻す
+                const content = allContent.find(c => c.id === contentId);
+                if (content) {
+                    content.isActive = !isActive;
+                }
+                displayContent();
+            }
+        };
+
+        // フィルタ変更時の再表示
+        statusFilter.addEventListener('change', displayContent);
+        categoryFilter.addEventListener('change', displayContent);
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+</html>
+
