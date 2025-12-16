@@ -20,60 +20,81 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Noto Sans JP', 'Poppins', sans-serif;
             background-color: #121212;
             color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 15px; /* スマホ向けに小さく */
         }
 
         .container {
-            max-width: 1140px;
+            max-width: 100%; /* スマホでは全幅 */
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px; /* スマホ向けに小さく */
         }
 
         .header {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
+            border-radius: 12px; /* スマホ向けに小さく */
+            padding: 20px 15px; /* スマホ向けに小さく */
+            margin-bottom: 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header-content {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-direction: column; /* スマホでは縦並び */
+            gap: 15px; /* スマホ向けに小さく */
         }
 
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px; /* スマホ向けに小さく */
         }
 
         .logo-section h1 {
-            font-size: 1.8rem;
+            font-size: 1.3rem; /* スマホ向けに小さく */
             color: #e0e0e0;
             font-weight: 700;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap; /* スマホでは折り返し */
+            gap: 10px; /* スマホ向けに小さく */
             align-items: center;
+            width: 100%;
         }
 
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.85rem; /* スマホ向けに小さく */
+            padding: 8px 12px; /* タッチターゲット確保 */
+            min-height: 44px; /* タッチターゲット確保 */
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             transition: color 0.3s ease;
+            touch-action: manipulation; /* タッチ最適化 */
         }
 
         .nav-links a:hover {
@@ -83,10 +104,10 @@
         .member-container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 40px;
+            border-radius: 16px; /* スマホ向けに小さく */
+            padding: 25px 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* スマホ向けに小さく */
             animation: slideUp 0.5s ease-out;
         }
 
@@ -102,37 +123,43 @@
         }
 
         .page-title {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-size: 1.8rem; /* スマホ向けに小さく */
+            margin-bottom: 25px; /* スマホ向けに小さく */
             text-align: center;
             background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            padding: 0 10px;
         }
 
         .user-info-section {
             background: rgba(255, 255, 255, 0.03);
             border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
+            padding: 20px 15px; /* スマホ向けに小さく */
+            margin-bottom: 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .user-info-section h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
+            font-size: 1.2rem; /* スマホ向けに小さく */
+            margin-bottom: 15px; /* スマホ向けに小さく */
             color: #007bff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px; /* スマホ向けに小さく */
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .info-item {
             display: flex;
+            flex-wrap: wrap; /* スマホでは折り返し */
             align-items: center;
-            gap: 15px;
-            padding: 15px 0;
+            gap: 10px; /* スマホ向けに小さく */
+            padding: 12px 0; /* スマホ向けに小さく */
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
@@ -180,7 +207,7 @@
         .purchase-item {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            padding: 20px;
+            padding: 18px 16px; /* スマホ向けに調整 */
             margin-bottom: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
@@ -190,6 +217,102 @@
             background: rgba(255, 255, 255, 0.08);
             transform: translateY(-2px);
         }
+
+        /* プレミアムプランカードのモバイル対応 */
+        .purchase-item .premium-card-content {
+            display: flex;
+            flex-direction: column; /* スマホでは縦並び */
+            gap: 15px;
+        }
+
+        .purchase-item .premium-card-main {
+            display: flex;
+            flex-direction: column; /* スマホでは縦並び */
+            gap: 12px;
+            flex: 1;
+        }
+
+        .purchase-item .premium-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .purchase-item .premium-card-icon {
+            font-size: 1.5rem; /* スマホ向けに小さく */
+            flex-shrink: 0;
+        }
+
+        .purchase-item .premium-card-text {
+            flex: 1;
+            min-width: 0;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        .purchase-item .premium-card-title-row {
+            display: flex;
+            flex-wrap: wrap; /* 折り返しを許可 */
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .purchase-item .premium-card-title-row strong {
+            font-size: 0.9rem; /* 適切なサイズ */
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .purchase-item .premium-card-button {
+            width: 100%; /* スマホでは全幅 */
+            text-align: center;
+            padding: 12px 20px; /* タッチターゲット確保 */
+            min-height: 48px;
+        }
+
+        /* プレミアムカードの文章スタイル */
+        .purchase-item .premium-benefits-text {
+            color: #e0e0e0;
+            font-size: 0.85rem; /* 適切なサイズ */
+            line-height: 1.8;
+            margin: 12px 0;
+        }
+
+        .purchase-item .premium-benefits-text .benefit-line {
+            display: block;
+            margin-bottom: 10px;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            line-height: 1.6;
+        }
+
+        .purchase-item .premium-benefits-text .benefit-line:last-child {
+            margin-bottom: 0;
+        }
+
+        .purchase-item .premium-benefits-note {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.8rem; /* 適切なサイズ */
+            color: #999;
+            line-height: 1.8;
+        }
+
+        .purchase-item .premium-benefits-note .note-line {
+            display: block;
+            margin-bottom: 8px;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            line-height: 1.6;
+        }
+
+        .purchase-item .premium-benefits-note .note-line:last-child {
+            margin-bottom: 0;
+        }
+
 
         .purchase-item.empty {
             text-align: center;
@@ -208,16 +331,36 @@
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 15px 30px;
+            justify-content: center;
+            gap: 8px; /* スマホ向けに小さく */
+            padding: 14px 20px; /* スマホ向けに調整 */
+            min-height: 48px; /* タッチターゲット確保 */
             border: none;
             border-radius: 10px;
-            font-size: 1rem;
+            font-size: 0.95rem; /* スマホ向けに小さく */
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             font-family: 'Noto Sans JP', sans-serif;
+            touch-action: manipulation; /* タッチ最適化 */
+            width: 100%; /* スマホでは全幅 */
+        }
+
+        /* スマホでのホバー効果を無効化 */
+        @media (hover: none) {
+            .btn-primary:hover,
+            .btn-danger:hover,
+            .btn-secondary:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+
+        /* アクティブ状態（タッチ時） */
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
         }
 
         .btn-primary {
@@ -270,38 +413,270 @@
             100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 768px) {
-            .member-container {
-                padding: 30px 20px;
+        /* Footer */
+        footer {
+            padding: 30px 0;
+            background-color: #0c0c0c;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        footer div {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        footer p {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        footer p:last-child {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        footer span {
+            color: #666;
+        }
+
+        /* --- Responsive Design (Mobile-First) --- */
+
+        /* タブレット対応 (768px以上) */
+        @media (min-width: 768px) {
+            .main-content {
+                padding: 20px;
             }
 
-            .page-title {
-                font-size: 2rem;
+            .container {
+                max-width: 1140px;
+                padding: 0 20px;
+            }
+
+            .header {
+                padding: 30px;
+                margin-bottom: 30px;
+                border-radius: 16px;
             }
 
             .header-content {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.8rem;
             }
 
             .nav-links {
-                width: 100%;
-                justify-content: space-between;
+                flex-wrap: nowrap;
+                gap: 20px;
+                width: auto;
+            }
+
+            .nav-links a {
+                font-size: 1rem;
+                padding: 0;
+                min-height: auto;
+            }
+
+            .member-container {
+                padding: 50px 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+                margin-bottom: 40px;
+                padding: 0;
+            }
+
+            .user-info-section {
+                padding: 30px;
+                margin-bottom: 30px;
+            }
+
+            .user-info-section h2 {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+                gap: 10px;
+            }
+
+            .info-item {
+                flex-wrap: nowrap;
+                gap: 15px;
+                padding: 15px 0;
             }
 
             .btn-group {
-                flex-direction: column;
+                flex-direction: row;
             }
 
             .btn {
-                width: 100%;
-                justify-content: center;
+                width: auto;
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+
+        /* タブレット対応 (768px以上) - プレミアムカードを横並びに */
+        @media (min-width: 768px) {
+            .purchase-item {
+                padding: 20px;
+            }
+
+            .purchase-item .premium-card-content {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .purchase-item .premium-card-main {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .purchase-item .premium-card-header {
+                align-items: center;
+            }
+
+            .purchase-item .premium-card-icon {
+                font-size: 2rem;
+            }
+
+            .purchase-item .premium-card-title-row {
+                flex-wrap: nowrap;
+            }
+
+            .purchase-item .premium-card-title-row strong {
+                font-size: 1.1rem;
+            }
+
+            .purchase-item .premium-benefits-text {
+                font-size: 0.95rem;
+            }
+
+            .purchase-item .premium-benefits-note {
+                font-size: 0.9rem;
+            }
+
+            .purchase-item .premium-card-button {
+                width: auto;
+                padding: 10px 20px;
+            }
+        }
+
+        /* PC対応 (992px以上) */
+        @media (min-width: 992px) {
+            .nav-links a:hover {
+                color: #007bff;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            }
+
+            .btn-danger:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(245, 87, 108, 0.4);
+            }
+
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+        }
+
+        /* 超小型デバイス (最大400px) */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .header {
+                padding: 15px 12px;
+                border-radius: 10px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .member-container {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            .user-info-section {
+                padding: 15px 12px;
+            }
+
+            .user-info-section h2 {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 12px 18px;
+                font-size: 0.9rem;
+            }
+
+            .purchase-item {
+                padding: 15px 12px;
+            }
+
+            .purchase-item .premium-card-icon {
+                font-size: 1.3rem;
+            }
+
+            .purchase-item .premium-card-title-row strong {
+                font-size: 0.85rem;
+            }
+
+            .purchase-item .premium-benefits-text {
+                font-size: 0.8rem;
+            }
+
+            .purchase-item .premium-benefits-note {
+                font-size: 0.75rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container main-content">
         <!-- Header -->
         <div class="header">
             <div class="header-content">
@@ -310,7 +685,7 @@
                 </div>
                 <nav class="nav-links">
                     <a href="index.html" target="_self"><i class="fas fa-home"></i> ホーム</a>
-                    <span style="cursor: not-allowed; opacity: 0.6; color: #999;"><i class="fas fa-clock"></i> オンラインサロン（準備中）</span>
+                    <a href="salon.html" target="_self"><i class="fas fa-users"></i> オンラインサロン</a>
                     <a href="echo-videos.html" target="_self"><i class="fas fa-video"></i> エコー動画</a>
                     <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
                 </nav>
@@ -350,21 +725,75 @@
                     </ul>
                 </div>
 
+                <!-- プラン管理セクション -->
+                <div class="user-info-section" id="planManagementSection" style="display: none;">
+                    <h2><i class="fas fa-crown"></i> プラン管理</h2>
+                    <div id="planInfo" style="margin-bottom: 20px;">
+                        <p style="color: #ccc; line-height: 1.8; margin-bottom: 15px;">
+                            現在のプラン: <strong id="currentPlanName" style="color: #ffc107;">-</strong>
+                        </p>
+                        <p style="color: #999; font-size: 0.9rem; line-height: 1.7; margin-bottom: 20px;">
+                            プランの変更や解約は、Stripe Customer Portalから行えます。<br>
+                            プラン変更時は二重請求を防ぐため、必ずCustomer Portalから変更してください。
+                        </p>
+                        <a href="plans.html" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">
+                            <i class="fas fa-crown"></i> プランを管理する
+                        </a>
+                        <button 
+                            class="btn btn-secondary" 
+                            id="openCustomerPortalBtn" 
+                            style="width: 100%; margin-bottom: 10px; display: none;">
+                            <i class="fas fa-external-link-alt"></i> Customer Portalを開く（プラン変更・解約）
+                        </button>
+                        <div style="background: rgba(255, 193, 7, 0.1); border-left: 4px solid #ffc107; padding: 15px; margin-top: 15px; border-radius: 4px;">
+                            <p style="color: #ffc107; font-size: 0.9rem; font-weight: 700; margin-bottom: 10px;">
+                                <i class="fas fa-exclamation-triangle"></i> 解約について
+                            </p>
+                            <p style="color: #ccc; font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px;">
+                                <strong>解約方法:</strong><br>
+                                1. 下の「Customer Portalを開く」ボタンをクリック<br>
+                                2. Customer Portalで「サブスクリプションをキャンセル」を選択<br>
+                                3. 確認画面で解約を完了<br>
+                                または、直接「サブスクリプションを解約する」ボタンから解約することもできます。
+                            </p>
+                            <p style="color: #ccc; font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px;">
+                                <strong>解約後のアクセス:</strong><br>
+                                解約後も、現在の請求期間終了までコンテンツにアクセスできます。<br>
+                                例: 1月15日に解約した場合、1月末までアクセス可能です。
+                            </p>
+                            <p style="color: #ccc; font-size: 0.85rem; line-height: 1.7;">
+                                <strong>注意:</strong><br>
+                                解約後は自動的に更新されません。再登録する場合は、再度プラン登録を行ってください。
+                            </p>
+                        </div>
+                        <button 
+                            class="btn btn-danger" 
+                            id="cancelSubscriptionBtn" 
+                            style="width: 100%; margin-top: 15px; background: linear-gradient(135deg, #dc3545, #c82333); display: none;">
+                            <i class="fas fa-times-circle"></i> サブスクリプションを解約する
+                        </button>
+                        <div id="cancelLoading" style="display: none; text-align: center; margin-top: 10px;">
+                            <div class="spinner"></div>
+                            <p style="color: #999; font-size: 0.85rem;">解約処理中...</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- パスワード変更セクション -->
                 <div class="user-info-section">
                     <h2><i class="fas fa-key"></i> パスワード変更</h2>
                     <form id="passwordChangeForm">
                         <div class="form-group" style="margin-bottom: 20px;">
                             <label for="currentPassword" style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 600; font-size: 0.9rem;">現在のパスワード</label>
-                            <input type="password" id="currentPassword" required style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
+                            <input type="password" id="currentPassword" autocomplete="current-password" required style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
                         </div>
                         <div class="form-group" style="margin-bottom: 20px;">
                             <label for="newPassword" style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 600; font-size: 0.9rem;">新しいパスワード（8文字以上）</label>
-                            <input type="password" id="newPassword" required minlength="8" style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
+                            <input type="password" id="newPassword" autocomplete="new-password" required minlength="8" style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
                         </div>
                         <div class="form-group" style="margin-bottom: 20px;">
                             <label for="confirmPassword" style="display: block; margin-bottom: 8px; color: #e0e0e0; font-weight: 600; font-size: 0.9rem;">新しいパスワード（確認）</label>
-                            <input type="password" id="confirmPassword" required minlength="8" style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
+                            <input type="password" id="confirmPassword" autocomplete="new-password" required minlength="8" style="width: 100%; padding: 12px; border: 2px solid rgba(255, 255, 255, 0.1); border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: #e0e0e0; font-size: 1rem; font-family: 'Noto Sans JP', sans-serif;">
                         </div>
                         <div id="passwordChangeMessage" style="display: none; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9rem;"></div>
                         <div class="loading" id="passwordChangeLoading" style="display: none;">
@@ -391,6 +820,23 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <div>
+            <p>
+                <a href="terms.html">利用規約</a>
+                <span>|</span>
+                <a href="privacy.html">プライバシーポリシー</a>
+                <span>|</span>
+                <a href="law.html">特定商取引法に基づく表記</a>
+            </p>
+            <p>© 2024 運動器超音波Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Stripe Payment Links設定 -->
+    <script src="plan-payment-config.js"></script>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -412,6 +858,10 @@
             doc,
             getDoc
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { 
+            getFunctions, 
+            httpsCallable 
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-functions.js';
 
         // Firebase設定
         const firebaseConfig = {
@@ -447,6 +897,7 @@
                 try {
                     displayUserInfo(user);
                     await displayPurchaseHistory(user);
+                    await displayPlanInfo(user);
                     loadingSection.style.display = 'none';
                     contentSection.style.display = 'block';
                 } catch (error) {
@@ -480,6 +931,146 @@
                 userCreatedAt.textContent = '-';
             }
         }
+
+        // プラン情報を表示
+        async function displayPlanInfo(user) {
+            const planManagementSection = document.getElementById('planManagementSection');
+            const currentPlanName = document.getElementById('currentPlanName');
+            const cancelSubscriptionBtn = document.getElementById('cancelSubscriptionBtn');
+            
+            try {
+                const plan = await getUserPlan(user);
+                
+                if (plan) {
+                    planManagementSection.style.display = 'block';
+                    if (plan === 'basic') {
+                        currentPlanName.textContent = '1980円プラン';
+                        currentPlanName.style.color = '#66b2ff';
+                    } else if (plan === 'premium') {
+                        currentPlanName.textContent = '2980円プラン';
+                        currentPlanName.style.color = '#ffc107';
+                    } else {
+                        currentPlanName.textContent = '不明なプラン';
+                        currentPlanName.style.color = '#999';
+                    }
+                    
+                    // Customer Portalボタンと解約ボタンを表示
+                    // プランに登録されている場合は、Customer Portalボタンを表示
+                    // stripeSubscriptionIdがある場合は、直接解約ボタンも表示
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    const openCustomerPortalBtn = document.getElementById('openCustomerPortalBtn');
+                    
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        
+                        // プランに登録されている場合は、Customer Portalボタンを表示
+                        // （stripeSubscriptionIdがなくても、Customer Portalでメールアドレスでログイン可能）
+                        if (openCustomerPortalBtn) {
+                            openCustomerPortalBtn.style.display = 'block';
+                        }
+                        
+                        // stripeSubscriptionIdがある場合のみ、直接解約ボタンを表示
+                        if (userData.stripeSubscriptionId && cancelSubscriptionBtn) {
+                            cancelSubscriptionBtn.style.display = 'block';
+                        } else if (cancelSubscriptionBtn) {
+                            cancelSubscriptionBtn.style.display = 'none';
+                        }
+                    }
+                } else {
+                    planManagementSection.style.display = 'none';
+                    if (cancelSubscriptionBtn) cancelSubscriptionBtn.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('プラン情報表示エラー:', error);
+                planManagementSection.style.display = 'none';
+                if (cancelSubscriptionBtn) cancelSubscriptionBtn.style.display = 'none';
+            }
+        }
+
+        // サブスクリプション解約関数
+        async function handleCancelSubscription() {
+            // 確認ダイアログ
+            const confirmed = confirm(
+                '本当にサブスクリプションを解約しますか？\n\n' +
+                '解約後も現在の請求期間終了までコンテンツにアクセスできます。\n\n' +
+                'この操作は取り消せません。'
+            );
+            
+            if (!confirmed) {
+                return;
+            }
+
+            const cancelLoading = document.getElementById('cancelLoading');
+            const cancelSubscriptionBtn = document.getElementById('cancelSubscriptionBtn');
+
+            try {
+                // ローディング表示
+                if (cancelLoading) cancelLoading.style.display = 'block';
+                if (cancelSubscriptionBtn) cancelSubscriptionBtn.disabled = true;
+
+                // 解約実行（請求期間終了時に解約）
+                const result = await cancelSubscription({ cancelAtPeriodEnd: true });
+                
+                // 成功メッセージ
+                alert(
+                    'サブスクリプションの解約が完了しました。\n\n' +
+                    '現在の請求期間終了までコンテンツにアクセスできます。\n\n' +
+                    'ページを更新して最新の状態を確認してください。'
+                );
+                
+                // ページをリロードして状態を更新
+                window.location.reload();
+            } catch (error) {
+                console.error('解約エラー:', error);
+                
+                let errorMessage = '解約に失敗しました。';
+                if (error.code === 'unauthenticated') {
+                    errorMessage = 'ログインが必要です。ページを再読み込みしてください。';
+                } else if (error.code === 'failed-precondition') {
+                    errorMessage = 'アクティブなサブスクリプションが見つかりません。';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                alert(errorMessage);
+            } finally {
+                if (cancelLoading) cancelLoading.style.display = 'none';
+                if (cancelSubscriptionBtn) cancelSubscriptionBtn.disabled = false;
+            }
+        }
+
+        // Customer Portalを開く関数
+        async function handleOpenCustomerPortal() {
+            // plan-payment-config.jsからCustomer Portal URLを取得
+            let customerPortalUrl = null;
+            
+            if (typeof CUSTOMER_PORTAL_URL !== 'undefined' && CUSTOMER_PORTAL_URL) {
+                customerPortalUrl = CUSTOMER_PORTAL_URL.url;
+            }
+            
+            if (!customerPortalUrl || customerPortalUrl.includes('[YOUR')) {
+                alert('Customer Portalの設定が完了していません。\n\n管理者にお問い合わせください。');
+                console.warn('⚠️ Customer Portal URL not configured');
+                return;
+            }
+            
+            // Customer Portalにリダイレクト
+            window.location.href = customerPortalUrl;
+        }
+
+        // 解約ボタンとCustomer Portalボタンのイベントリスナー
+        window.addEventListener('DOMContentLoaded', () => {
+            const cancelSubscriptionBtn = document.getElementById('cancelSubscriptionBtn');
+            const openCustomerPortalBtn = document.getElementById('openCustomerPortalBtn');
+            
+            if (cancelSubscriptionBtn) {
+                cancelSubscriptionBtn.addEventListener('click', handleCancelSubscription);
+            }
+            
+            if (openCustomerPortalBtn) {
+                openCustomerPortalBtn.addEventListener('click', handleOpenCustomerPortal);
+            }
+        });
 
         // ユーザーのプラン情報を取得
         async function getUserPlan(user) {
@@ -518,44 +1109,57 @@
                 if (isPremium) {
                     premiumMessage = `
                         <li class="purchase-item" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 193, 7, 0.1)); border: 2px solid rgba(255, 215, 0, 0.3);">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <i class="fas fa-crown" style="font-size: 2rem; color: #ffd700;"></i>
-                                <div style="flex: 1;">
-                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                                        <strong style="color: #ffd700; font-size: 1.1rem;">プレミアムプラン会員特典</strong>
-                                        <span style="background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">2980円プラン</span>
+                            <div class="premium-card-content">
+                                <div class="premium-card-main">
+                                    <div class="premium-card-header">
+                                        <i class="fas fa-crown premium-card-icon" style="color: #ffd700;"></i>
+                                        <div class="premium-card-text">
+                                            <div class="premium-card-title-row">
+                                                <strong style="color: #ffd700;">プレミアムプラン会員特典</strong>
+                                                <span style="background: rgba(255, 215, 0, 0.2); color: #ffd700; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; white-space: nowrap; flex-shrink: 0;">2980円プラン</span>
+                                            </div>
+                                            <div class="premium-benefits-text">
+                                                <span class="benefit-line">すべてのエコー動画（67本）を視聴できます</span>
+                                                <span class="benefit-line">個別購入は不要です</span>
+                                            </div>
+                                            <div class="premium-benefits-note">
+                                                <span class="note-line"><span style="color: #ffd700; font-weight: 600;">オンラインサロン</span>からすべての動画を視聴できます</span>
+                                                <span class="note-line" style="color: #ffd700; font-size: 0.75rem;">（準備中）</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p style="color: #e0e0e0; margin-bottom: 8px;">
-                                        すべてのエコー動画（67本）を視聴できます！
-                                    </p>
-                                    <p style="font-size: 0.9rem; color: #999;">
-                                        個別購入は不要です。<span style="color: #ffd700; font-weight: 600;">オンラインサロン</span>からすべての動画を視聴できます。<span style="color: #ffd700; font-size: 0.85rem;">（準備中）</span>
-                                    </p>
                                 </div>
-                                <span class="btn btn-primary" style="padding: 10px 20px; background: linear-gradient(135deg, #666, #555); cursor: not-allowed; opacity: 0.6;">
-                                    <i class="fas fa-clock"></i> コンテンツを見る（準備中）
-                                </span>
+                                <a href="salon.html" class="btn btn-primary premium-card-button" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                    <i class="fas fa-play"></i> コンテンツを見る
+                                </a>
                             </div>
                         </li>
                     `;
                 } else if (isBasic) {
                     premiumMessage = `
                         <li class="purchase-item" style="background: rgba(102, 126, 234, 0.1); border: 2px solid rgba(102, 126, 234, 0.3);">
-                            <div style="display: flex; align-items: center; gap: 15px;">
-                                <i class="fas fa-info-circle" style="font-size: 2rem; color: #667eea;"></i>
-                                <div style="flex: 1;">
-                                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                                        <strong style="color: #667eea; font-size: 1.1rem;">1980円プラン会員</strong>
-                                        <span style="background: rgba(102, 126, 234, 0.2); color: #667eea; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem;">基本プラン</span>
+                            <div class="premium-card-content">
+                                <div class="premium-card-main">
+                                    <div class="premium-card-header">
+                                        <i class="fas fa-info-circle premium-card-icon" style="color: #667eea;"></i>
+                                        <div class="premium-card-text">
+                                            <div class="premium-card-title-row">
+                                                <strong style="color: #667eea;">1980円プラン会員</strong>
+                                                <span style="background: rgba(102, 126, 234, 0.2); color: #667eea; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; white-space: nowrap; flex-shrink: 0;">基本プラン</span>
+                                            </div>
+                                            <div class="premium-benefits-text">
+                                                <span class="benefit-line">エコーアプリを使用できます</span>
+                                                <span class="benefit-line">Note記事を閲覧できます</span>
+                                                <span class="benefit-line">アーカイブ動画を視聴できます</span>
+                                            </div>
+                                            <div class="premium-benefits-note">
+                                                <span class="note-line"><span style="color: #667eea; font-weight: 600;">オンラインサロン</span>からコンテンツを視聴できます</span>
+                                                <span class="note-line" style="color: #667eea; font-size: 0.75rem;">（準備中）</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <p style="color: #e0e0e0; margin-bottom: 8px;">
-                                        エコーアプリ、Note記事、アーカイブ動画にアクセス可能です。
-                                    </p>
-                                    <p style="font-size: 0.9rem; color: #999;">
-                                        <span style="color: #667eea; font-weight: 600;">オンラインサロン</span>からコンテンツを視聴できます。<span style="color: #667eea; font-size: 0.85rem;">（準備中）</span>
-                                    </p>
                                 </div>
-                                <span class="btn btn-primary" style="padding: 10px 20px; background: #666; cursor: not-allowed; opacity: 0.6;">
+                                <span class="btn btn-primary premium-card-button" style="background: #666; cursor: not-allowed; opacity: 0.6;">
                                     <i class="fas fa-clock"></i> コンテンツを見る（準備中）
                                 </span>
                             </div>
@@ -574,7 +1178,7 @@
                                 <p>個別購入履歴がありません</p>
                                 ${!isPremium ? `
                                     <p style="font-size: 0.9rem; margin-top: 10px; color: #999;">
-                                        <span style="color: #007bff;">オンラインサロン</span> から動画を購入できます<span style="color: #007bff; font-size: 0.85rem;">（準備中）</span>
+                                        <a href="salon.html" style="color: #007bff; text-decoration: underline;">オンラインサロン</a>から動画を購入できます
                                     </p>
                                 ` : ''}
                             </li>
@@ -588,9 +1192,9 @@
                                         <i class="fas fa-video" style="color: #007bff; margin-right: 10px;"></i>
                                         <strong>動画ID: ${videoId}</strong>
                                     </div>
-                                    <span class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem; background: #666; cursor: not-allowed; opacity: 0.6;">
-                                        <i class="fas fa-clock"></i> 視聴する（準備中）
-                                    </span>
+                                    <a href="salon.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
+                                        <i class="fas fa-play"></i> 視聴する
+                                    </a>
                                 </div>
                             </li>
                         `).join('');
@@ -631,9 +1235,9 @@
                                             <span>購入日: ${dateStr}</span>
                                         </div>
                                     </div>
-                                    <span class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem; background: #666; cursor: not-allowed; opacity: 0.6;">
-                                        <i class="fas fa-clock"></i> 視聴する（準備中）
-                                    </span>
+                                    <a href="salon.html" class="btn btn-secondary" style="padding: 8px 15px; font-size: 0.9rem;">
+                                        <i class="fas fa-play"></i> 視聴する
+                                    </a>
                                 </div>
                             </li>
                         `;

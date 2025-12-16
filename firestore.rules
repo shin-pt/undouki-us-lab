@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ==========================================
+    // ユーザー情報
+    // ==========================================
+    // ユーザーは自分のデータのみ読み書き可能
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // 新規作成時は、自分のUIDと一致することを確認
+      allow create: if request.auth != null && 
+                       request.auth.uid == userId &&
+                       request.resource.data.keys().hasAll(['email', 'plan', 'createdAt']) &&
+                       request.resource.data.email is string &&
+                       (request.resource.data.plan == null || 
+                        request.resource.data.plan == 'basic' || 
+                        request.resource.data.plan == 'premium');
+      
+      // 更新時は、emailの変更を禁止（セキュリティのため）
+      allow update: if request.auth != null && 
+                       request.auth.uid == userId &&
+                       !request.resource.data.diff(resource.data).affectedKeys().hasAny(['email']);
+    }
+    
+    // ==========================================
+    // 購入履歴
+    // ==========================================
+    // ユーザーは自分の購入履歴のみ読み取り可能
+    // 購入履歴は変更・削除不可（監査証跡のため）
+    match /purchases/{purchaseId} {
+      // 読み取り: 自分の購入履歴のみ
+      allow read: if request.auth != null && 
+                     resource.data.userId == request.auth.uid;
+      
+      // 作成: 認証済みユーザーが自分の購入履歴を作成可能
+      allow create: if request.auth != null && 
+                       request.resource.data.userId == request.auth.uid &&
+                       request.resource.data.keys().hasAll(['userId', 'videoId', 'price', 'purchasedAt']) &&
+                       request.resource.data.userId is string &&
+                       request.resource.data.videoId is string &&
+                       request.resource.data.price is number;
+      
+      // 更新・削除: 禁止（購入履歴は不変）
+      allow update, delete: if false;
+    }
+    
+    // ==========================================
+    // サロンコンテンツ
+    // ==========================================
+    // 認証済みユーザーのみ読み取り可能
+    // 書き込みは管理ツールから（別途認証が必要）
+    match /salon_content/{contentId} {
+      // 読み取り: 認証済みユーザーのみ
+      allow read: if request.auth != null;
+      
+      // 書き込み: 現在は認証済みユーザーに許可（本番環境では管理ツール用の認証を追加推奨）
+      // TODO: 本番環境では、管理者のみが書き込み可能になるよう制限を追加
+      allow write: if request.auth != null;
+      
+      // より厳格な制限が必要な場合の例:
+      // allow write: if request.auth != null && 
+      //                 get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // ==========================================
+    // その他のコレクション
+    // ==========================================
+    // デフォルト: すべてのアクセスを拒否
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+

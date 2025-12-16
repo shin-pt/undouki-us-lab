@@ -25,54 +25,63 @@
             background-color: #121212;
             color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px; /* スマホ向けに小さく */
             background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M43.05 79.73c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23zm13.9-43.05c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23z" fill-opacity="0.03" fill="%23FFF"/></svg>');
         }
 
         .container {
-            max-width: 1140px;
+            max-width: 100%; /* スマホでは全幅 */
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px; /* スマホ向けに小さく */
         }
 
         .header {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
+            border-radius: 12px; /* スマホ向けに小さく */
+            padding: 20px 15px; /* スマホ向けに小さく */
+            margin-bottom: 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header-content {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-direction: column; /* スマホでは縦並び */
+            gap: 15px; /* スマホ向けに小さく */
         }
 
         .logo-section h1 {
-            font-size: 1.8rem;
+            font-size: 1.3rem; /* スマホ向けに小さく */
             color: #e0e0e0;
             font-weight: 700;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap; /* スマホでは折り返し */
+            gap: 10px; /* スマホ向けに小さく */
             align-items: center;
+            width: 100%;
         }
 
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.85rem; /* スマホ向けに小さく */
+            padding: 8px 12px; /* タッチターゲット確保 */
+            min-height: 44px; /* タッチターゲット確保 */
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             transition: color 0.3s ease;
+            touch-action: manipulation; /* タッチ最適化 */
         }
 
         .nav-links a:hover {
@@ -82,10 +91,10 @@
         .about-container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 40px;
+            border-radius: 16px; /* スマホ向けに小さく */
+            padding: 25px 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* スマホ向けに小さく */
             animation: slideUp 0.5s ease-out;
         }
 
@@ -101,62 +110,75 @@
         }
 
         .page-title {
-            font-size: 2.5rem;
+            font-size: 1.8rem; /* スマホ向けに小さく */
             font-weight: 900;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* スマホ向けに小さく */
             text-align: center;
             background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            padding: 0 10px;
         }
 
         .page-subtitle {
             text-align: center;
             color: #999;
-            font-size: 1.1rem;
-            margin-bottom: 50px;
+            font-size: 0.9rem; /* スマホ向けに小さく */
+            margin-bottom: 30px; /* スマホ向けに小さく */
+            padding: 0 10px;
+            line-height: 1.7;
         }
 
         .intro-section {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 40px;
+            border-radius: 12px; /* スマホ向けに小さく */
+            padding: 20px 18px; /* スマホ向けに小さく */
+            margin-bottom: 25px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .intro-section h2 {
-            font-size: 1.8rem;
-            margin-bottom: 20px;
+            font-size: 1.3rem; /* スマホ向けに小さく */
+            margin-bottom: 15px; /* スマホ向けに小さく */
             color: #e0e0e0;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px; /* スマホ向けに小さく */
+            flex-wrap: wrap; /* 折り返し可能に */
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .intro-section h2 i {
             color: #667eea;
+            font-size: 1.2rem; /* アイコンサイズ調整 */
+            flex-shrink: 0;
         }
 
         .intro-section p {
-            font-size: 1.1rem;
-            line-height: 1.8;
+            font-size: 0.9rem; /* スマホ向けに小さく */
+            line-height: 1.9; /* 行間を広げて読みやすく */
             color: #ccc;
-            margin-bottom: 15px;
+            margin-bottom: 12px; /* スマホ向けに小さく */
+            word-break: keep-all; /* 日本語の単語を途中で切らない */
+            overflow-wrap: break-word; /* 長い単語のみ折り返し */
+            text-align: left;
         }
 
         .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            grid-template-columns: 1fr; /* スマホでは1列 */
+            gap: 20px; /* スマホ向けに小さく */
+            margin-bottom: 30px; /* スマホ向けに小さく */
         }
 
         .content-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 30px;
+            border-radius: 12px; /* スマホ向けに小さく */
+            padding: 20px 18px; /* スマホ向けに小さく */
             border: 2px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             position: relative;
@@ -175,10 +197,28 @@
             transition: transform 0.3s ease;
         }
 
-        .content-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
-            border-color: rgba(102, 126, 234, 0.5);
+        /* スマホでのホバー効果を無効化 */
+        @media (hover: none) {
+            .content-card:hover {
+                transform: none;
+                box-shadow: none;
+                border-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        /* アクティブ状態（タッチ時） */
+        .content-card:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* PCでのホバー効果 */
+        @media (hover: hover) {
+            .content-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+                border-color: rgba(102, 126, 234, 0.5);
+            }
         }
 
         .content-card:hover::before {
@@ -186,44 +226,64 @@
         }
 
         .content-card-icon {
-            font-size: 3rem;
+            font-size: 2.2rem; /* スマホ向けに小さく */
             color: #667eea;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* スマホ向けに小さく */
             display: block;
         }
 
         .content-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem; /* スマホ向けに小さく */
+            margin-bottom: 12px; /* スマホ向けに小さく */
             color: #e0e0e0;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .content-card p {
             color: #999;
-            line-height: 1.7;
-            font-size: 0.95rem;
+            line-height: 1.8; /* 行間を広げて読みやすく */
+            font-size: 0.85rem; /* スマホ向けに小さく */
+            word-break: keep-all; /* 日本語の単語を途中で切らない */
+            overflow-wrap: break-word; /* 長い単語のみ折り返し */
         }
 
         .plan-section {
             background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 40px;
+            border-radius: 12px; /* スマホ向けに小さく */
+            padding: 25px 20px; /* スマホ向けに小さく */
+            margin-bottom: 25px; /* スマホ向けに小さく */
             border: 2px solid rgba(102, 126, 234, 0.3);
             text-align: center;
         }
 
         .plan-section h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
+            font-size: 1.4rem; /* スマホ向けに小さく */
+            margin-bottom: 15px; /* スマホ向けに小さく */
             color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* スマホ向けに小さく */
+            flex-wrap: wrap; /* 折り返し可能に */
+            word-break: keep-all;
+            overflow-wrap: break-word;
+        }
+
+        .plan-section h2 i {
+            flex-shrink: 0;
+            font-size: 1.3rem; /* アイコンサイズ調整 */
         }
 
         .plan-section p {
-            font-size: 1.1rem;
+            font-size: 0.9rem; /* スマホ向けに小さく */
             color: #ccc;
-            margin-bottom: 30px;
-            line-height: 1.8;
+            margin-bottom: 20px; /* スマホ向けに小さく */
+            line-height: 1.9; /* 行間を広げて読みやすく */
+            word-break: keep-all; /* 日本語の単語を途中で切らない */
+            overflow-wrap: break-word; /* 長い単語のみ折り返し */
+            text-align: left; /* 左揃えに変更 */
+            padding: 0 5px; /* 左右に少し余白 */
         }
 
         .plan-buttons {
@@ -234,16 +294,35 @@
         }
 
         .plan-btn {
-            padding: 18px 40px;
+            padding: 14px 24px; /* スマホ向けに調整 */
+            min-height: 48px; /* タッチターゲット確保 */
             border-radius: 12px;
-            font-size: 1.1rem;
+            font-size: 0.95rem; /* スマホ向けに小さく */
             font-weight: 700;
             text-decoration: none;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            gap: 8px; /* スマホ向けに小さく */
             border: 2px solid transparent;
+            width: 100%; /* スマホでは全幅 */
+            touch-action: manipulation; /* タッチ最適化 */
+        }
+
+        /* スマホでのホバー効果を無効化 */
+        @media (hover: none) {
+            .plan-btn.primary:hover,
+            .plan-btn.secondary:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+
+        /* アクティブ状態（タッチ時） */
+        .plan-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
         }
 
         .plan-btn.primary {
@@ -292,26 +371,193 @@
             border-color: rgba(255, 255, 255, 0.3);
         }
 
-        @media (max-width: 768px) {
+        /* --- Responsive Design (Mobile-First) --- */
+
+        /* タブレット対応 (768px以上) */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
+            .container {
+                max-width: 1140px;
+                padding: 0 20px;
+            }
+
+            .header {
+                padding: 30px;
+                margin-bottom: 30px;
+                border-radius: 16px;
+            }
+
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-links {
+                flex-wrap: nowrap;
+                gap: 20px;
+                width: auto;
+            }
+
+            .nav-links a {
+                font-size: 1rem;
+                padding: 0;
+                min-height: auto;
+            }
+
+            .nav-links a:hover {
+                color: #007bff;
+            }
+
             .about-container {
-                padding: 30px 20px;
+                padding: 50px 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             }
 
             .page-title {
-                font-size: 2rem;
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+                padding: 0;
+            }
+
+            .page-subtitle {
+                font-size: 1.1rem;
+                margin-bottom: 50px;
+                padding: 0;
+            }
+
+            .intro-section {
+                padding: 35px 30px;
+                margin-bottom: 40px;
+            }
+
+            .intro-section h2 {
+                font-size: 1.6rem;
+                margin-bottom: 18px;
+            }
+
+            .intro-section p {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .plan-section {
+                padding: 35px 30px;
+                margin-bottom: 40px;
+            }
+
+            .plan-section h2 {
+                font-size: 1.8rem;
+                margin-bottom: 18px;
+            }
+
+            .plan-section p {
+                font-size: 1rem;
+                line-height: 1.8;
+                text-align: center;
             }
 
             .content-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
+                margin-bottom: 50px;
+            }
+
+            .content-card {
+                padding: 28px 25px;
+                border-radius: 16px;
+            }
+
+            .content-card-icon {
+                font-size: 2.8rem;
+                margin-bottom: 18px;
+            }
+
+            .content-card h3 {
+                font-size: 1.4rem;
+                margin-bottom: 14px;
+            }
+
+            .content-card p {
+                font-size: 0.95rem;
+                line-height: 1.7;
             }
 
             .plan-buttons {
-                flex-direction: column;
+                flex-direction: row;
             }
 
             .plan-btn {
-                width: 100%;
-                justify-content: center;
+                width: auto;
+                padding: 18px 40px;
+                font-size: 1.1rem;
+            }
+        }
+
+        /* PC対応 (992px以上) */
+        @media (min-width: 992px) {
+            .plan-btn.primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            }
+
+            .plan-btn.secondary:hover {
+                background: rgba(255, 255, 255, 0.15);
+                transform: translateY(-3px);
+            }
+        }
+
+        /* 超小型デバイス (最大400px) */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .header {
+                padding: 15px 12px;
+                border-radius: 10px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .about-container {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 12px;
+            }
+
+            .page-subtitle {
+                font-size: 0.85rem;
+                margin-bottom: 25px;
+            }
+
+            .plan-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -326,7 +572,7 @@
                 </div>
                 <nav class="nav-links">
                     <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
-                    <span style="cursor: not-allowed; opacity: 0.6; color: #999;"><i class="fas fa-clock"></i> オンラインサロン（準備中）</span>
+                    <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
                     <a href="auth.html"><i class="fas fa-sign-in-alt"></i> ログイン</a>
                 </nav>
             </div>
@@ -355,8 +601,8 @@
             </div>
 
             <!-- コンテンツ紹介 -->
-            <h2 style="font-size: 2rem; margin-bottom: 30px; text-align: center; color: #e0e0e0;">
-                <i class="fas fa-th"></i> 提供コンテンツ
+            <h2 style="font-size: 1.4rem; margin-bottom: 20px; text-align: center; color: #e0e0e0; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; word-break: keep-all; overflow-wrap: break-word;">
+                <i class="fas fa-th" style="flex-shrink: 0;"></i> 提供コンテンツ
             </h2>
             <div class="content-grid">
                 <!-- エコーアプリ -->
@@ -433,10 +679,6 @@
                         <i class="fas fa-crown"></i>
                         プランを確認する
                     </a>
-                    <span class="plan-btn secondary" style="cursor: not-allowed; opacity: 0.6;">
-                        <i class="fas fa-clock"></i>
-                        サンプルを見る（準備中）
-                    </span>
                 </div>
             </div>
 

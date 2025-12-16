@@ -25,55 +25,64 @@
             background-color: #121212;
             color: #e0e0e0;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px; /* スマホ向けに小さく */
         }
 
         .container {
-            max-width: 1140px;
+            max-width: 100%; /* スマホでは全幅 */
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px; /* スマホ向けに小さく */
         }
 
         .header {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
+            border-radius: 12px; /* スマホ向けに小さく */
+            padding: 20px 15px; /* スマホ向けに小さく */
+            margin-bottom: 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .header-content {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
+            flex-direction: column; /* スマホでは縦並び */
+            gap: 15px; /* スマホ向けに小さく */
         }
 
         .logo-section {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px; /* スマホ向けに小さく */
         }
 
         .logo-section h1 {
-            font-size: 1.8rem;
+            font-size: 1.3rem; /* スマホ向けに小さく */
             color: #e0e0e0;
             font-weight: 700;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            flex-wrap: wrap; /* スマホでは折り返し */
+            gap: 10px; /* スマホ向けに小さく */
             align-items: center;
+            width: 100%;
         }
 
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
             font-weight: 600;
+            font-size: 0.85rem; /* スマホ向けに小さく */
+            padding: 8px 12px; /* タッチターゲット確保 */
+            min-height: 44px; /* タッチターゲット確保 */
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             transition: color 0.3s ease;
+            touch-action: manipulation; /* タッチ最適化 */
         }
 
         .nav-links a:hover {
@@ -83,10 +92,10 @@
         .salon-container {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 50px 40px;
+            border-radius: 16px; /* スマホ向けに小さく */
+            padding: 25px 20px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* スマホ向けに小さく */
             animation: slideUp 0.5s ease-out;
         }
 
@@ -102,34 +111,42 @@
         }
 
         .page-title {
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-size: 1.8rem; /* スマホ向けに小さく */
+            margin-bottom: 25px; /* スマホ向けに小さく */
             text-align: center;
             background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            padding: 0 10px;
         }
 
         .category-tabs {
             display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 5px; /* スマホ向けに小さく */
+            margin-bottom: 25px; /* スマホ向けに小さく */
             flex-wrap: wrap;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            overflow-x: auto; /* 横スクロール対応 */
+            -webkit-overflow-scrolling: touch;
         }
 
         .category-tab {
-            padding: 15px 25px;
+            padding: 12px 16px; /* スマホ向けに調整 */
+            min-height: 44px; /* タッチターゲット確保 */
             background: none;
             border: none;
             color: #999;
-            font-size: 1rem;
+            font-size: 0.85rem; /* スマホ向けに小さく */
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
             font-family: 'Noto Sans JP', sans-serif;
+            white-space: nowrap;
+            touch-action: manipulation; /* タッチ最適化 */
         }
 
         .category-tab.active {
@@ -152,58 +169,118 @@
 
         .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr; /* スマホでは1列 */
+            gap: 20px; /* スマホ向けに小さく */
+            margin-bottom: 25px; /* スマホ向けに小さく */
         }
 
         .content-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px 15px; /* スマホ向けに小さく */
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             cursor: pointer;
+            touch-action: manipulation; /* タッチ最適化 */
+            display: flex;
+            flex-direction: column;
+            min-width: 0; /* flexboxでテキストが正しく折り返されるように */
         }
 
-        .content-card:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2);
+        /* スマホでのホバー効果を無効化 */
+        @media (hover: none) {
+            .content-card:hover {
+                transform: none;
+                box-shadow: none;
+            }
+        }
+
+        /* アクティブ状態（タッチ時） */
+        .content-card:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* PCでのホバー効果 */
+        @media (hover: hover) {
+            .content-card:hover {
+                background: rgba(255, 255, 255, 0.08);
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 123, 255, 0.2);
+            }
         }
 
         .content-card-header {
             display: flex;
+            flex-direction: column; /* 縦並び */
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .content-card-title-row {
+            display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
+            flex-wrap: nowrap; /* 折り返さない */
         }
 
         .content-card-icon {
             font-size: 1.5rem;
             color: #007bff;
+            flex-shrink: 0;
         }
 
         .content-card-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem; /* スマホ向けに小さく */
             font-weight: 700;
             color: #e0e0e0;
             margin: 0;
+            flex: 1;
+            min-width: 0;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .content-card-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+            margin-left: 0; /* アイコンの下に配置 */
+        }
+
+        .content-card-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .content-card-description {
             color: #999;
-            font-size: 0.95rem;
-            line-height: 1.6;
+            font-size: 0.85rem; /* スマホ向けに小さく */
+            line-height: 1.8;
             margin-bottom: 15px;
+            word-break: normal; /* 通常の改行ルール */
+            overflow-wrap: anywhere; /* 必要に応じてどこでも改行可能 */
+            text-align: left; /* 左揃え */
+            white-space: normal; /* 通常の改行を許可 */
+            overflow: visible; /* はみ出しを許可 */
+            min-width: 0; /* flexboxでテキストが正しく折り返されるように */
+            hyphens: none; /* ハイフネーションを無効化 */
+            text-align-last: left; /* 最後の行も左揃え */
         }
 
         .content-card-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem; /* スマホ向けに小さく */
             color: #666;
+            flex-wrap: wrap; /* スマホでは折り返し */
+            gap: 8px;
         }
 
         .content-empty {
@@ -303,36 +380,193 @@
             height: 100%;
         }
 
-        @media (max-width: 768px) {
-            .salon-container {
-                padding: 30px 20px;
+        /* --- Responsive Design (Mobile-First) --- */
+
+        /* タブレット対応 (768px以上) */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
             }
 
-            .page-title {
-                font-size: 2rem;
+            .container {
+                max-width: 1140px;
+                padding: 0 20px;
+            }
+
+            .header {
+                padding: 30px;
+                margin-bottom: 30px;
+                border-radius: 16px;
             }
 
             .header-content {
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.8rem;
             }
 
             .nav-links {
-                width: 100%;
-                justify-content: space-between;
+                flex-wrap: nowrap;
+                gap: 20px;
+                width: auto;
             }
 
-            .content-grid {
-                grid-template-columns: 1fr;
+            .nav-links a {
+                font-size: 1rem;
+                padding: 0;
+                min-height: auto;
+            }
+
+            .nav-links a:hover {
+                color: #007bff;
+            }
+
+            .salon-container {
+                padding: 50px 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
+
+            .page-title {
+                font-size: 2.5rem;
+                margin-bottom: 40px;
+                padding: 0;
             }
 
             .category-tabs {
-                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 30px;
             }
 
             .category-tab {
-                width: 100%;
-                text-align: left;
+                padding: 15px 25px;
+                font-size: 1rem;
+            }
+
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 25px;
+                margin-bottom: 30px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+
+            .content-card-header {
+                flex-direction: row; /* タブレット以上では横並び */
+                align-items: flex-start;
+                justify-content: space-between;
+            }
+
+            .content-card-title-row {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .content-card-title {
+                font-size: 1.2rem;
+            }
+
+            .content-card-badges {
+                margin-left: 15px;
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 6px;
+                flex-shrink: 0;
+            }
+
+            .content-card-description {
+                font-size: 0.95rem;
+                word-break: normal;
+                overflow-wrap: anywhere;
+            }
+
+            .content-card-footer {
+                font-size: 0.85rem;
+            }
+
+            /* プラン情報セクションを2列レイアウトに */
+            #planInfoSection > div {
+                grid-template-columns: 1fr auto !important;
+                align-items: center;
+            }
+
+            #planInfoSection {
+                padding: 25px 30px !important;
+            }
+
+            #planInfoSection h3 {
+                font-size: 1rem !important;
+            }
+
+            #planInfoSection #currentPlanDisplay {
+                font-size: 1.5rem !important;
+            }
+
+            #planInfoSection p {
+                font-size: 0.9rem !important;
+            }
+
+            #planInfoSection .btn {
+                padding: 12px 24px !important;
+                font-size: 0.95rem !important;
+            }
+        }
+
+        /* PC対応 (992px以上) */
+        @media (min-width: 992px) {
+            .category-tab:hover {
+                color: #007bff;
+            }
+        }
+
+        /* 超小型デバイス (最大400px) */
+        @media (max-width: 400px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            .header {
+                padding: 15px 12px;
+                border-radius: 10px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.8rem;
+                padding: 6px 10px;
+            }
+
+            .salon-container {
+                padding: 20px 15px;
+                border-radius: 12px;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+                margin-bottom: 20px;
+            }
+
+            .category-tab {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+            }
+
+            .content-card {
+                padding: 15px 12px;
             }
         }
     </style>
@@ -359,20 +593,23 @@
             <h1 class="page-title">オンラインサロン</h1>
 
             <!-- プラン情報表示 -->
-            <div id="planInfoSection" style="display: none; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 20px; margin-bottom: 30px; border: 1px solid rgba(255, 255, 255, 0.1);">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                    <div>
-                        <h3 style="font-size: 1.2rem; margin-bottom: 8px; color: #e0e0e0;">
-                            <i class="fas fa-crown" style="color: #ffc107; margin-right: 8px;"></i>
-                            現在のプラン: <span id="currentPlanDisplay">未登録</span>
-                        </h3>
-                        <p style="color: #999; font-size: 0.9rem; margin: 0;">
+            <div id="planInfoSection" style="display: none; background: rgba(255, 255, 255, 0.05); border-radius: 12px; padding: 18px 16px; margin-bottom: 25px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+                    <div style="min-width: 0;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <i class="fas fa-crown" style="color: #ffc107; font-size: 1rem;"></i>
+                            <h3 style="font-size: 0.9rem; margin: 0; color: #e0e0e0; white-space: nowrap;">現在のプラン:</h3>
+                        </div>
+                        <div id="currentPlanDisplay" style="font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; color: #ffc107; word-break: keep-all; overflow-wrap: break-word; line-height: 1.3;">未登録</div>
+                        <p style="color: #999; font-size: 0.8rem; margin: 0; line-height: 1.6;">
                             <span id="planDescription">プランに登録すると、より多くのコンテンツにアクセスできます</span>
                         </p>
                     </div>
-                    <a href="plans.html" class="btn btn-primary" id="planManageBtn" style="display: none;">
-                        <i class="fas fa-crown"></i> プランを管理
-                    </a>
+                    <div style="display: flex; align-items: center; justify-content: flex-start; align-self: start;">
+                        <a href="plans.html" class="btn btn-primary" id="planManageBtn" style="display: none; white-space: nowrap; padding: 10px 18px; font-size: 0.85rem;">
+                            <i class="fas fa-crown"></i> プランを管理
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -498,18 +735,21 @@
             if (!userPlan) {
                 currentPlanDisplay.textContent = '未登録';
                 currentPlanDisplay.style.color = '#999';
+                currentPlanDisplay.style.fontSize = '1rem';
                 planDescription.textContent = 'プランに登録すると、より多くのコンテンツにアクセスできます';
                 planManageBtn.textContent = 'プランを登録する';
                 planManageBtn.style.display = 'inline-flex';
             } else if (userPlan === 'basic') {
                 currentPlanDisplay.textContent = '1980円プラン';
                 currentPlanDisplay.style.color = '#66b2ff';
+                currentPlanDisplay.style.fontSize = '1.3rem';
                 planDescription.textContent = 'エコーアプリ、Note記事、アーカイブ動画にアクセス可能';
                 planManageBtn.textContent = 'プランを変更する';
                 planManageBtn.style.display = 'inline-flex';
             } else if (userPlan === 'premium') {
                 currentPlanDisplay.textContent = '2980円プラン';
                 currentPlanDisplay.style.color = '#ffc107';
+                currentPlanDisplay.style.fontSize = '1.3rem';
                 planDescription.textContent = 'すべてのコンテンツにアクセス可能';
                 planManageBtn.textContent = 'プランを管理する';
                 planManageBtn.style.display = 'inline-flex';
@@ -713,9 +953,9 @@
                 // プランバッジの表示
                 let planBadge = '';
                 if (content.requiredPlan === 'basic') {
-                    planBadge = '<span style="background: rgba(0, 123, 255, 0.2); color: #66b2ff; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">1980円プラン</span>';
+                    planBadge = '<span class="content-card-badge" style="background: rgba(0, 123, 255, 0.2); color: #66b2ff;">1980円プラン</span>';
                 } else if (content.requiredPlan === 'premium') {
-                    planBadge = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">2980円プラン</span>';
+                    planBadge = '<span class="content-card-badge" style="background: rgba(255, 193, 7, 0.2); color: #ffc107;">2980円プラン</span>';
                 }
 
                 // URLがない場合の表示
@@ -724,23 +964,27 @@
                 if (content.category === 'エコー動画') {
                     if (userPlan === 'premium') {
                         // プレミアムプラン会員は視聴可能（echo-videos.htmlで全動画視聴可能）
-                        urlStatus = '<span style="background: rgba(40, 167, 69, 0.2); color: #28a745; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;"><i class="fas fa-crown"></i> 視聴可能</span>';
+                        urlStatus = '<span class="content-card-badge" style="background: rgba(40, 167, 69, 0.2); color: #28a745;"><i class="fas fa-crown"></i> 視聴可能</span>';
                     } else if (!content.url || content.url.trim() === '') {
-                        urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
+                        urlStatus = '<span class="content-card-badge" style="background: rgba(255, 193, 7, 0.2); color: #ffc107;">準備中</span>';
                     }
                 } else if (!content.url || content.url.trim() === '') {
-                    urlStatus = '<span style="background: rgba(255, 193, 7, 0.2); color: #ffc107; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; margin-left: 8px;">準備中</span>';
+                    urlStatus = '<span class="content-card-badge" style="background: rgba(255, 193, 7, 0.2); color: #ffc107;">準備中</span>';
                 }
 
                 return `
                     <div class="content-card" data-content-id="${content.id}" data-content-type="${content.type}" data-content-url="${content.url || ''}" data-content-title="${content.title}" data-content-category="${content.category}">
                         <div class="content-card-header">
-                            <i class="${icon} content-card-icon"></i>
-                            <h3 class="content-card-title">
-                                ${content.title}
+                            <div class="content-card-title-row">
+                                <i class="${icon} content-card-icon"></i>
+                                <h3 class="content-card-title">${content.title}</h3>
+                            </div>
+                            ${planBadge || urlStatus ? `
+                            <div class="content-card-badges">
                                 ${planBadge}
                                 ${urlStatus}
-                            </h3>
+                            </div>
+                            ` : ''}
                         </div>
                         <p class="content-card-description">${content.description || '説明はありません'}</p>
                         <div class="content-card-footer">
@@ -852,6 +1096,20 @@
             }
         });
     </script>
+
+    <!-- Footer -->
+    <footer style="padding: 30px 0; background-color: #0c0c0c; text-align: center; margin-top: 50px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <p style="color: #999; font-size: 0.85rem; margin-bottom: 10px;">
+                <a href="terms.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">利用規約</a>
+                <span style="color: #666;">|</span>
+                <a href="privacy.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">プライバシーポリシー</a>
+                <span style="color: #666;">|</span>
+                <a href="law.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">特定商取引法に基づく表記</a>
+            </p>
+            <p style="color: #555; font-size: 0.9rem;">© 2024 運動器超音波Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
 </body>
 </html>
 

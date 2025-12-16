@@ -27,16 +27,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px; /* スマホ向けに小さく */
         }
 
         .success-container {
             background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            max-width: 600px;
+            border-radius: 16px; /* スマホ向けに小さく */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* スマホ向けに小さく */
+            max-width: 100%; /* スマホでは全幅 */
             width: 100%;
-            padding: 60px 40px;
+            padding: 30px 20px; /* スマホ向けに小さく */
             text-align: center;
             animation: slideUp 0.5s ease-out;
         }
@@ -72,10 +72,13 @@
         }
 
         h1 {
-            font-size: 2rem;
+            font-size: 1.5rem; /* スマホ向けに小さく */
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 15px; /* スマホ向けに小さく */
             font-weight: 700;
+            word-break: keep-all;
+            overflow-wrap: break-word;
+            padding: 0 10px;
         }
 
         .message {
@@ -169,15 +172,38 @@
             100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 600px) {
+        /* --- Responsive Design (Mobile-First) --- */
+
+        /* タブレット対応 (768px以上) */
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+
             .success-container {
-                padding: 40px 20px;
+                max-width: 600px;
+                padding: 60px 40px;
+                border-radius: 20px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             }
 
             h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
+                margin-bottom: 20px;
+                padding: 0;
             }
 
+            .btn-group {
+                flex-direction: row;
+            }
+
+            .btn {
+                width: auto;
+            }
+        }
+
+        /* スマホ対応 (767px未満) */
+        @media (max-width: 767px) {
             .btn-group {
                 flex-direction: column;
             }
@@ -185,6 +211,9 @@
             .btn {
                 width: 100%;
                 justify-content: center;
+                padding: 14px 20px;
+                min-height: 48px;
+                font-size: 0.95rem;
             }
         }
     </style>

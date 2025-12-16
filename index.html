@@ -153,49 +153,54 @@
         }
 
         /* --- Header --- */
+        /* モバイルファースト: デフォルトはスマホ向け */
         .main-header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            padding: 50px 0;
+            padding: 20px 0;
             z-index: 1000;
             transition: all 0.3s ease;
-            background: transparent;
-            min-height: 150px;
-        }
-        .main-header.scrolled {
             background: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
-            padding: 20px 0;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
             min-height: 80px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .main-header.scrolled {
+            padding: 15px 0;
+            min-height: 70px;
         }
         .main-header .container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .logo {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
             text-decoration: none;
             transition: all 0.3s ease;
+            flex: 1;
+            min-width: 0;
         }
 
         .logo img {
-            height: 120px;
+            height: 50px;
             width: auto;
-            max-width: 120px;
+            max-width: 50px;
             object-fit: contain;
             transition: transform 0.3s ease, height 0.3s ease, max-width 0.3s ease;
             display: block;
+            flex-shrink: 0;
         }
 
         .main-header.scrolled .logo img {
-            height: 60px;
-            max-width: 60px;
+            height: 45px;
+            max-width: 45px;
         }
 
         .logo:hover img {
@@ -203,11 +208,13 @@
         }
 
         .logo-text {
-            font-size: 1.8rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .logo:hover .logo-text {
@@ -215,13 +222,15 @@
         }
         .main-nav {
             display: flex;
-            flex-wrap: nowrap;
             align-items: center;
-            white-space: nowrap;
-            gap: 10px;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        .main-nav > a:not(.auth-link) {
+            display: none; /* スマホでは非表示 */
         }
         .main-nav a {
-            margin-left: 20px;
+            margin-left: 0;
             font-weight: 600;
             font-size: 0.9rem;
             transition: all 0.3s ease;
@@ -257,7 +266,7 @@
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 25px;
-            padding: 8px 16px;
+            padding: 8px 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -265,10 +274,16 @@
             cursor: pointer;
             transition: all 0.3s ease;
             color: var(--text-color);
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            min-width: 120px;
+            min-width: 44px; /* タッチターゲット確保 */
+            min-height: 44px;
             position: relative;
+            touch-action: manipulation;
+        }
+        
+        .user-menu-btn span {
+            display: none; /* スマホではアイコンのみ */
         }
 
         .user-menu-btn:hover {
@@ -403,10 +418,15 @@
         .auth-link {
             background: var(--gradient-blue);
             color: white !important;
-            padding: 8px 20px;
+            padding: 10px 18px;
             border-radius: 20px;
             font-weight: 600;
             transition: all 0.3s ease;
+            min-height: 44px; /* タッチターゲット確保 */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
         }
 
         .auth-link:hover {
@@ -417,6 +437,13 @@
         .auth-link::after {
             display: none;
         }
+        
+        /* タッチデバイスでのホバー無効化 */
+        @media (hover: none) {
+            .auth-link:hover {
+                transform: none;
+            }
+        }
 
         @media (max-width: 992px) {
             .user-menu-dropdown {
@@ -425,59 +452,69 @@
         }
 
         /* --- Hero Section --- */
+        /* モバイルファースト: デフォルトはスマホ向け */
         #home {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding-top: 120px;
-            background: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.8)), url(https://images.unsplash.com/photo-1581091222030-41ce94309703?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1772&q=80) no-repeat center bottom/cover;
+            padding-top: 100px;
+            padding-bottom: 40px;
+            background: linear-gradient(135deg, rgba(18, 18, 18, 0.95), rgba(30, 30, 30, 0.95));
             text-align: center;
             opacity: 1 !important;
             transform: none !important;
         }
         .hero-text {
-            max-width: 900px;
+            max-width: 100%;
             margin: 0 auto;
+            padding: 0 20px;
         }
         .hero-text h1 {
-            font-size: 3.5rem;
+            font-size: 1.6rem;
             font-weight: 900;
             line-height: 1.4;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
         .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
             color: var(--secondary-color);
+            line-height: 1.7;
+            padding: 0 10px;
         }
         .hero-buttons {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-width: 800px;
-            margin: 50px auto 0;
+            grid-template-columns: 1fr; /* スマホでは1列 */
+            gap: 15px;
+            max-width: 100%;
+            margin: 30px auto 0;
+            padding: 0 20px;
         }
 
         .hero-btn {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             gap: 12px;
-            padding: 20px 30px;
+            padding: 18px 20px;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 16px;
             color: #fff;
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-transform: none;
             letter-spacing: 0.5px;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
             text-decoration: none;
-            min-height: 80px;
+            min-height: 70px; /* タッチターゲット確保 */
+            width: 100%;
+            touch-action: manipulation;
         }
 
         .hero-btn::before {
@@ -505,12 +542,29 @@
         }
 
         .hero-btn i {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             transition: transform 0.3s ease;
+            flex-shrink: 0;
+            min-width: 24px;
         }
-
-        .hero-btn:hover i {
-            transform: scale(1.2) rotate(5deg);
+        
+        /* タッチデバイスでのホバー無効化 */
+        @media (hover: none) {
+            .hero-btn:hover {
+                transform: none;
+            }
+            .hero-btn:hover::before {
+                opacity: 0;
+            }
+            .hero-btn:hover i {
+                transform: none;
+            }
+        }
+        
+        /* アクティブ状態（タッチ時） */
+        .hero-btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
         }
 
         .hero-btn.primary {
@@ -561,31 +615,25 @@
             flex-direction: column;
             align-items: flex-start;
             text-align: left;
+            flex: 1;
+            min-width: 0;
         }
 
         .hero-btn-text .main-text {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             line-height: 1.4;
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         .hero-btn-text .sub-text {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             opacity: 0.9;
             margin-top: 4px;
             font-weight: 400;
-        }
-
-        @media (max-width: 768px) {
-            .hero-buttons {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .hero-btn {
-                min-height: 70px;
-                padding: 18px 25px;
-            }
+            word-break: keep-all;
+            overflow-wrap: break-word;
         }
 
         /* --- About Section --- */
@@ -1102,15 +1150,171 @@
         }
 
         /* --- Responsive Design --- */
-        @media (max-width: 992px) {
-            h2.section-title { font-size: 2.5rem; }
-            .hero-text h1 { font-size: 2.8rem; }
-            .main-nav > a:not(.auth-link) { 
-                display: none; 
+        
+        /* タブレット対応 (768px以上) */
+        @media (min-width: 768px) {
+            .main-header {
+                padding: 30px 0;
+            background: transparent;
+                min-height: 120px;
             }
+            
+            .main-header.scrolled {
+                background: rgba(18, 18, 18, 0.95);
+                padding: 20px 0;
+                min-height: 80px;
+            }
+            
+            .logo img {
+                height: 90px;
+                max-width: 90px;
+            }
+            
+            .main-header.scrolled .logo img {
+                height: 50px;
+                max-width: 50px;
+            }
+            
+            .logo-text {
+                font-size: 1.5rem;
+            }
+            
+            .main-nav > a:not(.auth-link) {
+                display: inline-block;
+            }
+            
+            .user-menu-btn span {
+                display: inline;
+            }
+            
+            .user-menu-btn {
+                min-width: 120px;
+            }
+            
+            #home {
+                padding-top: 120px;
+            }
+            
+            .hero-text {
+                max-width: 800px;
+            padding: 0;
+        }
+            
+            .hero-text h1 {
+                font-size: 2.5rem;
+                margin-bottom: 25px;
+            }
+            
+            .hero-text p {
+                font-size: 1.1rem;
+                margin-bottom: 35px;
+                padding: 0;
+            }
+            
+            .hero-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                max-width: 800px;
+                padding: 0;
+            }
+            
+            .hero-btn {
+                min-height: 80px;
+                padding: 20px 30px;
+            }
+            
+            .hero-btn-text .main-text {
+                font-size: 1rem;
+            }
+            
+            .hero-btn-text .sub-text {
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* PC対応 (992px以上) */
+        @media (min-width: 992px) {
+            .main-header {
+                padding: 50px 0;
+                min-height: 150px;
+            }
+            
+            .main-header.scrolled {
+                padding: 20px 0;
+                min-height: 80px;
+            }
+            
+            .logo img {
+                height: 120px;
+                max-width: 120px;
+            }
+            
+            .main-header.scrolled .logo img {
+                height: 60px;
+                max-width: 60px;
+            }
+            
+            .logo-text {
+                font-size: 1.8rem;
+            }
+            
+            .logo {
+                gap: 15px;
+            }
+            
+            .main-header .container {
+                flex-wrap: nowrap;
+                gap: 0;
+            }
+            
             .main-nav {
-                display: flex !important;
+                gap: 10px;
             }
+            
+            .main-nav a {
+                margin-left: 20px;
+            }
+            
+            #home {
+                padding-top: 120px;
+            }
+            
+            .hero-text {
+                max-width: 900px;
+            }
+            
+            .hero-text h1 {
+                font-size: 3.5rem;
+                margin-bottom: 30px;
+            }
+            
+            .hero-text p {
+                font-size: 1.2rem;
+                margin-bottom: 40px;
+            }
+            
+            .hero-buttons {
+                margin: 50px auto 0;
+            }
+            
+            .hero-btn:hover {
+                transform: translateY(-8px) scale(1.02);
+                border-color: rgba(255, 255, 255, 0.4);
+                box-shadow: 0 20px 50px rgba(0, 123, 255, 0.4);
+            }
+            
+            .hero-btn:hover::before {
+                opacity: 1;
+            }
+            
+            .hero-btn:hover i {
+                transform: scale(1.2) rotate(5deg);
+            }
+        }
+        
+        /* その他のレスポンシブ設定 */
+        @media (max-width: 992px) {
+            h2.section-title { font-size: 2rem; }
             .about-grid, .contact-grid { grid-template-columns: 1fr; }
             .faq-grid, .access-grid { grid-template-columns: 1fr; }
             .about-image { margin-top: 40px; }
@@ -1120,100 +1324,130 @@
         }
         
         @media (max-width: 768px) {
-            .main-header {
-                min-height: 120px;
-                padding: 40px 0;
-            }
-            .main-header.scrolled {
-                min-height: 70px;
-                padding: 15px 0;
-            }
-            .logo img {
-                height: 90px;
-                max-width: 90px;
-            }
-            .main-header.scrolled .logo img {
-                height: 50px;
-                max-width: 50px;
-            }
-            .logo-text {
-                font-size: 1.5rem;
-            }
-
-            /* Mobile版でのヒーローセクション調整 */
-            #home {
-                margin-top: 0;
-                padding-top: 100px;
-                min-height: 80vh;
-            }
-            .hero-text h1 {
-                font-size: 1.8rem;
-                line-height: 1.3;
-                margin-bottom: 20px;
-            }
-            .hero-text p {
-                font-size: 1rem;
-                margin-bottom: 30px;
-                line-height: 1.6;
+            section { 
+                padding: 40px 0; /* スマホでは小さく */
             }
             
-            /* About セクションのタイトル調整 */
+            .section-intro { 
+                font-size: 0.95rem;
+                padding: 0 15px;
+            }
+            
             h2.section-title { 
-                font-size: 2rem;
+                font-size: 1.8rem;
                 line-height: 1.2;
                 word-break: keep-all;
                 overflow-wrap: break-word;
+                padding: 0 15px;
             }
             
-            section { padding: 60px 0; }
-            .section-intro { font-size: 1rem; }
-            .seminar-card { padding: 25px; }
-            .seminar-card h3 { font-size: 1.5rem; }
-            .faq-grid, .access-grid { grid-template-columns: 1fr; gap: 20px; }
-            .faq-item, .access-card { padding: 20px; }
+            .seminar-card { 
+                padding: 20px;
+                width: 100%;
+            }
+            
+            .seminar-card h3 { 
+                font-size: 1.4rem; 
+            }
+            
+            .faq-grid, .access-grid { 
+                grid-template-columns: 1fr; 
+                gap: 15px;
+                padding: 0 15px;
+            }
+            
+            .faq-item, .access-card { 
+                padding: 20px; 
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
         }
 
-        /* iPhone SE等の超小型デバイス対応 */
+        /* 超小型デバイス (最大400px) */
         @media (max-width: 400px) {
             .main-header {
-                min-height: 100px;
-                padding: 30px 0;
+                padding: 15px 0;
+                min-height: 70px;
             }
+            
             .main-header.scrolled {
-                min-height: 60px;
                 padding: 10px 0;
+                min-height: 60px;
             }
+            
+            .logo {
+                gap: 8px;
+            }
+            
             .logo img {
-                height: 70px;
-                max-width: 70px;
+                height: 45px;
+                max-width: 45px;
             }
+            
             .main-header.scrolled .logo img {
-                height: 40px;
-                max-width: 40px;
+                height: 35px;
+                max-width: 35px;
             }
+            
             .logo-text {
-                font-size: 1.3rem;
+                font-size: 1rem;
+            }
+            
+            .auth-link {
+                padding: 8px 14px;
+                font-size: 0.85rem;
             }
 
             #home {
-                padding-top: 80px;
-                min-height: 70vh;
+                padding-top: 90px;
+                padding-bottom: 30px;
             }
+            
             .hero-text h1 {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
                 margin-bottom: 15px;
             }
+            
             .hero-text p {
-                font-size: 0.95rem;
+                font-size: 0.9rem;
                 margin-bottom: 25px;
             }
+            
+            .hero-buttons {
+                padding: 0 15px;
+                gap: 12px;
+            }
+            
             .hero-btn {
-                padding: 12px 30px;
+                padding: 16px 18px;
+                min-height: 65px;
+                gap: 10px;
+            }
+            
+            .hero-btn i {
+                font-size: 1.2rem;
+            }
+            
+            .hero-btn-text .main-text {
                 font-size: 0.9rem;
+            }
+            
+            .hero-btn-text .sub-text {
+                font-size: 0.65rem;
             }
 
             h2.section-title {
-                font-size: 1.7rem;
+                font-size: 1.6rem;
+            }
+            
+            .section-intro {
+                font-size: 0.9rem;
+            }
+            
+            .container {
+                padding: 0 12px;
             }
         }
     </style>
@@ -1250,26 +1484,26 @@
                             <div style="font-weight: 600; color: var(--text-color);">マイアカウント</div>
                             <div class="user-email" id="userEmailDisplay"></div>
                         </div>
-                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
-                            <i class="fas fa-clock"></i>
-                            <span>マイページ（準備中）</span>
-                        </span>
-                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
-                            <i class="fas fa-clock"></i>
-                            <span>オンラインサロン（準備中）</span>
-                        </span>
-                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
-                            <i class="fas fa-clock"></i>
-                            <span>プラン管理（準備中）</span>
-                        </span>
+                        <a href="member.html" style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #e0e0e0; text-decoration: none; transition: background 0.3s ease;">
+                            <i class="fas fa-user"></i>
+                            <span>マイページ</span>
+                        </a>
+                        <a href="salon.html" style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #e0e0e0; text-decoration: none; transition: background 0.3s ease;">
+                            <i class="fas fa-users"></i>
+                            <span>オンラインサロン</span>
+                        </a>
+                        <a href="plans.html" style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #e0e0e0; text-decoration: none; transition: background 0.3s ease;">
+                            <i class="fas fa-crown"></i>
+                            <span>プラン管理</span>
+                        </a>
                         <a href="echo-videos.html">
                             <i class="fas fa-video"></i>
                             <span>エコー動画</span>
                         </a>
-                        <span style="cursor: not-allowed; opacity: 0.6; display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #999;">
-                            <i class="fas fa-clock"></i>
-                            <span>ログアウト（準備中）</span>
-                        </span>
+                        <a href="#" id="logoutLink" style="display: flex; align-items: center; gap: 10px; padding: 10px 15px; color: #e0e0e0; text-decoration: none; transition: background 0.3s ease;">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>ログアウト</span>
+                        </a>
                     </div>
                 </div>
             </nav>
@@ -1294,21 +1528,19 @@
                             </div>
                         </a>
                         
-                        <span class="hero-btn green disabled">
-                            <i class="fas fa-clock"></i>
+                        <a href="salon-about.html" class="hero-btn green">
+                            <i class="fas fa-users"></i>
                             <div class="hero-btn-text">
                                 <span class="main-text">オンラインサロンについて</span>
-                                <span class="sub-text">（準備中）</span>
                             </div>
-                        </span>
+                        </a>
                         
                         <span class="hero-btn disabled">
                             <i class="fas fa-file-pdf"></i>
                             <div class="hero-btn-text">
                                 <span class="main-text">過去のセミナー資料を見る</span>
-                                <span class="sub-text">（準備中）</span>
                             </div>
-                        </span>
+                    </span>
                         
                         <a href="echo-videos.html" class="hero-btn purple">
                             <i class="fas fa-video"></i>
@@ -1433,11 +1665,10 @@
                         これまでに開催したセミナーの詳細PDF資料をご購入いただけます。<br>
                         <strong style="color: var(--text-color);">セミナーに参加できなかった方</strong>や、<strong style="color: var(--text-color);">復習したい方</strong>におすすめです。
                     </p>
-                    <span class="materials-btn" style="display: inline-flex; align-items: center; background: #666; color: white; padding: 18px 40px; border-radius: 50px; font-weight: 700; cursor: not-allowed; opacity: 0.6; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); font-size: 1.1rem;">
+                    <a href="materials.html" class="materials-btn" style="display: inline-flex; align-items: center; background: var(--accent-brown, #8B4513); color: white; padding: 18px 40px; border-radius: 50px; font-weight: 700; cursor: pointer; opacity: 1; box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3); font-size: 1.1rem; text-decoration: none; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 15px 40px rgba(139, 69, 19, 0.4)';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(139, 69, 19, 0.3)';">
                         <i class="fas fa-book-open" style="margin-right: 12px;"></i>
                         過去のセミナー資料を見る
-                        <span style="margin-left: 10px; font-size: 0.9rem;">（準備中）</span>
-                    </span>
+                    </a>
                     <p style="color: var(--secondary-color); margin-top: 20px; font-size: 0.9rem; font-style: italic;">
                         各資料 ¥1,500 / 決済後すぐにPDFをダウンロード可能
                     </p>
@@ -1653,9 +1884,9 @@
                         </div>
                     </div>
                     <form class="contact-form" action="https://formspree.io/f/mpwrpawr" method="POST">
-                        <div class="form-group"><input type="text" name="name" placeholder="お名前" required></div>
-                        <div class="form-group"><input type="email" name="email" placeholder="メールアドレス" required></div>
-                        <div class="form-group"><input type="text" name="subject" placeholder="件名" required></div>
+                        <div class="form-group"><input type="text" name="name" autocomplete="name" placeholder="お名前" required></div>
+                        <div class="form-group"><input type="email" name="email" autocomplete="email" placeholder="メールアドレス" required></div>
+                        <div class="form-group"><input type="text" name="subject" autocomplete="off" placeholder="件名" required></div>
                         <div class="form-group"><textarea name="message" rows="5" placeholder="お問い合わせ内容" required></textarea></div>
                         <input type="hidden" name="_subject" value="運動器超音波Lab お問い合わせ">
                         <button type="submit" class="send-btn">メッセージを送信</button>
@@ -1672,6 +1903,15 @@
                 <a href="https://www.instagram.com/musculoskeletal_ultrasound_lab?igsh=MWVjNWVxdzEwN29xcQ%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a href="line://ti/p/@080fwaof" target="_blank" rel="noopener noreferrer" aria-label="LINE"><i class="fab fa-line"></i></a>
                 <a href="https://peatix.com/group/16465902" target="_blank" rel="noopener noreferrer" aria-label="Peatix"><img src="picture_site/PeatixLogo_Vertical.jpg" alt="Peatix"></a>
+            </div>
+            <div style="margin: 20px 0; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <p style="color: #999; font-size: 0.85rem; margin-bottom: 10px;">
+                    <a href="terms.html" style="color: #999; text-decoration: none; margin: 0 10px;">利用規約</a>
+                    <span style="color: #666;">|</span>
+                    <a href="privacy.html" style="color: #999; text-decoration: none; margin: 0 10px;">プライバシーポリシー</a>
+                    <span style="color: #666;">|</span>
+                    <a href="law.html" style="color: #999; text-decoration: none; margin: 0 10px;">特定商取引法に基づく表記</a>
+                </p>
             </div>
             <p class="copyright">© 2024 運動器超音波Lab. All Rights Reserved.</p>
         </div>

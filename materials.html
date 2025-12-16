@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>過去のセミナー資料 - 運動器超音波Lab</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="運動器超音波Labの過去セミナー資料一覧。部位別エコー技術のPDF資料をご購入いただけます。">
+    <meta name="keywords" content="運動器超音波Lab,エコーセミナー,PDF資料,理学療法,超音波,大阪">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (for Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS Reset & Global Styles --- */
+        :root {
+            --bg-color: #121212;
+            --bg-light-color: #f4f6f8;
+            --text-color: #e0e0e0;
+            --text-dark-color: #333333;
+            --primary-color: #007bff;
+            --secondary-color: #999999;
+            --accent-green: #28a745;
+            --accent-brown: #8B4513;
+            --container-width: 1140px;
+            --section-padding: 100px 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 1.8;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M43.05 79.73c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23zm13.9-43.05c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23z" fill-opacity="0.03" fill="%23FFF"/></svg>');
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- Header --- */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px 0;
+            z-index: 1000;
+        }
+        .main-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            font-size: 0.95rem;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links a i {
+            font-size: 1rem;
+        }
+
+        /* --- Main Content --- */
+        .main-content {
+            padding-top: 120px;
+            flex: 1;
+            padding-bottom: 40px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .page-title h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        .page-title p {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Materials List --- */
+        .materials-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .materials-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .material-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .material-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-brown);
+            background: rgba(139, 69, 19, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .material-info {
+            flex: 1;
+        }
+
+        .material-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 8px;
+        }
+
+        .material-date {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+        }
+
+        .material-description {
+            color: var(--secondary-color);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .material-purchase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .material-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent-brown);
+        }
+
+        .purchase-btn {
+            background: var(--accent-brown);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .purchase-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
+            background: #a0541b;
+        }
+
+        .purchase-btn i {
+            margin-right: 8px;
+        }
+
+        /* --- Category Headers --- */
+        .category-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-green));
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin: 40px 0 20px 0;
+            text-align: center;
+        }
+
+        .category-header:first-child {
+            margin-top: 0;
+        }
+
+        .category-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .category-header i {
+            margin-right: 12px;
+            font-size: 2rem;
+        }
+
+        /* --- Notice --- */
+        .purchase-notice {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .purchase-notice h3 {
+            color: var(--accent-green);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .purchase-notice p {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .purchase-notice .highlight {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        /* --- Overview Section --- */
+        .overview-section {
+            text-align: center;
+            margin-bottom: 80px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overview-section h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 30px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .overview-section h1 i {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+
+        .overview-section .intro-text {
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+        }
+
+        .overview-section .intro-text p {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+        .overview-section .intro-text p:first-child {
+            color: var(--secondary-color);
+        }
+
+        .overview-section .intro-text p:last-child {
+            color: var(--text-color);
+            font-weight: 600;
+        }
+
+        .view-materials-btn {
+            display: inline-flex;
+            align-items: center;
+            background: var(--accent-brown);
+            color: white;
+            padding: 20px 45px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.3);
+            font-size: 1.2rem;
+        }
+
+        .view-materials-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(139, 69, 19, 0.4);
+        }
+
+        .view-materials-btn i {
+            margin-right: 12px;
+        }
+
+        .overview-section .price-info {
+            color: var(--secondary-color);
+            margin-top: 25px;
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        /* --- Plan Promotion Section --- */
+        .plan-promotion-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 16px;
+            padding: 40px;
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .plan-promotion-section h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .plan-promotion-section h3 i {
+            color: #ffc107;
+            font-size: 2rem;
+        }
+
+        .plan-promotion-section .promotion-text {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+        }
+
+        .plan-promotion-section .promotion-text p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .plan-promotion-section .promotion-text p:first-child {
+            color: var(--text-color);
+        }
+
+        .plan-promotion-section .promotion-text p:last-child {
+            color: var(--secondary-color);
+        }
+
+        .plan-promotion-section .promotion-text strong {
+            color: var(--text-color);
+        }
+
+        .plan-register-btn {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            font-size: 1.1rem;
+        }
+
+        .plan-register-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+        }
+
+        .plan-register-btn i {
+            margin-right: 12px;
+        }
+
+        .plan-promotion-section .plan-info {
+            color: var(--secondary-color);
+            margin-top: 20px;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 30px 0;
+            background-color: #0c0c0c;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: auto;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        footer div {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        footer p {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        footer p:last-child {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 0;
+        }
+
+        footer a {
+            color: #999;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        footer span {
+            color: #666;
+        }
+
+        .copyright {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-header .container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                width: 100%;
+                flex-direction: column;
+                gap: 8px;
+                align-items: stretch;
+            }
+
+            .nav-links a {
+                width: 100%;
+                padding: 12px 15px;
+                font-size: 0.9rem;
+                justify-content: flex-start;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.08);
+            }
+
+            .nav-links a i {
+                font-size: 1.1rem;
+                width: 20px;
+                text-align: center;
+            }
+
+            .overview-section {
+                padding: 40px 20px;
+                margin-bottom: 40px;
+            }
+
+            .overview-section h1 {
+                font-size: 2rem;
+            }
+
+            .overview-section h1 i {
+                font-size: 2rem;
+            }
+
+            .view-materials-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .material-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .materials-container {
+                padding: 25px;
+            }
+
+            .category-header h2 {
+                font-size: 1.4rem;
+            }
+
+            .plan-promotion-section {
+                padding: 30px 20px;
+            }
+
+            .plan-promotion-section h3 {
+                font-size: 1.4rem;
+            }
+
+            .plan-promotion-section h3 i {
+                font-size: 1.5rem;
+            }
+
+            .plan-register-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">運動器超音波Lab</a>
+            <nav class="nav-links">
+                <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
+                <a href="member.html" id="memberLink" style="display: none;"><i class="fas fa-user"></i> マイページ</a>
+                <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
+                <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
+                <a href="auth.html" id="authLink"><i class="fas fa-sign-in-alt"></i> ログイン</a>
+                <a href="#" id="logoutBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- 概要セクション -->
+            <div class="overview-section">
+                <h1>
+                    <i class="fas fa-file-pdf"></i>
+                    過去のセミナー資料
+                </h1>
+                <div class="intro-text">
+                    <p>これまでに開催したセミナーの詳細PDF資料をご購入いただけます。</p>
+                    <p><strong>セミナーに参加できなかった方</strong>や、<strong>復習したい方</strong>におすすめです。</p>
+                </div>
+                <a href="#materials-list" class="view-materials-btn">
+                    <i class="fas fa-book-open"></i>
+                    過去のセミナー資料を見る
+                </a>
+                <p class="price-info">
+                    各資料 ¥1,500 / 決済後すぐにPDFをダウンロード可能
+                </p>
+            </div>
+
+            <!-- 詳細リストセクション -->
+            <div id="materials-list" class="materials-container">
+                <div class="materials-list">
+
+                    <!-- 上肢カテゴリ -->
+                    <div class="category-header">
+                        <h2>
+                            <i class="fas fa-hand-paper"></i>
+                            上肢
+                        </h2>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">頚部前面</div>
+                            <div class="material-date">開催日: 2023年3月</div>
+                            <div class="material-description">
+                                頚部前面の筋群（胸鎖乳突筋、斜角筋群、舌骨下筋群など）の詳細なエコー描出法と臨床応用について解説した資料です。姿勢評価との関連性も含めて説明しています。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('cervical_anterior', '頚部前面')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">肩関節上方</div>
+                            <div class="material-date">開催日: 2023年4月</div>
+                            <div class="material-description">
+                                棘上筋、上部僧帽筋、肩甲挙筋などの肩関節上方に位置する筋群のエコー描出法と機能評価について詳しく解説した資料です。肩こりや肩関節インピンジメント症候群の評価に応用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('shoulder_superior', '肩関節上方')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">肩関節下方</div>
+                            <div class="material-date">開催日: 2023年6月</div>
+                            <div class="material-description">
+                                広背筋、大円筋、小円筋、棘下筋などの肩関節下方に位置する筋群のエコー描出法と評価について詳しく解説した資料です。肩関節の安定性評価や可動域制限の原因究明に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('shoulder_inferior', '肩関節下方')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 下肢カテゴリ -->
+                    <div class="category-header">
+                        <h2>
+                            <i class="fas fa-walking"></i>
+                            下肢
+                        </h2>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">膝関節前面</div>
+                            <div class="material-date">開催日: 2023年5月</div>
+                            <div class="material-description">
+                                大腿四頭筋、膝蓋靭帯、膝蓋上嚢などの膝関節前面の構造物のエコー描出法について詳しく解説した資料です。膝前面痛や膝関節伸展制限の評価に応用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('knee_anterior', '膝関節前面')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">膝関節内側</div>
+                            <div class="material-date">開催日: 2023年7月</div>
+                            <div class="material-description">
+                                内側側副靭帯、内側半月板、縫工筋、薄筋などの膝関節内側の構造物のエコー描出法と機能評価について解説した資料です。内側型変形性膝関節症の評価に有用です。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('knee_medial', '膝関節内側')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">股関節外側</div>
+                            <div class="material-date">開催日: 2023年8月</div>
+                            <div class="material-description">
+                                中殿筋、小殿筋、大腿筋膜張筋、腸脛靭帯などの股関節外側に位置する筋群のエコー描出法について詳しく解説した資料です。股関節外側痛やトレンデレンブルグ歩行の評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('hip_lateral', '股関節外側')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 体幹カテゴリ -->
+                    <div class="category-header">
+                        <h2>
+                            <i class="fas fa-user"></i>
+                            体幹
+                        </h2>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">腰部</div>
+                            <div class="material-date">開催日: 2023年9月</div>
+                            <div class="material-description">
+                                腰部多裂筋、腰方形筋、脊柱起立筋などの腰部深層筋群のエコー描出法と筋厚測定について詳しく解説した資料です。腰痛評価や腰椎安定性の評価に重要な内容です。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('lumbar_region', '腰部')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">腹部</div>
+                            <div class="material-date">開催日: 2023年10月</div>
+                            <div class="material-description">
+                                腹横筋、内腹斜筋、外腹斜筋、腹直筋の詳細なエコー描出法と機能評価について解説した資料です。体幹安定化訓練やコアトレーニングの効果判定に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('abdominal_region', '腹部')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item">
+                        <div class="material-info">
+                            <div class="material-title">腰部（Part2）</div>
+                            <div class="material-date">開催日: 2023年11月</div>
+                            <div class="material-description">
+                                大腰筋、腸骨筋、梨状筋などの腰部周辺筋群の応用的なエコー描出法について解説した資料です。腰椎前弯異常や股関節機能との関連性評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price">¥1,500</div>
+                            <button class="purchase-btn" onclick="purchaseMaterial('lumbar_part2', '腰部（Part2）')">
+                                <i class="fas fa-shopping-cart"></i>
+                                購入する
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 購入に関する注意事項 -->
+                <div class="purchase-notice">
+                    <h3>
+                        <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+                        ご購入について
+                    </h3>
+                    <p><span class="highlight">決済後すぐに</span>PDFをダウンロードしていただけます</p>
+                    <p>資料は<span class="highlight">永久保存版</span>で、いつでも参照可能です</p>
+                    <p>決済はStripeを使用し、<span class="highlight">安全・確実</span>にお支払いいただけます</p>
+                </div>
+
+                <!-- プラン登録案内セクション -->
+                <div class="plan-promotion-section">
+                    <h3>
+                        <i class="fas fa-crown"></i>
+                        プラン登録でお得に！
+                    </h3>
+                    <div class="promotion-text">
+                        <p>
+                            <strong>2980円プラン</strong>にご登録いただくと、<strong>PDF資料</strong>や<strong>エコー動画</strong>を含む<strong>すべてのコンテンツ</strong>にアクセスできます。
+                        </p>
+                        <p>
+                            個別購入よりも<strong>お得</strong>にご利用いただけます。
+                        </p>
+                    </div>
+                    <a href="plans.html" class="plan-register-btn">
+                        <i class="fas fa-crown"></i>
+                        プラン登録ページへ
+                    </a>
+                    <p class="plan-info">
+                        1980円プラン / 2980円プランからお選びいただけます
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div>
+            <p>
+                <a href="terms.html">利用規約</a>
+                <span>|</span>
+                <a href="privacy.html">プライバシーポリシー</a>
+                <span>|</span>
+                <a href="law.html">特定商取引法に基づく表記</a>
+            </p>
+            <p>© 2024 運動器超音波Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        // Firebase初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // UI要素
+        const authLink = document.getElementById('authLink');
+        const memberLink = document.getElementById('memberLink');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // 認証状態に応じてナビゲーションを更新
+        function updateNavigation(user) {
+            if (user) {
+                // ログイン時
+                if (authLink) authLink.style.display = 'none';
+                if (memberLink) memberLink.style.display = 'inline-flex';
+                if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+            } else {
+                // 未ログイン時
+                if (authLink) authLink.style.display = 'inline-flex';
+                if (memberLink) memberLink.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+            }
+        }
+
+        // ログアウト処理
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (confirm('ログアウトしますか？')) {
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'auth.html';
+                    } catch (error) {
+                        console.error('ログアウトエラー:', error);
+                        alert('ログアウトに失敗しました。もう一度お試しください。');
+                    }
+                }
+            });
+        }
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, (user) => {
+            updateNavigation(user);
+        });
+    </script>
+
+    <script>
+        function purchaseMaterial(productId, productName) {
+            // 実際のStripe Price IDを設定（本番環境では実際のIDに置き換え）
+            const priceMapping = {
+                'cervical_anterior': 'price_cervical_anterior_1500',
+                'shoulder_superior': 'price_shoulder_superior_1500',
+                'shoulder_inferior': 'price_shoulder_inferior_1500',
+                'knee_anterior': 'price_knee_anterior_1500',
+                'knee_medial': 'price_knee_medial_1500',
+                'hip_lateral': 'price_hip_lateral_1500',
+                'lumbar_region': 'price_lumbar_region_1500',
+                'abdominal_region': 'price_abdominal_region_1500',
+                'lumbar_part2': 'price_lumbar_part2_1500',
+                'shoulder_evaluation': 'price_shoulder_evaluation_1500',
+                'wrist_hand': 'price_wrist_hand_1500',
+                'ankle_medial': 'price_ankle_medial_1500',
+                'plantar_fascia': 'price_plantar_fascia_1500',
+                'knee_around': 'price_knee_around_1500',
+                'lumbar_multifidus': 'price_lumbar_multifidus_1500',
+                'abdominal_muscles': 'price_abdominal_muscles_1500',
+                'respiratory_muscles': 'price_respiratory_muscles_1500'
+            };
+
+            const priceId = priceMapping[productId];
+
+            // 実際のStripe Checkout URLを構築
+            const successUrl = encodeURIComponent(window.location.origin + '/success.html?product=' + encodeURIComponent(productName));
+            const cancelUrl = encodeURIComponent(window.location.href + '?payment=cancelled');
+            const checkoutUrl = `https://buy.stripe.com/${priceId}?success_url=${successUrl}&cancel_url=${cancelUrl}`;
+
+            // 開発環境でのテスト用アラート（本番では削除）
+            alert(`${productName}の購入手続きに進みます。\n\n本番環境では、Stripe Checkoutページにリダイレクトされます。\n\nPrice ID: ${priceId}`);
+
+            // 本番環境では以下のコメントアウトを解除
+            // window.location.href = checkoutUrl;
+        }
+
+        // URL パラメータから決済状況をチェック
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentStatus = urlParams.get('payment');
+
+        if (paymentStatus === 'cancelled') {
+            alert('決済がキャンセルされました。');
+        }
+    </script>
+</body>
+</html>
