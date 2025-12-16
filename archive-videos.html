@@ -609,7 +609,8 @@
                         <a href="index.html" target="_self"><i class="fas fa-home"></i> ホーム</a>
                         <a href="salon.html" target="_self"><i class="fas fa-users"></i> オンラインサロン</a>
                         <a href="echo-videos.html" target="_self"><i class="fas fa-video"></i> エコー動画</a>
-                        <a href="member.html" target="_self"><i class="fas fa-user"></i> マイページ</a>
+                        <a href="auth.html" id="authLink" style="display: none;"><i class="fas fa-sign-in-alt"></i> ログイン</a>
+                        <a href="member.html" id="memberLink" target="_self"><i class="fas fa-user"></i> マイページ</a>
                         <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
                     </nav>
                 </div>
@@ -739,6 +740,8 @@
         const videoContainer = document.getElementById('videoContainer');
         const closeVideoModalBtn = document.getElementById('closeVideoModal');
         const logoutBtn = document.getElementById('logoutBtn');
+        const authLink = document.getElementById('authLink');
+        const memberLink = document.getElementById('memberLink');
         const modalTitle = document.getElementById('modalTitle');
         const modalDescription = document.getElementById('modalDescription');
         const modalDate = document.getElementById('modalDate');
@@ -1191,9 +1194,26 @@
             }
         });
 
+        // 認証状態に応じてナビゲーションを更新
+        function updateNavigation(user) {
+            if (user) {
+                // ログイン時
+                if (authLink) authLink.style.display = 'none';
+                if (memberLink) memberLink.style.display = 'inline-flex';
+                if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+            } else {
+                // 未ログイン時
+                if (authLink) authLink.style.display = 'inline-flex';
+                if (memberLink) memberLink.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+            }
+        }
+
         // 認証状態の監視
         onAuthStateChanged(auth, async (user) => {
             console.log('🔐 認証状態変更:', user ? 'ログイン済み' : '未ログイン');
+            updateNavigation(user);
+            
             if (user) {
                 try {
                     console.log('👤 ユーザー情報取得中...', user.uid);

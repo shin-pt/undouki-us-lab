@@ -20,11 +20,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Noto Sans JP', 'Poppins', sans-serif;
             background-color: #121212;
             color: #e0e0e0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
             padding: 15px; /* スマホ向けに小さく */
         }
 
@@ -32,6 +39,7 @@
             max-width: 100%; /* スマホでは全幅 */
             margin: 0 auto;
             padding: 0 15px; /* スマホ向けに小さく */
+            flex: 1;
         }
 
         .header {
@@ -581,8 +589,10 @@
                 </div>
                 <nav class="nav-links">
                     <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
-                    <a href="member.html"><i class="fas fa-user"></i> マイページ</a>
+                    <a href="auth.html" id="authLink" style="display: none;"><i class="fas fa-sign-in-alt"></i> ログイン</a>
+                    <a href="member.html" id="memberLink"><i class="fas fa-user"></i> マイページ</a>
                     <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
+                    <a href="/quiz-app/"><i class="fas fa-question-circle"></i> エコークイズ</a>
                     <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
                 </nav>
             </div>
@@ -700,6 +710,8 @@
         const contentSection = document.getElementById('contentSection');
         const contentGrid = document.getElementById('contentGrid');
         const logoutBtn = document.getElementById('logoutBtn');
+        const authLink = document.getElementById('authLink');
+        const memberLink = document.getElementById('memberLink');
         const categoryTabs = document.querySelectorAll('.category-tab');
         const videoModal = document.getElementById('videoModal');
         const videoContainer = document.getElementById('videoContainer');
@@ -771,8 +783,25 @@
             return false;
         }
 
+        // 認証状態に応じてナビゲーションを更新
+        function updateNavigation(user) {
+            if (user) {
+                // ログイン時
+                if (authLink) authLink.style.display = 'none';
+                if (memberLink) memberLink.style.display = 'inline-flex';
+                if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+            } else {
+                // 未ログイン時
+                if (authLink) authLink.style.display = 'inline-flex';
+                if (memberLink) memberLink.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+            }
+        }
+
         // 認証状態の監視
         onAuthStateChanged(auth, async (user) => {
+            updateNavigation(user);
+            
             if (user) {
                 // ログインしている場合
                 try {
@@ -1098,7 +1127,7 @@
     </script>
 
     <!-- Footer -->
-    <footer style="padding: 30px 0; background-color: #0c0c0c; text-align: center; margin-top: 50px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+    <footer style="padding: 30px 0; background-color: #0c0c0c; text-align: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.1); width: 100%; flex-shrink: 0;">
         <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
             <p style="color: #999; font-size: 0.85rem; margin-bottom: 10px;">
                 <a href="terms.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">利用規約</a>

@@ -20,11 +20,18 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Noto Sans JP', 'Poppins', sans-serif;
             background-color: #121212;
             color: #e0e0e0;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
             padding: 15px; /* スマホ向けに小さく */
             background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M43.05 79.73c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23zm13.9-43.05c8.73-3.08 13.96-12.03 12.35-21.2-1.9-10.7-12.83-18.04-23.53-16.14-10.7 1.9-18.04 12.83-16.14 23.53 1.6 9.17 9.62 14.82 18.35 12.35l-2.06-8.73c-4.48 1.06-8.23.1-9.62-3.32-1.6-4.04.1-8.5 4.58-9.62 4.48-1.06 8.95.1 10.06 4.58 1.2 4.9-2.05 8.74-6.85 9.62l2.82 8.23z" fill-opacity="0.03" fill="%23FFF"/></svg>');
         }
@@ -33,6 +40,7 @@
             max-width: 100%; /* スマホでは全幅 */
             margin: 0 auto;
             padding: 0 15px; /* スマホ向けに小さく */
+            flex: 1;
         }
 
         .header {
@@ -573,7 +581,9 @@
                 <nav class="nav-links">
                     <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
                     <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
-                    <a href="auth.html"><i class="fas fa-sign-in-alt"></i> ログイン</a>
+                    <a href="auth.html" id="authLink"><i class="fas fa-sign-in-alt"></i> ログイン</a>
+                    <a href="member.html" id="memberLink" style="display: none;"><i class="fas fa-user"></i> マイページ</a>
+                    <a href="#" id="logoutBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
                 </nav>
             </div>
         </div>
@@ -691,6 +701,85 @@
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer style="padding: 30px 0; background-color: #0c0c0c; text-align: center; margin-top: auto; border-top: 1px solid rgba(255, 255, 255, 0.1); width: 100%; flex-shrink: 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <p style="color: #999; font-size: 0.85rem; margin-bottom: 10px;">
+                <a href="terms.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">利用規約</a>
+                <span style="color: #666;">|</span>
+                <a href="privacy.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">プライバシーポリシー</a>
+                <span style="color: #666;">|</span>
+                <a href="law.html" style="color: #999; text-decoration: none; margin: 0 10px; transition: color 0.3s ease;">特定商取引法に基づく表記</a>
+            </p>
+            <p style="color: #555; font-size: 0.9rem;">© 2024 運動器超音波Lab. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signOut
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        // Firebase設定
+        const firebaseConfig = {
+            apiKey: "AIzaSyAGKikNortFcMI_uLnGn2y_OyI6ZyxLiR0",
+            authDomain: "musculoskeletal-us-lab.firebaseapp.com",
+            projectId: "musculoskeletal-us-lab",
+            storageBucket: "musculoskeletal-us-lab.firebasestorage.app",
+            messagingSenderId: "199172067938",
+            appId: "1:199172067938:web:cdbcf04400cc74a784b73b"
+        };
+
+        // Firebase初期化
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // UI要素
+        const authLink = document.getElementById('authLink');
+        const memberLink = document.getElementById('memberLink');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // 認証状態に応じてナビゲーションを更新
+        function updateNavigation(user) {
+            if (user) {
+                // ログイン時
+                if (authLink) authLink.style.display = 'none';
+                if (memberLink) memberLink.style.display = 'inline-flex';
+                if (logoutBtn) logoutBtn.style.display = 'inline-flex';
+            } else {
+                // 未ログイン時
+                if (authLink) authLink.style.display = 'inline-flex';
+                if (memberLink) memberLink.style.display = 'none';
+                if (logoutBtn) logoutBtn.style.display = 'none';
+            }
+        }
+
+        // ログアウト処理
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (confirm('ログアウトしますか？')) {
+                    try {
+                        await signOut(auth);
+                        window.location.href = 'auth.html';
+                    } catch (error) {
+                        console.error('ログアウトエラー:', error);
+                        alert('ログアウトに失敗しました。もう一度お試しください。');
+                    }
+                }
+            });
+        }
+
+        // 認証状態の監視
+        onAuthStateChanged(auth, (user) => {
+            updateNavigation(user);
+        });
+    </script>
 </body>
 </html>
 
