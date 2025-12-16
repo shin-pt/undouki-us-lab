@@ -230,6 +230,20 @@
             background: #a0541b;
         }
 
+        .purchase-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.6;
+            transform: none;
+        }
+
+        .purchase-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
+            background: #666;
+        }
+
         .purchase-btn i {
             margin-right: 8px;
         }
@@ -639,9 +653,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('cervical_anterior', '頚部前面')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -656,9 +670,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('shoulder_superior', '肩関節上方')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -673,9 +687,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('shoulder_inferior', '肩関節下方')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -698,9 +712,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('knee_anterior', '膝関節前面')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -715,9 +729,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('knee_medial', '膝関節内側')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -732,9 +746,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('hip_lateral', '股関節外側')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -757,9 +771,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('lumbar_region', '腰部')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -774,9 +788,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('abdominal_region', '腹部')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -791,9 +805,9 @@
                         </div>
                         <div class="material-purchase">
                             <div class="material-price">¥1,500</div>
-                            <button class="purchase-btn" onclick="purchaseMaterial('lumbar_part2', '腰部（Part2）')">
-                                <i class="fas fa-shopping-cart"></i>
-                                購入する
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
                             </button>
                         </div>
                     </div>
@@ -915,6 +929,9 @@
     </script>
 
     <script>
+        // 購入機能は現在準備中です
+        // 将来的に有効化する際は、以下の関数のコメントアウトを解除してください
+        /*
         function purchaseMaterial(productId, productName) {
             // 実際のStripe Price IDを設定（本番環境では実際のIDに置き換え）
             const priceMapping = {
@@ -950,6 +967,7 @@
             // 本番環境では以下のコメントアウトを解除
             // window.location.href = checkoutUrl;
         }
+        */
 
         // URL パラメータから決済状況をチェック
         const urlParams = new URLSearchParams(window.location.search);
