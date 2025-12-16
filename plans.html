@@ -1155,7 +1155,7 @@
             }
 
             if (!customerPortalUrl || customerPortalUrl.includes('[YOUR')) {
-                showMessage('Customer Portalの設定が完了していません。\n\n現在のサブスクリプションを変更する場合は、Stripeダッシュボードから直接操作してください。\n\n設定方法は CUSTOMER-PORTAL-SETUP.md を参照してください。', 'error');
+                showMessage('Customer Portalの設定が完了していません。\n\n現在のサブスクリプションを変更する場合は、Stripeダッシュボードから直接操作してください。\n\n設定方法は docs/stripe/CUSTOMER-PORTAL-SETUP.md を参照してください。', 'error');
                 console.warn('⚠️ Customer Portal URL not configured');
                 console.warn('💡 plan-payment-config.jsのCUSTOMER_PORTAL_URLを確認してください');
                 return;
