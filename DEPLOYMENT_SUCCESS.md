@@ -16,7 +16,8 @@
 - **メンバーページ**: https://musculoskeletal-us-lab.web.app/member.html
 
 ### Flutterアプリ
-- **クイズアプリ**: https://musculoskeletal-us-lab.web.app/quiz-app/
+- **クイズアプリ（メインURL）**: https://musculoskeletal-us-lab.web.app/quiz-app/
+- **旧URL（リダイレクト）**: https://echo-quiz-app.web.app/ → 自動的にメインURLにリダイレクトされます
 
 ## 📋 実施した作業
 

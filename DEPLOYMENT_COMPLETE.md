@@ -25,7 +25,8 @@
 - **プランページ**: https://musculoskeletal-us-lab.web.app/plans.html
 
 ### Flutterアプリ
-- **クイズアプリ**: https://musculoskeletal-us-lab.web.app/quiz-app/
+- **クイズアプリ（メインURL）**: https://musculoskeletal-us-lab.web.app/quiz-app/
+- **旧URL（リダイレクト）**: https://echo-quiz-app.web.app/ → 自動的にメインURLにリダイレクトされます
 
 ## 📋 動作確認チェックリスト
 
@@ -58,6 +59,7 @@
 - ✅ 1つのサイトで両方のアプリを提供
 - ✅ 相互リンクでシームレスな遷移
 - ✅ プレミアムプラン機能が`echo-videos.html`で動作
+- ✅ 旧URL（`echo-quiz-app.web.app`）からメインURLへの自動リダイレクト設定完了
 
 ## 📝 今後のメンテナンス
 
