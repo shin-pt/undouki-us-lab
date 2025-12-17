@@ -107,38 +107,93 @@
         }
         .main-header .container {
             display: flex;
-            flex-direction: column; /* スマホでは縦並び */
-            gap: 15px; /* スマホ向けに小さく */
-            align-items: flex-start;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            position: relative;
         }
         .logo {
-            font-size: 1.3rem; /* スマホ向けに小さく */
+            font-size: 1.3rem;
             font-weight: 700;
             color: var(--text-color);
             text-decoration: none;
             letter-spacing: 1px;
             word-break: keep-all;
             overflow-wrap: break-word;
+            flex: 1;
         }
-        .nav-links {
+
+        /* ハンバーガーメニューボタン */
+        .menu-toggle {
             display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 30px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+            touch-action: manipulation;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: #e0e0e0;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        .nav-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: rgba(18, 18, 18, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            margin-top: 10px;
+            padding: 15px;
+            flex-direction: column;
+            gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+        }
+
+        .nav-links.active {
+            display: flex;
         }
 
         .nav-links a {
             color: #e0e0e0;
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            padding: 12px 15px;
+            min-height: 44px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
+            gap: 10px;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
             border-radius: 8px;
-            white-space: nowrap;
-            font-size: 0.95rem;
         }
 
         .nav-links a:hover {
@@ -740,10 +795,23 @@
                 font-size: 1.8rem;
             }
 
+            .menu-toggle {
+                display: none;
+            }
+
             .nav-links {
+                display: flex !important;
+                position: static;
                 flex-direction: row;
+                flex-wrap: wrap;
                 gap: 15px;
                 width: auto;
+                background: transparent;
+                backdrop-filter: none;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
             }
 
             .nav-links a {
@@ -887,7 +955,12 @@
     <header class="main-header">
         <div class="container">
             <a href="index.html" class="logo">運動器超音波Lab</a>
-            <nav class="nav-links">
+            <button class="menu-toggle" id="menuToggle" aria-label="メニューを開く">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="nav-links" id="navLinks">
                 <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
                 <a href="member.html" id="memberLink" style="display: none;"><i class="fas fa-user"></i> マイページ</a>
                 <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
@@ -2245,6 +2318,35 @@
             } catch (e) {
                 console.error('⚠️ Failed to update purchased buttons:', e);
             }
+        }
+    </script>
+
+    <!-- メニュートグル機能 -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        if (menuToggle && navLinks) {
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            // メニュー外をクリックしたら閉じる
+            document.addEventListener('click', (e) => {
+                if (!menuToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+
+            // メニューリンクをクリックしたら閉じる
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
         }
     </script>
 
