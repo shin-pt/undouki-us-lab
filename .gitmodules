@@ -1,0 +1,3 @@
+[submodule "echo-quiz-app"]
+	path = echo-quiz-app
+	url = https://github.com/shin-pt/echo-quiz-app.git
