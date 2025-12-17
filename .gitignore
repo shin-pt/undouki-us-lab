@@ -20,3 +20,7 @@
 .env.*.local
 functions/.env
 quiz-app/
+
+# Firebase Service Account（機密情報）
+firebase-service-account.json
+*-firebase-adminsdk-*.json
