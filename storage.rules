@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // echo_imagesフォルダへの読み取りを全員に許可（画像表示用）
+    match /echo_images/{allPaths=**} {
+      allow read: if true;
+      allow write: if false; // 読み取り専用（セキュリティのため）
+    }
+    
+    // その他のファイルはデフォルトで読み取り不可
+    match /{allPaths=**} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}
+
