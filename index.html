@@ -184,7 +184,7 @@
             gap: 10px;
             text-decoration: none;
             transition: all 0.3s ease;
-            flex: 1;
+            flex: 0 0 auto; /* 必要以上に広がらないように */
             min-width: 0;
         }
 
@@ -1179,6 +1179,19 @@
                 font-size: 1.5rem;
             }
             
+            .logo {
+                flex: 0 0 auto; /* 必要以上に広がらないように */
+                max-width: 350px; /* 最大幅を制限 */
+            }
+            
+            .main-header .container {
+                gap: 30px; /* ロゴとナビゲーションの間隔を確保 */
+            }
+            
+            .main-nav {
+                flex-shrink: 0; /* ナビゲーションが縮小されないように */
+            }
+            
             .main-nav > a:not(.auth-link) {
                 display: inline-block;
             }
@@ -1260,15 +1273,20 @@
             
             .logo {
                 gap: 15px;
+                flex: 0 0 auto; /* 必要以上に広がらないように */
+                max-width: 400px; /* 最大幅を制限 */
             }
             
             .main-header .container {
                 flex-wrap: nowrap;
-                gap: 0;
+                gap: 40px; /* ロゴとナビゲーションの間隔を確保 */
+                justify-content: space-between; /* ロゴとナビゲーションを両端に配置 */
             }
             
             .main-nav {
                 gap: 10px;
+                flex-shrink: 0; /* ナビゲーションが縮小されないように */
+                margin-left: auto; /* 右側に配置 */
             }
             
             .main-nav a {
