@@ -726,7 +726,7 @@
                     </ul>
                 </div>
 
-                <!-- プラン管理セクション -->
+                <!-- プラン管理セクション（プラン登録済みユーザー用） -->
                 <div class="user-info-section" id="planManagementSection" style="display: none;">
                     <h2><i class="fas fa-crown"></i> プラン管理</h2>
                     <div id="planInfo" style="margin-bottom: 20px;">
@@ -776,6 +776,78 @@
                         <div id="cancelLoading" style="display: none; text-align: center; margin-top: 10px;">
                             <div class="spinner"></div>
                             <p style="color: #999; font-size: 0.85rem;">解約処理中...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- プラン選択セクション（プラン未登録ユーザー用） -->
+                <div class="user-info-section" id="planSelectionSection" style="display: none;">
+                    <h2><i class="fas fa-crown"></i> プラン登録</h2>
+                    <div id="planSelectionInfo" style="margin-bottom: 20px;">
+                        <p style="color: #ccc; line-height: 1.8; margin-bottom: 20px;">
+                            プランに登録すると、より多くのコンテンツにアクセスできます。
+                        </p>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px;">
+                            <!-- 1980円プランカード -->
+                            <div style="background: rgba(255, 255, 255, 0.05); border: 2px solid rgba(102, 126, 234, 0.3); border-radius: 12px; padding: 20px;">
+                                <div style="text-align: center; margin-bottom: 15px;">
+                                    <h3 style="color: #e0e0e0; font-size: 1.3rem; margin-bottom: 10px;">1980円プラン</h3>
+                                    <div style="font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 5px;">¥1,980</div>
+                                    <div style="color: #999; font-size: 0.9rem;">/月</div>
+                                </div>
+                                <ul style="list-style: none; margin-bottom: 20px; padding: 0;">
+                                    <li style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                        <span style="color: #ccc; font-size: 0.9rem;">エコーアプリ使用</span>
+                                    </li>
+                                    <li style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                        <span style="color: #ccc; font-size: 0.9rem;">Note記事閲覧</span>
+                                    </li>
+                                    <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                        <span style="color: #ccc; font-size: 0.9rem;">アーカイブ動画</span>
+                                    </li>
+                                </ul>
+                                <button 
+                                    class="btn btn-primary" 
+                                    onclick="window.location.href='plans.html?select_plan=basic'"
+                                    style="width: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                    <i class="fas fa-crown"></i> このプランに登録
+                                </button>
+                            </div>
+
+                            <!-- 2980円プランカード -->
+                            <div style="background: rgba(255, 193, 7, 0.1); border: 2px solid rgba(255, 193, 7, 0.5); border-radius: 12px; padding: 20px; position: relative;">
+                                <div style="position: absolute; top: -1px; right: 20px; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); color: #121212; padding: 5px 15px; border-radius: 0 0 8px 8px; font-size: 0.8rem; font-weight: 700; transform: rotate(0deg);">
+                                    おすすめ
+                                </div>
+                                <div style="text-align: center; margin-bottom: 15px; margin-top: 10px;">
+                                    <h3 style="color: #e0e0e0; font-size: 1.3rem; margin-bottom: 10px;">2980円プラン</h3>
+                                    <div style="font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 5px;">¥2,980</div>
+                                    <div style="color: #999; font-size: 0.9rem;">/月</div>
+                                </div>
+                                <ul style="list-style: none; margin-bottom: 20px; padding: 0;">
+                                    <li style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                        <span style="color: #ccc; font-size: 0.9rem;">1980円プランのすべて</span>
+                                    </li>
+                                    <li style="padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                        <span style="color: #ccc; font-size: 0.9rem;">PDF資料</span>
+                                    </li>
+                                    <li style="padding: 8px 0; display: flex; align-items: center; gap: 10px;">
+                                        <i class="fas fa-check-circle" style="color: #4caf50;"></i>
+                                        <span style="color: #ccc; font-size: 0.9rem;">エコー動画</span>
+                                    </li>
+                                </ul>
+                                <button 
+                                    class="btn btn-primary" 
+                                    onclick="window.location.href='plans.html?select_plan=premium'"
+                                    style="width: 100%; background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%); color: #121212;">
+                                    <i class="fas fa-crown"></i> このプランに登録
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -936,6 +1008,7 @@
         // プラン情報を表示
         async function displayPlanInfo(user) {
             const planManagementSection = document.getElementById('planManagementSection');
+            const planSelectionSection = document.getElementById('planSelectionSection');
             const currentPlanName = document.getElementById('currentPlanName');
             const cancelSubscriptionBtn = document.getElementById('cancelSubscriptionBtn');
             
@@ -943,7 +1016,10 @@
                 const plan = await getUserPlan(user);
                 
                 if (plan) {
+                    // プラン登録済みの場合：プラン管理セクションを表示
                     planManagementSection.style.display = 'block';
+                    planSelectionSection.style.display = 'none';
+                    
                     if (plan === 'basic') {
                         currentPlanName.textContent = '1980円プラン';
                         currentPlanName.style.color = '#66b2ff';
@@ -978,12 +1054,15 @@
                         }
                     }
                 } else {
+                    // プラン未登録の場合：プラン選択セクションを表示
                     planManagementSection.style.display = 'none';
+                    planSelectionSection.style.display = 'block';
                     if (cancelSubscriptionBtn) cancelSubscriptionBtn.style.display = 'none';
                 }
             } catch (error) {
                 console.error('プラン情報表示エラー:', error);
                 planManagementSection.style.display = 'none';
+                planSelectionSection.style.display = 'block'; // エラー時もプラン選択セクションを表示
                 if (cancelSubscriptionBtn) cancelSubscriptionBtn.style.display = 'none';
             }
         }

@@ -1248,7 +1248,8 @@
                 }
             }
 
-            // 新規登録の場合のみPayment Linkにリダイレクト
+            // プラン未登録の場合、または既存プランがあるがテストモードの場合、Payment Linkにリダイレクト
+            // （会員登録済み + サブスク未登録ユーザーもここに到達）
             const paymentLink = PLAN_PAYMENT_LINKS[plan];
 
             if (!paymentLink) {
@@ -1329,11 +1330,13 @@
             }
         });
 
-        // プラン自動リダイレクト処理（会員登録後の自動遷移用）
+        // プラン自動リダイレクト処理（会員登録後の自動遷移用、member.htmlからの遷移用）
         async function handlePlanRedirect() {
             const urlParams = new URLSearchParams(window.location.search);
             const redirectPlan = urlParams.get('redirect_plan');
+            const selectPlan = urlParams.get('select_plan');
             
+            // redirect_planパラメータ（会員登録後の自動遷移用）
             if (redirectPlan && (redirectPlan === 'basic' || redirectPlan === 'premium')) {
                 const user = auth.currentUser;
                 if (user) {
@@ -1351,6 +1354,26 @@
                     return true; // リダイレクトが実行されたことを示す
                 }
             }
+            
+            // select_planパラメータ（member.htmlからの遷移用）
+            if (selectPlan && (selectPlan === 'basic' || selectPlan === 'premium')) {
+                const user = auth.currentUser;
+                if (user) {
+                    // ログイン済みの場合、自動的にStripe決済ページにリダイレクト
+                    console.log(`🔄 Auto-redirecting to Stripe for selected plan: ${selectPlan}`);
+                    try {
+                        // URLパラメータをクリーンアップ
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        // Stripe決済ページにリダイレクト
+                        await redirectToStripe(selectPlan);
+                    } catch (error) {
+                        console.error('プラン自動リダイレクトエラー:', error);
+                        showMessage('プラン登録ページへの遷移に失敗しました。もう一度お試しください。', 'error');
+                    }
+                    return true; // リダイレクトが実行されたことを示す
+                }
+            }
+            
             return false; // リダイレクトが実行されなかったことを示す
         }
 
