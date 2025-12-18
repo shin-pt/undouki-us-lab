@@ -1310,7 +1310,7 @@
             if (confirm('ログアウトしますか？')) {
                 try {
                     await signOut(auth);
-                    window.location.href = 'auth.html';
+                    window.location.href = 'auth.html?action=signup';
                 } catch (error) {
                     console.error('ログアウトエラー:', error);
                     alert('ログアウトに失敗しました。');
@@ -1336,8 +1336,8 @@
                     `;
                 }
             } else {
-                // ログインしていない場合、ログインページにリダイレクト
-                window.location.href = 'auth.html';
+                // ログインしていない場合、会員登録ページにリダイレクト
+                window.location.href = 'auth.html?action=signup';
             }
         });
     </script>

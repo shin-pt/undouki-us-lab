@@ -512,6 +512,29 @@
         const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
 
+        // URLパラメータをチェックして、初期表示するタブを決定
+        const urlParams = new URLSearchParams(window.location.search);
+        const action = urlParams.get('action');
+
+        // 初期タブ設定
+        if (action === 'signup') {
+            // 会員登録タブをアクティブにする
+            signupTab.classList.add('active');
+            loginTab.classList.remove('active');
+            resetTab.classList.remove('active');
+            signupForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            resetForm.style.display = 'none';
+        } else {
+            // デフォルトはログインタブ
+            loginTab.classList.add('active');
+            signupTab.classList.remove('active');
+            resetTab.classList.remove('active');
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            resetForm.style.display = 'none';
+        }
+
         // タブ切り替え
         loginTab.addEventListener('click', () => {
             loginTab.classList.add('active');
