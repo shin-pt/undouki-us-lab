@@ -718,7 +718,7 @@
                         </h2>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="shoulder_superior">
                         <div class="material-info">
                             <div class="material-title">肩関節上方</div>
                             <div class="material-date">開催日: 2025年5月</div>
@@ -735,7 +735,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="shoulder_inferior">
                         <div class="material-info">
                             <div class="material-title">肩関節下方</div>
                             <div class="material-date">開催日: 2025年6月</div>
@@ -752,7 +752,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="elbow_medial">
                         <div class="material-info">
                             <div class="material-title">肘関節内側</div>
                             <div class="material-date">開催日: 2025年11月</div>
@@ -777,7 +777,7 @@
                         </h2>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="knee_anterior">
                         <div class="material-info">
                             <div class="material-title">膝関節前面</div>
                             <div class="material-date">開催日: 2025年3月</div>
@@ -811,7 +811,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="hip_lateral">
                         <div class="material-info">
                             <div class="material-title">股関節外側</div>
                             <div class="material-date">開催日: 2025年7月</div>
@@ -828,7 +828,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="ankle_medial">
                         <div class="material-info">
                             <div class="material-title">足関節内側</div>
                             <div class="material-date">開催日: 2025年10月</div>
@@ -845,7 +845,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="achilles_tendon">
                         <div class="material-info">
                             <div class="material-title">アキレス腱周囲</div>
                             <div class="material-date">開催日: 2025年1月</div>
@@ -862,7 +862,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="plantar_fascia">
                         <div class="material-info">
                             <div class="material-title">足底部</div>
                             <div class="material-date">開催日: 2025年2月</div>
@@ -887,7 +887,7 @@
                         </h2>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="cervical_anterior">
                         <div class="material-info">
                             <div class="material-title">頚部前面</div>
                             <div class="material-date">開催日: 2025年9月</div>
@@ -904,7 +904,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="lumbar_region">
                         <div class="material-info">
                             <div class="material-title">腰部</div>
                             <div class="material-date">開催日: 2024年9月</div>
@@ -921,7 +921,7 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="lumbar_part2">
                         <div class="material-info">
                             <div class="material-title">腰部（Part2）</div>
                             <div class="material-date">開催日: 2025年8月</div>
@@ -989,6 +989,9 @@
         </div>
     </footer>
 
+    <!-- Material Payment Configuration -->
+    <script src="material-payment-config.js"></script>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -997,6 +1000,20 @@
             onAuthStateChanged,
             signOut
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            doc,
+            getDoc,
+            collection,
+            query,
+            where,
+            getDocs
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { 
+            getStorage,
+            ref,
+            getDownloadURL
+        } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js';
 
         // Firebase設定
         const firebaseConfig = {
@@ -1011,6 +1028,8 @@
         // Firebase初期化
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
 
         // UI要素
         const authLink = document.getElementById('authLink');
@@ -1049,9 +1068,164 @@
         }
 
         // 認証状態の監視
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             updateNavigation(user);
+            if (user) {
+                await initializeMaterialsPage(user);
+            } else {
+                // 未ログイン時は全てのボタンを購入ボタンとして表示
+                updateMaterialButtons(false, []);
+            }
         });
+
+        // PDF資料の初期化
+        async function initializeMaterialsPage(user) {
+            try {
+                // ユーザーのプラン情報を取得
+                const userPlan = await getUserPlan(user);
+                const isPremium = userPlan === 'premium';
+
+                // 購入済みPDF資料を取得
+                const purchasedMaterials = await getPurchasedMaterials(user);
+
+                // 各資料のボタン状態を更新
+                updateMaterialButtons(isPremium, purchasedMaterials);
+            } catch (error) {
+                console.error('資料ページの初期化エラー:', error);
+            }
+        }
+
+        // ユーザーのプラン情報を取得
+        async function getUserPlan(user) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    return userData.plan || null;
+                }
+                return null;
+            } catch (error) {
+                console.error('プラン情報取得エラー:', error);
+                return null;
+            }
+        }
+
+        // 購入済みPDF資料を取得
+        async function getPurchasedMaterials(user) {
+            try {
+                const purchasesQuery = query(
+                    collection(db, 'purchases'),
+                    where('userId', '==', user.uid),
+                    where('type', '==', 'material')
+                );
+                const querySnapshot = await getDocs(purchasesQuery);
+                const purchasedMaterials = [];
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    if (data.materialId) {
+                        purchasedMaterials.push(data.materialId);
+                    }
+                });
+                return purchasedMaterials;
+            } catch (error) {
+                console.error('購入済み資料の取得エラー:', error);
+                return [];
+            }
+        }
+
+        // 資料ボタンの状態を更新
+        function updateMaterialButtons(isPremium, purchasedMaterials) {
+            const user = auth.currentUser;
+            const materialItems = document.querySelectorAll('.material-item');
+            materialItems.forEach((item) => {
+                const materialId = item.dataset.materialId;
+                if (!materialId) return;
+
+                const purchaseBtn = item.querySelector('.purchase-btn');
+                if (!purchaseBtn) return;
+
+                // 未ログインの場合
+                if (!user) {
+                    purchaseBtn.disabled = false;
+                    purchaseBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> 購入する';
+                    purchaseBtn.classList.remove('disabled');
+                    purchaseBtn.onclick = () => {
+                        if (confirm('購入にはログインが必要です。ログインページに移動しますか？')) {
+                            window.location.href = 'auth.html';
+                        }
+                    };
+                    return;
+                }
+
+                const isPurchased = purchasedMaterials.includes(materialId);
+                const hasAccess = isPremium || isPurchased;
+
+                if (hasAccess) {
+                    // アクセス可能な場合
+                    purchaseBtn.disabled = false;
+                    purchaseBtn.innerHTML = '<i class="fas fa-download"></i> ダウンロード';
+                    purchaseBtn.classList.remove('disabled');
+                    purchaseBtn.onclick = () => downloadMaterial(materialId);
+                } else {
+                    // 購入が必要な場合
+                    purchaseBtn.disabled = false;
+                    purchaseBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> 購入する';
+                    purchaseBtn.classList.remove('disabled');
+                    purchaseBtn.onclick = () => {
+                        if (typeof purchaseMaterial === 'function') {
+                            purchaseMaterial(materialId);
+                        } else {
+                            alert('購入機能の設定が完了していません。');
+                        }
+                    };
+                }
+            });
+        }
+
+        // PDF資料をダウンロード
+        async function downloadMaterial(materialId) {
+            const user = auth.currentUser;
+            if (!user) {
+                if (confirm('ログインが必要です。ログインページに移動しますか？')) {
+                    window.location.href = 'auth.html';
+                }
+                return;
+            }
+
+            try {
+                // アクセス権限を再確認
+                const userPlan = await getUserPlan(user);
+                const isPremium = userPlan === 'premium';
+                const purchasedMaterials = await getPurchasedMaterials(user);
+                const isPurchased = purchasedMaterials.includes(materialId);
+
+                if (!isPremium && !isPurchased) {
+                    alert('この資料を購入する必要があります。');
+                    return;
+                }
+
+                // Firebase StorageからPDFを取得
+                const storageRef = ref(storage, `materials/${materialId}.pdf`);
+                const downloadURL = await getDownloadURL(storageRef);
+
+                // ダウンロードリンクを作成してクリック
+                const link = document.createElement('a');
+                link.href = downloadURL;
+                link.download = `${MATERIAL_TITLES[materialId] || materialId}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                console.log(`✅ PDF downloaded: ${materialId}`);
+            } catch (error) {
+                console.error('PDFダウンロードエラー:', error);
+                if (error.code === 'storage/object-not-found') {
+                    alert('PDFファイルが見つかりませんでした。管理者にお問い合わせください。');
+                } else {
+                    alert('PDFのダウンロードに失敗しました。もう一度お試しください。');
+                }
+            }
+        }
     </script>
 
     <!-- メニュートグル機能 -->

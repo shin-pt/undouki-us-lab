@@ -13,6 +13,13 @@ service firebase.storage {
       allow write: if false; // 読み取り専用（セキュリティのため）
     }
     
+    // materialsフォルダ（PDF資料）へのアクセス制御
+    // 認証済みユーザーのみ読み取り可能（アプリ側で購入済みチェックを実施）
+    match /materials/{fileName} {
+      allow read: if request.auth != null; // 認証済みユーザーのみ
+      allow write: if false; // 読み取り専用（管理ツールからアップロード）
+    }
+    
     // その他のファイルはデフォルトで読み取り不可
     match /{allPaths=**} {
       allow read: if false;
