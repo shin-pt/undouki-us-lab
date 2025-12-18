@@ -788,8 +788,56 @@
             return false;
         }
 
+        // 管理者判定関数
+        async function isAdminUser(user) {
+            if (!user) return false;
+            
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    return userData.isAdmin === true;
+                }
+                return false;
+            } catch (error) {
+                console.error('管理者判定エラー:', error);
+                return false;
+            }
+        }
+
+        // 一般利用者向けに「準備中」メッセージを表示
+        function showComingSoonMessage() {
+            return `
+                <div style="background: rgba(255, 193, 7, 0.15); border: 2px solid rgba(255, 193, 7, 0.5); 
+                            border-radius: 12px; padding: 40px 30px; margin: 40px 0; text-align: center;">
+                    <i class="fas fa-clock" style="font-size: 3rem; color: #ffc107; margin-bottom: 20px;"></i>
+                    <h2 style="color: #ffc107; margin-bottom: 15px; font-size: 1.5rem;">
+                        準備中です
+                    </h2>
+                    <p style="color: #e0e0e0; font-size: 1rem; line-height: 1.8;">
+                        アーカイブ動画は現在準備中です。<br>
+                        公開まで今しばらくお待ちください。
+                    </p>
+                </div>
+            `;
+        }
+
         // Firestoreからアーカイブ動画を取得
         async function loadVideos() {
+            const user = auth.currentUser;
+            
+            // 管理者判定
+            const isAdmin = await isAdminUser(user);
+            
+            if (!isAdmin) {
+                // 一般利用者の場合：「準備中」を表示
+                loadingSection.style.display = 'none';
+                contentSection.style.display = 'block';
+                videoGrid.innerHTML = showComingSoonMessage();
+                return;
+            }
+
+            // 管理者の場合のみ動画を読み込み
             try {
                 console.log('📥 アーカイブ動画を読み込み中...');
                 
@@ -1217,6 +1265,19 @@
             if (user) {
                 try {
                     console.log('👤 ユーザー情報取得中...', user.uid);
+                    
+                    // 管理者判定
+                    const isAdmin = await isAdminUser(user);
+                    
+                    if (!isAdmin) {
+                        // 一般利用者の場合：「準備中」を表示
+                        loadingSection.style.display = 'none';
+                        contentSection.style.display = 'block';
+                        videoGrid.innerHTML = showComingSoonMessage();
+                        return;
+                    }
+                    
+                    // 管理者の場合のみ通常の処理を実行
                     userPlan = await getUserPlan(user);
                     console.log('📋 ユーザープラン:', userPlan);
                     await loadVideos();
