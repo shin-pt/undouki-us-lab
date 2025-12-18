@@ -684,11 +684,40 @@
                 const selectedPlan = urlParams.get('plan');
                 
                 if (selectedPlan && (selectedPlan === 'basic' || selectedPlan === 'premium')) {
-                    // プランが選択されている場合、plans.htmlにリダイレクトして自動的にStripe決済ページに遷移
-                    showSuccess('会員登録が完了しました！プラン登録ページに移動します。');
-                    setTimeout(() => {
-                        window.location.href = `plans.html?redirect_plan=${selectedPlan}`;
-                    }, 1500);
+                    // プランが選択されている場合、直接Stripe決済ページにリダイレクト
+                    // 環境判定（本番環境かどうか）
+                    const hostname = window.location.hostname || '';
+                    const protocol = window.location.protocol || '';
+                    const IS_PRODUCTION = hostname !== 'localhost' &&
+                                          hostname !== '127.0.0.1' &&
+                                          hostname !== '' &&
+                                          protocol !== 'file:';
+                    
+                    // Stripe Payment Links設定
+                    const PLAN_PAYMENT_LINKS = IS_PRODUCTION ? {
+                        // 本番環境用 Payment Links
+                        'basic': 'https://buy.stripe.com/14A14ncel0sQ6dA7bMeME1y', // 1980円プラン
+                        'premium': 'https://buy.stripe.com/fZu4gz929b7ufOa7bMeME1z' // 2980円プラン
+                    } : {
+                        // テスト環境用 Payment Links
+                        'basic': 'https://buy.stripe.com/test_bJe9ATfqx6Re59w3ZAeME02', // 1980円プラン（テスト用）
+                        'premium': 'https://buy.stripe.com/test_00w8wP4LT1wUcBYeEeeME03' // 2980円プラン（テスト用）
+                    };
+                    
+                    const paymentLink = PLAN_PAYMENT_LINKS[selectedPlan];
+                    
+                    if (paymentLink) {
+                        showSuccess('会員登録が完了しました！プラン登録ページに移動します。');
+                        setTimeout(() => {
+                            window.location.href = paymentLink;
+                        }, 1500);
+                    } else {
+                        // Payment Linkが見つからない場合、plans.htmlにリダイレクト
+                        showSuccess('会員登録が完了しました！プラン登録ページに移動します。');
+                        setTimeout(() => {
+                            window.location.href = `plans.html?redirect_plan=${selectedPlan}`;
+                        }, 1500);
+                    }
                 } else {
                     // プランが選択されていない場合、メンバーページにリダイレクト
                     showSuccess('会員登録が完了しました！');
