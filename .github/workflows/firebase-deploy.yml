@@ -14,6 +14,12 @@ jobs:
           submodules: recursive
           token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
+      # サブモジュールを最新のコミットに更新
+      - name: Update submodules to latest
+        run: |
+          git submodule update --remote --recursive
+          git submodule status
+
       # Flutterのセットアップ
       - uses: subosito/flutter-action@v2
         with:
