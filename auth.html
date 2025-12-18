@@ -844,23 +844,28 @@
         let loginInProgress = false; // ログイン処理中フラグ
 
         // 認証状態の監視
-        // 注意: ログイン/会員登録処理でリダイレクトするため、planパラメータがある場合やログイン処理中はリダイレクトしない
+        // 注意: ログイン/会員登録処理でリダイレクトするため、planパラメータがある場合は完全にリダイレクトしない
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log('ユーザーがログインしています:', user.email);
+                
+                // URLパラメータにplanがある場合は、ログイン/会員登録処理でリダイレクトするため、ここでは何もしない
+                const urlParams = new URLSearchParams(window.location.search);
+                const plan = urlParams.get('plan');
+                
+                if (plan && (plan === 'basic' || plan === 'premium')) {
+                    console.log('⚠️ Plan parameter detected, skipping redirect in onAuthStateChanged');
+                    return; // planパラメータがある場合は完全にスキップ
+                }
+                
                 // 既にログインしている場合はメンバーページにリダイレクト
-                // ただし、URLパラメータにplanがある場合、リダイレクト中、またはログイン処理中はリダイレクトしない
+                // ただし、リダイレクト中、またはログイン処理中はリダイレクトしない
                 if (window.location.pathname.includes('auth.html') && !isRedirecting && !loginInProgress) {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const plan = urlParams.get('plan');
-                    // planパラメータがない場合のみ、member.htmlにリダイレクト
-                    if (!plan) {
-                        setTimeout(() => {
-                            if (!isRedirecting && !loginInProgress) {
-                                window.location.href = 'member.html';
-                            }
-                        }, 1000); // ログイン処理のリダイレクトより遅く実行
-                    }
+                    setTimeout(() => {
+                        if (!isRedirecting && !loginInProgress) {
+                            window.location.href = 'member.html';
+                        }
+                    }, 1000); // ログイン処理のリダイレクトより遅く実行
                 }
             } else {
                 console.log('ユーザーはログインしていません');
