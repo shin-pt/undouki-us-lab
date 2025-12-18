@@ -1080,12 +1080,7 @@
                 // 未ログイン時：「準備中」を表示
                 const materialsContainer = document.getElementById('materials-list');
                 if (materialsContainer) {
-                    const materialsList = materialsContainer.querySelector('.materials-list');
-                    if (materialsList) {
-                        materialsList.innerHTML = showComingSoonMessage();
-                    } else {
-                        materialsContainer.innerHTML = showComingSoonMessage();
-                    }
+                    materialsContainer.innerHTML = showComingSoonMessage();
                 }
             }
         });
@@ -1291,12 +1286,7 @@
                     // 一般利用者の場合：全て「準備中」を表示
                     const materialsContainer = document.getElementById('materials-list');
                     if (materialsContainer) {
-                        const materialsList = materialsContainer.querySelector('.materials-list');
-                        if (materialsList) {
-                            materialsList.innerHTML = showComingSoonMessage();
-                        } else {
-                            materialsContainer.innerHTML = showComingSoonMessage();
-                        }
+                        materialsContainer.innerHTML = showComingSoonMessage();
                     }
                     return;
                 }
