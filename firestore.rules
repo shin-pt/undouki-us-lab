@@ -35,12 +35,21 @@ service cloud.firestore {
                      resource.data.userId == request.auth.uid;
       
       // 作成: 認証済みユーザーが自分の購入履歴を作成可能
+      // 動画購入（type='video'または未設定）またはPDF資料購入（type='material'）に対応
       allow create: if request.auth != null && 
                        request.resource.data.userId == request.auth.uid &&
-                       request.resource.data.keys().hasAll(['userId', 'videoId', 'price', 'purchasedAt']) &&
                        request.resource.data.userId is string &&
-                       request.resource.data.videoId is string &&
-                       request.resource.data.price is number;
+                       request.resource.data.price is number &&
+                       request.resource.data.purchasedAt != null &&
+                       // 動画購入の場合: videoIdが必須、typeは'video'または未設定
+                       ((request.resource.data.type == null || 
+                         request.resource.data.type == 'video') &&
+                        request.resource.data.videoId is string &&
+                        request.resource.data.videoId != '') ||
+                       // PDF資料購入の場合: materialIdが必須、typeは'material'
+                       (request.resource.data.type == 'material' &&
+                        request.resource.data.materialId is string &&
+                        request.resource.data.materialId != '');
       
       // 更新・削除: 禁止（購入履歴は不変）
       allow update, delete: if false;

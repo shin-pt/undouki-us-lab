@@ -274,6 +274,7 @@
     <!-- Video Mapping Data -->
     <script src="vimeo-mapping.js"></script>
     <script src="video-payment-config.js"></script>
+    <script src="material-payment-config.js"></script>
     
     <!-- Firebase SDK -->
     <script type="module">
@@ -303,7 +304,7 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Firestoreに購入履歴を保存する関数
+        // Firestoreに購入履歴を保存する関数（動画用）
         async function savePurchaseToFirestore(videoId, price, videoTitle) {
             const user = auth.currentUser;
             if (!user) {
@@ -331,7 +332,8 @@
                     videoId: videoId,
                     videoTitle: videoTitle || `動画ID: ${videoId}`,
                     price: price,
-                    purchasedAt: serverTimestamp()
+                    purchasedAt: serverTimestamp(),
+                    type: 'video' // 動画購入を識別
                 });
 
                 console.log(`✅ 購入履歴をFirestoreに保存しました: ${videoId}`);
@@ -340,8 +342,48 @@
             }
         }
 
+        // FirestoreにPDF購入履歴を保存する関数
+        async function saveMaterialPurchaseToFirestore(materialId, price, materialTitle) {
+            const user = auth.currentUser;
+            if (!user) {
+                console.warn('⚠️ ユーザーがログインしていないため、Firestoreに保存できません');
+                return;
+            }
+
+            try {
+                // 既に同じ資料を購入しているかチェック
+                const purchasesQuery = query(
+                    collection(db, 'purchases'),
+                    where('userId', '==', user.uid),
+                    where('materialId', '==', materialId),
+                    where('type', '==', 'material')
+                );
+                const existingPurchases = await getDocs(purchasesQuery);
+
+                if (!existingPurchases.empty) {
+                    console.log(`ℹ️ 資料 ${materialId} は既に購入済みです`);
+                    return;
+                }
+
+                // 購入履歴をFirestoreに保存
+                await addDoc(collection(db, 'purchases'), {
+                    userId: user.uid,
+                    materialId: materialId,
+                    materialTitle: materialTitle || `資料ID: ${materialId}`,
+                    price: price,
+                    purchasedAt: serverTimestamp(),
+                    type: 'material' // PDF資料購入を識別
+                });
+
+                console.log(`✅ PDF購入履歴をFirestoreに保存しました: ${materialId}`);
+            } catch (error) {
+                console.error('❌ Firestoreへの保存に失敗:', error);
+            }
+        }
+
         // グローバルに公開（他のスクリプトから使用可能にする）
         window.savePurchaseToFirestore = savePurchaseToFirestore;
+        window.saveMaterialPurchaseToFirestore = saveMaterialPurchaseToFirestore;
         window.firebaseAuth = auth;
     </script>
     
@@ -349,12 +391,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('💳 Processing payment success...');
 
-            // URLパラメータから動画IDを取得
+            // URLパラメータから情報を取得
             const urlParams = new URLSearchParams(window.location.search);
             const videoId = urlParams.get('video_id');
+            const materialId = urlParams.get('material_id');
+            const purchaseType = urlParams.get('type'); // 'video' or 'material'
             const sessionId = urlParams.get('session_id');
 
             console.log('Video ID from URL:', videoId);
+            console.log('Material ID from URL:', materialId);
+            console.log('Purchase Type:', purchaseType);
             console.log('Session ID:', sessionId);
 
             // ローディングを表示
@@ -364,8 +410,67 @@
 
             // 少し遅延させて処理を実行（アニメーション効果のため）
             setTimeout(async function() {
-                if (videoId) {
-                    // 購入動画情報を取得
+                if (materialId && purchaseType === 'material') {
+                    // PDF資料購入の処理
+                    const price = typeof getMaterialPrice === 'function'
+                        ? getMaterialPrice(materialId)
+                        : 1500;
+
+                    // タイトルを取得（MATERIAL_TITLESがあれば使用）
+                    const materialTitle = (typeof MATERIAL_TITLES !== 'undefined' && MATERIAL_TITLES[materialId])
+                        ? MATERIAL_TITLES[materialId]
+                        : `資料ID: ${materialId}`;
+
+                    // localStorageにも保存（後方互換性のため）
+                    if (typeof markMaterialAsPurchased === 'function') {
+                        markMaterialAsPurchased(materialId);
+                        console.log(`✅ Marked material as purchased (localStorage): ${materialId}`);
+                    }
+
+                    // Firestoreに購入履歴を保存
+                    if (typeof window.saveMaterialPurchaseToFirestore === 'function') {
+                        await window.saveMaterialPurchaseToFirestore(materialId, price, materialTitle);
+                    }
+
+                    // 成功メッセージを更新
+                    document.querySelector('h1').textContent = 'PDF資料の購入が完了しました！';
+                    document.querySelector('.message').innerHTML = `
+                        PDF資料のご購入ありがとうございます。<br>
+                        購入された資料の情報を確認中です...
+                    `;
+
+                    // 資料情報を表示
+                    document.getElementById('videoInfo').innerHTML = `
+                        <h3><i class="fas fa-file-pdf"></i> 購入資料</h3>
+                        <p id="videoTitle">${materialTitle}</p>
+                        <p id="videoPrice">価格: ¥${price}</p>
+                        <p style="margin-top: 15px; color: #666;">
+                            <i class="fas fa-info-circle"></i> 
+                            <a href="materials.html" style="color: #667eea; text-decoration: underline;">
+                                資料一覧ページ
+                            </a>からPDFをダウンロードできます。
+                        </p>
+                    `;
+                    videoInfoDiv.style.display = 'block';
+
+                    // Vimeoプレイヤーセクションは非表示
+                    document.getElementById('vimeoPlayerSection').style.display = 'none';
+
+                    // ボタンを更新
+                    const actionButtons = document.getElementById('actionButtons');
+                    actionButtons.innerHTML = `
+                        <a href="materials.html" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i>
+                            資料一覧に戻る
+                        </a>
+                        <a href="index.html" class="btn btn-primary">
+                            <i class="fas fa-home"></i>
+                            ホームへ
+                        </a>
+                    `;
+
+                } else if (videoId) {
+                    // 動画購入の処理（既存の処理）
                     const price = typeof getVideoPrice === 'function'
                         ? getVideoPrice(videoId)
                         : 800;
@@ -415,8 +520,8 @@
                         console.warn('⚠️ Vimeo URL not found for video:', videoId);
                     }
                 } else {
-                    console.warn('⚠️ No video_id parameter found in URL');
-                    document.getElementById('videoTitle').textContent = '動画情報を取得できませんでした';
+                    console.warn('⚠️ No video_id or material_id parameter found in URL');
+                    document.getElementById('videoTitle').textContent = '購入情報を取得できませんでした';
                     videoInfoDiv.style.display = 'block';
                 }
 
@@ -427,6 +532,7 @@
                 // ペンディング中の購入情報をクリア
                 try {
                     localStorage.removeItem('pending_video_purchase');
+                    localStorage.removeItem('pending_material_purchase');
                     localStorage.removeItem('purchase_timestamp');
                     console.log('🧹 Cleared pending purchase data');
                 } catch (e) {

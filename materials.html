@@ -1007,7 +1007,9 @@
             collection,
             query,
             where,
-            getDocs
+            getDocs,
+            addDoc,
+            serverTimestamp
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { 
             getStorage,
@@ -1072,11 +1074,170 @@
             updateNavigation(user);
             if (user) {
                 await initializeMaterialsPage(user);
+                // 購入完了チェック（URLパラメータから）
+                await checkPurchaseCompletion(user);
             } else {
                 // 未ログイン時は全てのボタンを購入ボタンとして表示
                 updateMaterialButtons(false, []);
             }
         });
+
+        // 購入完了チェックと処理
+        async function checkPurchaseCompletion(user) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const purchasedMaterialId = urlParams.get('purchased');
+            const purchaseType = urlParams.get('type');
+            
+            if (purchasedMaterialId && purchaseType === 'material') {
+                try {
+                    // 購入履歴をFirestoreに保存
+                    const price = typeof getMaterialPrice === 'function'
+                        ? getMaterialPrice(purchasedMaterialId)
+                        : 1500;
+                    
+                    const materialTitle = (typeof MATERIAL_TITLES !== 'undefined' && MATERIAL_TITLES[purchasedMaterialId])
+                        ? MATERIAL_TITLES[purchasedMaterialId]
+                        : `資料ID: ${purchasedMaterialId}`;
+                    
+                    // Firestoreに保存
+                    await saveMaterialPurchaseToFirestore(purchasedMaterialId, price, materialTitle);
+                    
+                    // 成功メッセージを表示
+                    showPurchaseSuccessMessage(purchasedMaterialId, materialTitle);
+                    
+                    // URLパラメータをクリーンアップ（ブラウザ履歴を更新）
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                    
+                    // ページを再初期化してボタン状態を更新
+                    await initializeMaterialsPage(user);
+                } catch (error) {
+                    console.error('購入完了処理エラー:', error);
+                }
+            }
+        }
+
+        // 購入完了メッセージを表示する関数
+        function showPurchaseSuccessMessage(materialId, materialTitle) {
+            // ページ上部に成功バナーを表示
+            const materialsContainer = document.getElementById('materials-list');
+            if (!materialsContainer) return;
+
+            // 既存のバナーがあれば削除
+            const existingBanner = document.getElementById('purchase-success-banner');
+            if (existingBanner) {
+                existingBanner.remove();
+            }
+
+            const successBanner = document.createElement('div');
+            successBanner.id = 'purchase-success-banner';
+            successBanner.style.cssText = `
+                background: rgba(40, 167, 69, 0.15);
+                border: 2px solid rgba(40, 167, 69, 0.5);
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 30px;
+                text-align: center;
+                animation: slideDown 0.5s ease-out;
+            `;
+            successBanner.innerHTML = `
+                <div style="display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap;">
+                    <i class="fas fa-check-circle" style="color: #28a745; font-size: 1.5rem;"></i>
+                    <div>
+                        <strong style="color: #28a745; font-size: 1.1rem; display: block; margin-bottom: 5px;">
+                            ${materialTitle}の購入が完了しました！
+                        </strong>
+                        <span style="color: #e0e0e0; font-size: 0.95rem;">
+                            PDFをダウンロードできます
+                        </span>
+                    </div>
+                    <button onclick="this.closest('#purchase-success-banner').remove()" 
+                            style="background: rgba(255, 255, 255, 0.1); border: none; color: #e0e0e0; 
+                                   cursor: pointer; padding: 8px 12px; border-radius: 6px; margin-left: auto;
+                                   transition: background 0.3s ease;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+
+            // アニメーション用のCSSを追加（まだない場合）
+            if (!document.getElementById('purchase-success-animation-style')) {
+                const style = document.createElement('style');
+                style.id = 'purchase-success-animation-style';
+                style.textContent = `
+                    @keyframes slideDown {
+                        from {
+                            opacity: 0;
+                            transform: translateY(-20px);
+                        }
+                        to {
+                            opacity: 1;
+                            transform: translateY(0);
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // materials-listの最初に挿入
+            const materialsList = materialsContainer.querySelector('.materials-list');
+            if (materialsList) {
+                materialsList.insertBefore(successBanner, materialsList.firstChild);
+            } else {
+                materialsContainer.insertBefore(successBanner, materialsContainer.firstChild);
+            }
+
+            // 5秒後に自動で非表示（オプション）
+            setTimeout(() => {
+                if (successBanner.parentElement) {
+                    successBanner.style.transition = 'opacity 0.5s ease-out';
+                    successBanner.style.opacity = '0';
+                    setTimeout(() => {
+                        if (successBanner.parentElement) {
+                            successBanner.remove();
+                        }
+                    }, 500);
+                }
+            }, 5000);
+        }
+
+        // FirestoreにPDF購入履歴を保存する関数
+        async function saveMaterialPurchaseToFirestore(materialId, price, materialTitle) {
+            const user = auth.currentUser;
+            if (!user) {
+                console.warn('⚠️ ユーザーがログインしていないため、Firestoreに保存できません');
+                return;
+            }
+
+            try {
+                // 既に同じ資料を購入しているかチェック
+                const purchasesQuery = query(
+                    collection(db, 'purchases'),
+                    where('userId', '==', user.uid),
+                    where('materialId', '==', materialId),
+                    where('type', '==', 'material')
+                );
+                const existingPurchases = await getDocs(purchasesQuery);
+
+                if (!existingPurchases.empty) {
+                    console.log(`ℹ️ 資料 ${materialId} は既に購入済みです`);
+                    return;
+                }
+
+                // 購入履歴をFirestoreに保存
+                await addDoc(collection(db, 'purchases'), {
+                    userId: user.uid,
+                    materialId: materialId,
+                    materialTitle: materialTitle || `資料ID: ${materialId}`,
+                    price: price,
+                    purchasedAt: serverTimestamp(),
+                    type: 'material'
+                });
+
+                console.log(`✅ PDF購入履歴をFirestoreに保存しました: ${materialId}`);
+            } catch (error) {
+                console.error('❌ Firestoreへの保存に失敗:', error);
+            }
+        }
 
         // PDF資料の初期化
         async function initializeMaterialsPage(user) {
