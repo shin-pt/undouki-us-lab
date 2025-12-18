@@ -515,6 +515,7 @@
         // URLパラメータをチェックして、初期表示するタブを決定
         const urlParams = new URLSearchParams(window.location.search);
         const action = urlParams.get('action');
+        const plan = urlParams.get('plan');
 
         // 初期タブ設定
         if (action === 'signup') {
@@ -526,7 +527,7 @@
             loginForm.style.display = 'none';
             resetForm.style.display = 'none';
         } else {
-            // デフォルトはログインタブ
+            // デフォルトはログインタブ（planパラメータがある場合もログインタブ）
             loginTab.classList.add('active');
             signupTab.classList.remove('active');
             resetTab.classList.remove('active');
@@ -599,11 +600,53 @@
                 console.log('🔐 ログイン試行中...', email);
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log('✅ ログイン成功:', userCredential.user.uid);
-                showSuccess('ログインに成功しました！');
-                // ログイン成功後、メンバーページにリダイレクト
-                setTimeout(() => {
-                    window.location.href = 'member.html';
-                }, 1000);
+                
+                // URLパラメータからプラン情報を取得
+                const urlParams = new URLSearchParams(window.location.search);
+                const selectedPlan = urlParams.get('plan');
+                
+                if (selectedPlan && (selectedPlan === 'basic' || selectedPlan === 'premium')) {
+                    // プランが選択されている場合、直接Stripe決済ページにリダイレクト
+                    // 環境判定（本番環境かどうか）
+                    const hostname = window.location.hostname || '';
+                    const protocol = window.location.protocol || '';
+                    const IS_PRODUCTION = hostname !== 'localhost' &&
+                                          hostname !== '127.0.0.1' &&
+                                          hostname !== '' &&
+                                          protocol !== 'file:';
+                    
+                    // Stripe Payment Links設定
+                    const PLAN_PAYMENT_LINKS = IS_PRODUCTION ? {
+                        // 本番環境用 Payment Links
+                        'basic': 'https://buy.stripe.com/14A14ncel0sQ6dA7bMeME1y', // 1980円プラン
+                        'premium': 'https://buy.stripe.com/fZu4gz929b7ufOa7bMeME1z' // 2980円プラン
+                    } : {
+                        // テスト環境用 Payment Links
+                        'basic': 'https://buy.stripe.com/test_bJe9ATfqx6Re59w3ZAeME02', // 1980円プラン（テスト用）
+                        'premium': 'https://buy.stripe.com/test_00w8wP4LT1wUcBYeEeeME03' // 2980円プラン（テスト用）
+                    };
+                    
+                    const paymentLink = PLAN_PAYMENT_LINKS[selectedPlan];
+                    
+                    if (paymentLink) {
+                        showSuccess('ログインに成功しました！プラン登録ページに移動します。');
+                        setTimeout(() => {
+                            window.location.href = paymentLink;
+                        }, 1500);
+                    } else {
+                        // Payment Linkが見つからない場合、メンバーページにリダイレクト
+                        showSuccess('ログインに成功しました！');
+                        setTimeout(() => {
+                            window.location.href = 'member.html';
+                        }, 1000);
+                    }
+                } else {
+                    // プランが選択されていない場合、メンバーページにリダイレクト
+                    showSuccess('ログインに成功しました！');
+                    setTimeout(() => {
+                        window.location.href = 'member.html';
+                    }, 1000);
+                }
             } catch (error) {
                 console.error('❌ ログインエラー:', error);
                 console.error('エラーコード:', error.code);

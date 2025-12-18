@@ -1178,10 +1178,10 @@
         async function redirectToStripe(plan) {
             const user = auth.currentUser;
             if (!user) {
-                // 未ログイン時は会員登録ページにリダイレクト（プラン情報をURLパラメータで渡す）
-                showMessage('プラン登録には会員登録が必要です。会員登録ページに移動します。', 'info');
+                // 未ログイン時はログイン/会員登録ページにリダイレクト（プラン情報をURLパラメータで渡す）
+                showMessage('プラン登録にはログインが必要です。ログインページに移動します。', 'info');
                 setTimeout(() => {
-                    window.location.href = `auth.html?action=signup&plan=${plan}`;
+                    window.location.href = `auth.html?plan=${plan}`;
                 }, 1500);
                 return;
             }
