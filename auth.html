@@ -606,10 +606,18 @@
                 const urlParams = new URLSearchParams(window.location.search);
                 const selectedPlan = urlParams.get('plan');
                 
+                // プラン情報をlocalStorageに保存（onAuthStateChangedで使用）
+                if (selectedPlan && (selectedPlan === 'basic' || selectedPlan === 'premium')) {
+                    localStorage.setItem('pending_plan_redirect', selectedPlan);
+                }
+                
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 console.log('✅ ログイン成功:', userCredential.user.uid);
                 
-                if (selectedPlan && (selectedPlan === 'basic' || selectedPlan === 'premium')) {
+                // localStorageからプラン情報を取得（URLパラメータより優先）
+                const planToRedirect = localStorage.getItem('pending_plan_redirect') || selectedPlan;
+                
+                if (planToRedirect && (planToRedirect === 'basic' || planToRedirect === 'premium')) {
                     // プランが選択されている場合、直接Stripe決済ページにリダイレクト（即座に実行）
                     // 環境判定（本番環境かどうか）
                     const hostname = window.location.hostname || '';
@@ -630,10 +638,12 @@
                         'premium': 'https://buy.stripe.com/test_00w8wP4LT1wUcBYeEeeME03' // 2980円プラン（テスト用）
                     };
                     
-                    const paymentLink = PLAN_PAYMENT_LINKS[selectedPlan];
+                    const paymentLink = PLAN_PAYMENT_LINKS[planToRedirect];
                     
                     if (paymentLink) {
                         console.log('🎯 Redirecting to Stripe payment page:', paymentLink);
+                        // localStorageからプラン情報を削除
+                        localStorage.removeItem('pending_plan_redirect');
                         // リダイレクトフラグを設定してonAuthStateChangedのリダイレクトを防ぐ
                         isRedirecting = true;
                         // 即座にリダイレクト（onAuthStateChangedより先に実行されるように）
@@ -641,6 +651,7 @@
                         return; // 以降の処理を実行しない
                     } else {
                         // Payment Linkが見つからない場合、メンバーページにリダイレクト
+                        localStorage.removeItem('pending_plan_redirect');
                         loginInProgress = false;
                         showSuccess('ログインに成功しました！');
                         setTimeout(() => {
@@ -649,6 +660,7 @@
                     }
                 } else {
                     // プランが選択されていない場合、メンバーページにリダイレクト
+                    localStorage.removeItem('pending_plan_redirect');
                     loginInProgress = false;
                     showSuccess('ログインに成功しました！');
                     setTimeout(() => {
@@ -849,10 +861,12 @@
             if (user) {
                 console.log('ユーザーがログインしています:', user.email);
                 
-                // URLパラメータにplanがある場合は、ログイン/会員登録処理でリダイレクトするため、ここでは何もしない
+                // localStorageからプラン情報を取得（URLパラメータより優先）
+                const pendingPlan = localStorage.getItem('pending_plan_redirect');
                 const urlParams = new URLSearchParams(window.location.search);
-                const plan = urlParams.get('plan');
+                const plan = urlParams.get('plan') || pendingPlan;
                 
+                // planパラメータまたはlocalStorageにplanがある場合は、ログイン/会員登録処理でリダイレクトするため、ここでは何もしない
                 if (plan && (plan === 'basic' || plan === 'premium')) {
                     console.log('⚠️ Plan parameter detected, skipping redirect in onAuthStateChanged');
                     return; // planパラメータがある場合は完全にスキップ
