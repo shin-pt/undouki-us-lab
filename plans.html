@@ -1178,10 +1178,10 @@
         async function redirectToStripe(plan) {
             const user = auth.currentUser;
             if (!user) {
-                // 未ログイン時は会員登録ページにリダイレクト
+                // 未ログイン時は会員登録ページにリダイレクト（プラン情報をURLパラメータで渡す）
                 showMessage('プラン登録には会員登録が必要です。会員登録ページに移動します。', 'info');
                 setTimeout(() => {
-                    window.location.href = 'auth.html?action=signup';
+                    window.location.href = `auth.html?action=signup&plan=${plan}`;
                 }, 1500);
                 return;
             }
@@ -1329,11 +1329,43 @@
             }
         });
 
+        // プラン自動リダイレクト処理（会員登録後の自動遷移用）
+        async function handlePlanRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectPlan = urlParams.get('redirect_plan');
+            
+            if (redirectPlan && (redirectPlan === 'basic' || redirectPlan === 'premium')) {
+                const user = auth.currentUser;
+                if (user) {
+                    // ログイン済みの場合、自動的にStripe決済ページにリダイレクト
+                    console.log(`🔄 Auto-redirecting to Stripe for plan: ${redirectPlan}`);
+                    try {
+                        // URLパラメータをクリーンアップ
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        // Stripe決済ページにリダイレクト
+                        await redirectToStripe(redirectPlan);
+                    } catch (error) {
+                        console.error('プラン自動リダイレクトエラー:', error);
+                        showMessage('プラン登録ページへの遷移に失敗しました。もう一度お試しください。', 'error');
+                    }
+                    return true; // リダイレクトが実行されたことを示す
+                }
+            }
+            return false; // リダイレクトが実行されなかったことを示す
+        }
+
         // 認証状態の監視
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 // ログインしている場合
                 try {
+                    // プラン自動リダイレクトをチェック（会員登録後の自動遷移）
+                    const redirected = await handlePlanRedirect();
+                    if (redirected) {
+                        // リダイレクトが実行された場合、以降の処理をスキップ
+                        return;
+                    }
+                    
                     const plan = await getUserPlan(user);
                     await displayCurrentPlan(plan);
                     loadingSection.style.display = 'none';

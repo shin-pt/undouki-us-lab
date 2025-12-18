@@ -678,11 +678,24 @@
                 });
 
                 console.log('✅ ユーザー情報をFirestoreに保存しました:', user.uid);
-                showSuccess('会員登録が完了しました！');
-                // 登録成功後、メンバーページにリダイレクト
-                setTimeout(() => {
-                    window.location.href = 'member.html';
-                }, 1000);
+                
+                // URLパラメータからプラン情報を取得
+                const urlParams = new URLSearchParams(window.location.search);
+                const selectedPlan = urlParams.get('plan');
+                
+                if (selectedPlan && (selectedPlan === 'basic' || selectedPlan === 'premium')) {
+                    // プランが選択されている場合、plans.htmlにリダイレクトして自動的にStripe決済ページに遷移
+                    showSuccess('会員登録が完了しました！プラン登録ページに移動します。');
+                    setTimeout(() => {
+                        window.location.href = `plans.html?redirect_plan=${selectedPlan}`;
+                    }, 1500);
+                } else {
+                    // プランが選択されていない場合、メンバーページにリダイレクト
+                    showSuccess('会員登録が完了しました！');
+                    setTimeout(() => {
+                        window.location.href = 'member.html';
+                    }, 1000);
+                }
             } catch (error) {
                 console.error('❌ 会員登録エラー:', error);
                 console.error('エラーコード:', error.code);
