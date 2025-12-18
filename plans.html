@@ -405,6 +405,13 @@
             display: block;
         }
 
+        .message.info {
+            background: rgba(33, 150, 243, 0.2);
+            border: 1px solid rgba(33, 150, 243, 0.5);
+            color: #64b5f6;
+            display: block;
+        }
+
         /* --- Responsive Design (Mobile-First) --- */
 
         /* タブレット対応 (768px以上) */
@@ -1171,7 +1178,11 @@
         async function redirectToStripe(plan) {
             const user = auth.currentUser;
             if (!user) {
-                showMessage('ログインしていません。', 'error');
+                // 未ログイン時は会員登録ページにリダイレクト
+                showMessage('プラン登録には会員登録が必要です。会員登録ページに移動します。', 'info');
+                setTimeout(() => {
+                    window.location.href = 'auth.html?action=signup';
+                }, 1500);
                 return;
             }
 
@@ -1336,8 +1347,11 @@
                     `;
                 }
             } else {
-                // ログインしていない場合、会員登録ページにリダイレクト
-                window.location.href = 'auth.html?action=signup';
+                // ログインしていない場合でもプランを表示（リダイレクトしない）
+                loadingSection.style.display = 'none';
+                contentSection.style.display = 'block';
+                // 現在のプラン情報を未登録として表示
+                await displayCurrentPlan(null);
             }
         });
     </script>
