@@ -11,7 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          submodules: true
+          submodules: recursive
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
 
       # Flutterのセットアップ
       - uses: subosito/flutter-action@v2
@@ -22,20 +23,32 @@ jobs:
       # Flutterアプリのビルド
       - name: Install Flutter dependencies
         run: |
-          cd echo-quiz-app
-          flutter pub get
+          if [ -d "echo-quiz-app" ]; then
+            cd echo-quiz-app
+            flutter pub get
+          else
+            echo "Warning: echo-quiz-app directory not found. Skipping Flutter build."
+          fi
 
       - name: Build Flutter web app
         run: |
-          cd echo-quiz-app
-          flutter build web --base-href=/quiz-app/
+          if [ -d "echo-quiz-app" ]; then
+            cd echo-quiz-app
+            flutter build web --base-href=/quiz-app/
+          else
+            echo "Warning: echo-quiz-app directory not found. Skipping Flutter build."
+          fi
 
       # ビルド出力をquiz-appディレクトリにコピー
       - name: Copy build output to quiz-app
         run: |
-          rm -rf quiz-app
-          mkdir -p quiz-app
-          cp -r echo-quiz-app/build/web/* quiz-app/
+          if [ -d "echo-quiz-app/build/web" ]; then
+            rm -rf quiz-app
+            mkdir -p quiz-app
+            cp -r echo-quiz-app/build/web/* quiz-app/
+          else
+            echo "Warning: echo-quiz-app/build/web directory not found. quiz-app directory will not be updated."
+          fi
 
       # Firebase Hostingにデプロイ
       - uses: FirebaseExtended/action-hosting-deploy@v0
