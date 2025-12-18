@@ -609,6 +609,9 @@
             try {
                 console.log('🔐 ログイン試行中...', email);
                 
+                // ログイン処理中フラグを設定（onAuthStateChangedでリダイレクトを防ぐ）
+                isLoginOrSignupInProgress = true;
+                
                 // URLパラメータからプラン情報を事前に取得（ログイン前に取得）
                 const urlParams = new URLSearchParams(window.location.search);
                 const selectedPlan = urlParams.get('plan');
@@ -651,12 +654,15 @@
                         console.log('🎯 Redirecting to Stripe payment page:', paymentLink);
                         // localStorageからプラン情報を削除
                         localStorage.removeItem('pending_plan_redirect');
+                        // フラグをリセット（リダイレクト前に）
+                        isLoginOrSignupInProgress = false;
                         // 即座にリダイレクト（onAuthStateChangedより先に実行されるように）
                         window.location.replace(paymentLink); // replaceを使用してブラウザ履歴に残さない
                         return; // 以降の処理を実行しない
                     } else {
                         // Payment Linkが見つからない場合、メンバーページにリダイレクト
                         localStorage.removeItem('pending_plan_redirect');
+                        isLoginOrSignupInProgress = false;
                         showSuccess('ログインに成功しました！');
                         setTimeout(() => {
                             window.location.href = 'member.html';
@@ -665,6 +671,7 @@
                 } else {
                     // プランが選択されていない場合、メンバーページにリダイレクト
                     localStorage.removeItem('pending_plan_redirect');
+                    isLoginOrSignupInProgress = false;
                     showSuccess('ログインに成功しました！');
                     setTimeout(() => {
                         window.location.href = 'member.html';
@@ -696,6 +703,8 @@
                     errorMsg = `ログインに失敗しました: ${error.message || error.code || '不明なエラー'}`;
                 }
                 showError(errorMsg);
+                // エラー時もフラグをリセット
+                isLoginOrSignupInProgress = false;
             } finally {
                 loginBtn.disabled = false;
                 loginLoading.classList.remove('active');
@@ -727,6 +736,9 @@
             clearMessages();
 
             try {
+                // 会員登録処理中フラグを設定（onAuthStateChangedでリダイレクトを防ぐ）
+                isLoginOrSignupInProgress = true;
+                
                 // ユーザーアカウントを作成
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
@@ -777,12 +789,15 @@
                         console.log('🎯 Redirecting to Stripe payment page after signup:', paymentLink);
                         // localStorageからプラン情報を削除
                         localStorage.removeItem('pending_plan_redirect');
+                        // フラグをリセット（リダイレクト前に）
+                        isLoginOrSignupInProgress = false;
                         // 即座にリダイレクト（onAuthStateChangedより先に実行されるように）
                         window.location.replace(paymentLink); // replaceを使用してブラウザ履歴に残さない
                         return; // 以降の処理を実行しない
                     } else {
                         // Payment Linkが見つからない場合、メンバーページにリダイレクト
                         localStorage.removeItem('pending_plan_redirect');
+                        isLoginOrSignupInProgress = false;
                         showSuccess('会員登録が完了しました！');
                         setTimeout(() => {
                             window.location.href = 'member.html';
@@ -791,6 +806,7 @@
                 } else {
                     // プランが選択されていない場合、メンバーページにリダイレクト
                     localStorage.removeItem('pending_plan_redirect');
+                    isLoginOrSignupInProgress = false;
                     showSuccess('会員登録が完了しました！');
                     setTimeout(() => {
                         window.location.href = 'member.html';
@@ -800,6 +816,9 @@
                 console.error('❌ 会員登録エラー:', error);
                 console.error('エラーコード:', error.code);
                 console.error('エラーメッセージ:', error.message);
+                
+                // エラー時もフラグをリセット
+                isLoginOrSignupInProgress = false;
                 
                 let errorMsg = '会員登録に失敗しました。';
                 if (error.code === 'auth/email-already-in-use') {
@@ -862,10 +881,17 @@
         // 認証状態の監視
         // 注意: ログイン/会員登録処理でリダイレクトを制御するため、planパラメータがある場合は完全にリダイレクトしない
         let redirectTimeoutId = null; // setTimeoutのIDを保存
+        let isLoginOrSignupInProgress = false; // ログイン/会員登録処理中フラグ（グローバルスコープ）
         
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log('ユーザーがログインしています:', user.email);
+                
+                // ログイン/会員登録処理中は完全にスキップ
+                if (isLoginOrSignupInProgress) {
+                    console.log('⚠️ Login/Signup in progress, skipping redirect in onAuthStateChanged');
+                    return;
+                }
                 
                 // 既存のタイマーをクリア
                 if (redirectTimeoutId) {
@@ -903,7 +929,7 @@
                         const checkPlan = new URLSearchParams(window.location.search).get('plan');
                         const checkPendingPlan = localStorage.getItem('pending_plan_redirect');
                         
-                        if (!stillSubmitting && !checkPlan && !checkPendingPlan) {
+                        if (!stillSubmitting && !checkPlan && !checkPendingPlan && !isLoginOrSignupInProgress) {
                             console.log('🔄 Redirecting to member.html from onAuthStateChanged');
                             window.location.href = 'member.html';
                         } else {
@@ -919,6 +945,7 @@
                     clearTimeout(redirectTimeoutId);
                     redirectTimeoutId = null;
                 }
+                isLoginOrSignupInProgress = false; // ログアウト時にフラグをリセット
             }
         });
     </script>
