@@ -35,6 +35,8 @@ jobs:
             if [ ! -f ".env" ]; then
               touch .env
             fi
+            # 古いFirebase Storage URLを新しいURLに置換
+            find lib -name "*.dart" -type f -exec sed -i 's|echo-quiz-app\.firebasestorage\.app|musculoskeletal-us-lab.firebasestorage.app|g' {} +
             flutter pub get
           else
             echo "Warning: echo-quiz-app directory not found. Skipping Flutter build."
