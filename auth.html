@@ -874,12 +874,22 @@
                 
                 // 既にログインしている場合はメンバーページにリダイレクト
                 // ただし、リダイレクト中、またはログイン処理中はリダイレクトしない
+                // また、フォーム送信中（ログイン/会員登録処理中）はリダイレクトしない
                 if (window.location.pathname.includes('auth.html') && !isRedirecting && !loginInProgress) {
-                    setTimeout(() => {
-                        if (!isRedirecting && !loginInProgress) {
-                            window.location.href = 'member.html';
-                        }
-                    }, 1000); // ログイン処理のリダイレクトより遅く実行
+                    // フォームが送信されているかチェック（ログイン/会員登録処理中かどうか）
+                    const loginBtn = document.getElementById('loginBtn');
+                    const signupBtn = document.getElementById('signupBtn');
+                    const isFormSubmitting = (loginBtn && loginBtn.disabled) || (signupBtn && signupBtn.disabled);
+                    
+                    if (!isFormSubmitting) {
+                        setTimeout(() => {
+                            // 再度チェック（ログイン/会員登録処理が完了していない場合）
+                            const stillSubmitting = (loginBtn && loginBtn.disabled) || (signupBtn && signupBtn.disabled);
+                            if (!isRedirecting && !loginInProgress && !stillSubmitting) {
+                                window.location.href = 'member.html';
+                            }
+                        }, 2000); // ログイン処理のリダイレクトより十分遅く実行
+                    }
                 }
             } else {
                 console.log('ユーザーはログインしていません');
