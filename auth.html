@@ -652,7 +652,12 @@
                     
                     if (paymentLink) {
                         console.log('🎯 Redirecting to Stripe payment page:', paymentLink);
-                        // localStorageからプラン情報を削除
+                        // 既存のタイマーをクリア（onAuthStateChangedのリダイレクトを防ぐ）
+                        if (redirectTimeoutId) {
+                            clearTimeout(redirectTimeoutId);
+                            redirectTimeoutId = null;
+                        }
+                        // localStorageからプラン情報を削除（onAuthStateChangedで検出されないように）
                         localStorage.removeItem('pending_plan_redirect');
                         // フラグをリセット（リダイレクト前に）
                         isLoginOrSignupInProgress = false;
@@ -787,7 +792,12 @@
                     
                     if (paymentLink) {
                         console.log('🎯 Redirecting to Stripe payment page after signup:', paymentLink);
-                        // localStorageからプラン情報を削除
+                        // 既存のタイマーをクリア（onAuthStateChangedのリダイレクトを防ぐ）
+                        if (redirectTimeoutId) {
+                            clearTimeout(redirectTimeoutId);
+                            redirectTimeoutId = null;
+                        }
+                        // localStorageからプラン情報を削除（onAuthStateChangedで検出されないように）
                         localStorage.removeItem('pending_plan_redirect');
                         // フラグをリセット（リダイレクト前に）
                         isLoginOrSignupInProgress = false;
@@ -887,6 +897,11 @@
             if (user) {
                 console.log('ユーザーがログインしています:', user.email);
                 
+                // auth.htmlにいる場合のみ処理
+                if (!window.location.pathname.includes('auth.html')) {
+                    return; // auth.html以外では何もしない
+                }
+                
                 // ログイン/会員登録処理中は完全にスキップ
                 if (isLoginOrSignupInProgress) {
                     console.log('⚠️ Login/Signup in progress, skipping redirect in onAuthStateChanged');
@@ -920,8 +935,9 @@
                 const signupBtn = document.getElementById('signupBtn');
                 const isFormSubmitting = (loginBtn && loginBtn.disabled) || (signupBtn && signupBtn.disabled);
                 
-                // フォーム送信中でない場合、かつauth.htmlにいる場合のみ、既にログインしているユーザーをmember.htmlにリダイレクト
-                if (window.location.pathname.includes('auth.html') && !isFormSubmitting) {
+                // フォーム送信中でない場合、既にログインしているユーザーをmember.htmlにリダイレクト
+                // ただし、planパラメータがない場合のみ（上記のチェックで既に除外されているが、念のため）
+                if (!isFormSubmitting) {
                     // 十分に遅らせて実行（ログイン処理のリダイレクトが確実に実行されるように）
                     redirectTimeoutId = setTimeout(() => {
                         // 再度チェック（フォーム送信が完了していない場合、またはplanパラメータが設定された場合）
@@ -929,14 +945,15 @@
                         const checkPlan = new URLSearchParams(window.location.search).get('plan');
                         const checkPendingPlan = localStorage.getItem('pending_plan_redirect');
                         
+                        // すべての条件を満たす場合のみリダイレクト
                         if (!stillSubmitting && !checkPlan && !checkPendingPlan && !isLoginOrSignupInProgress) {
-                            console.log('🔄 Redirecting to member.html from onAuthStateChanged');
+                            console.log('🔄 Redirecting to member.html from onAuthStateChanged (already logged in user)');
                             window.location.href = 'member.html';
                         } else {
                             console.log('⚠️ Skipping redirect: form submitting or plan parameter exists');
                         }
                         redirectTimeoutId = null;
-                    }, 3000); // ログイン処理のリダイレクトより十分遅く実行（3秒）
+                    }, 5000); // ログイン処理のリダイレクトより十分遅く実行（5秒に延長）
                 }
             } else {
                 console.log('ユーザーはログインしていません');
