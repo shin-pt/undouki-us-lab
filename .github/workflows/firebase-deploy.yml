@@ -25,6 +25,10 @@ jobs:
         run: |
           if [ -d "echo-quiz-app" ]; then
             cd echo-quiz-app
+            # .envファイルが存在しない場合は空のファイルを作成
+            if [ ! -f ".env" ]; then
+              touch .env
+            fi
             flutter pub get
           else
             echo "Warning: echo-quiz-app directory not found. Skipping Flutter build."
