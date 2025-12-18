@@ -1354,11 +1354,20 @@
             }
 
             try {
+                console.log(`📥 PDFダウンロード開始: ${materialId}`);
+                
                 // アクセス権限を再確認
                 const userPlan = await getUserPlan(user);
                 const isPremium = userPlan === 'premium';
                 const purchasedMaterials = await getPurchasedMaterials(user);
                 const isPurchased = purchasedMaterials.includes(materialId);
+
+                console.log(`🔍 アクセス権限チェック:`, {
+                    materialId,
+                    isPremium,
+                    isPurchased,
+                    purchasedMaterials
+                });
 
                 if (!isPremium && !isPurchased) {
                     alert('この資料を購入する必要があります。');
@@ -1366,25 +1375,46 @@
                 }
 
                 // Firebase StorageからPDFを取得
-                const storageRef = ref(storage, `materials/${materialId}.pdf`);
+                const filePath = `materials/${materialId}.pdf`;
+                console.log(`📂 Storageパス: ${filePath}`);
+                
+                const storageRef = ref(storage, filePath);
+                console.log(`🔗 Storage参照作成完了`);
+                
                 const downloadURL = await getDownloadURL(storageRef);
+                console.log(`✅ ダウンロードURL取得成功: ${downloadURL.substring(0, 50)}...`);
 
                 // ダウンロードリンクを作成してクリック
                 const link = document.createElement('a');
                 link.href = downloadURL;
                 link.download = `${MATERIAL_TITLES[materialId] || materialId}.pdf`;
+                link.target = '_blank'; // 新しいタブで開く
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
 
                 console.log(`✅ PDF downloaded: ${materialId}`);
             } catch (error) {
-                console.error('PDFダウンロードエラー:', error);
+                console.error('❌ PDFダウンロードエラー:', error);
+                console.error('エラー詳細:', {
+                    code: error.code,
+                    message: error.message,
+                    stack: error.stack
+                });
+                
+                let errorMessage = 'PDFのダウンロードに失敗しました。';
+                
                 if (error.code === 'storage/object-not-found') {
-                    alert('PDFファイルが見つかりませんでした。管理者にお問い合わせください。');
+                    errorMessage = `PDFファイルが見つかりませんでした。\n\nファイルパス: materials/${materialId}.pdf\n\n管理者にお問い合わせください。`;
+                } else if (error.code === 'storage/unauthorized') {
+                    errorMessage = 'アクセス権限がありません。ログイン状態を確認してください。';
+                } else if (error.code === 'storage/unknown') {
+                    errorMessage = `不明なエラーが発生しました。\n\nエラーコード: ${error.code}\nエラーメッセージ: ${error.message}`;
                 } else {
-                    alert('PDFのダウンロードに失敗しました。もう一度お試しください。');
+                    errorMessage = `PDFのダウンロードに失敗しました。\n\nエラー: ${error.message || error.code || '不明なエラー'}`;
                 }
+                
+                alert(errorMessage);
             }
         }
     </script>
