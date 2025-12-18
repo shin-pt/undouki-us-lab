@@ -836,10 +836,16 @@
             if (user) {
                 console.log('ユーザーがログインしています:', user.email);
                 // 既にログインしている場合はメンバーページにリダイレクト
+                // ただし、URLパラメータにplanがある場合は、ログイン/会員登録処理でリダイレクトするため、ここではリダイレクトしない
                 if (window.location.pathname.includes('auth.html')) {
-                    setTimeout(() => {
-                        window.location.href = 'member.html';
-                    }, 500);
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const plan = urlParams.get('plan');
+                    // planパラメータがない場合のみ、member.htmlにリダイレクト
+                    if (!plan) {
+                        setTimeout(() => {
+                            window.location.href = 'member.html';
+                        }, 500);
+                    }
                 }
             } else {
                 console.log('ユーザーはログインしていません');
