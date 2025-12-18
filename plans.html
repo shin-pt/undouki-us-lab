@@ -1197,9 +1197,14 @@
                 customerId: subscription?.customerId
             });
             
+            // プラン未登録の場合（subscriptionがnullまたはplanがnull/undefined）、直接Stripe決済ページにリダイレクト
+            if (!subscription || !subscription.plan) {
+                console.log('📝 No existing plan found. Redirecting to Stripe payment page...');
+                // この後、Stripe Payment Linkにリダイレクト（下のコードに続く）
+            }
             // 既存のプランがある場合（planフィールドが設定されている場合）
             // 注意: テストモードで登録した場合、stripeSubscriptionIdはないが、planフィールドは設定されている
-            if (subscription && subscription.plan) {
+            else if (subscription && subscription.plan) {
                 console.log('✅ Existing plan found:', subscription.plan);
                 const currentPlanName = subscription.plan === 'basic' ? '1980円プラン' : 
                                        subscription.plan === 'premium' ? '2980円プラン' : 'プラン';
