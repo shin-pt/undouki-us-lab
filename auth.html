@@ -599,6 +599,9 @@
             try {
                 console.log('🔐 ログイン試行中...', email);
                 
+                // ログイン処理中フラグを設定
+                loginInProgress = true;
+                
                 // URLパラメータからプラン情報を事前に取得（ログイン前に取得）
                 const urlParams = new URLSearchParams(window.location.search);
                 const selectedPlan = urlParams.get('plan');
@@ -630,14 +633,15 @@
                     const paymentLink = PLAN_PAYMENT_LINKS[selectedPlan];
                     
                     if (paymentLink) {
-                        showSuccess('ログインに成功しました！プラン登録ページに移動します。');
+                        console.log('🎯 Redirecting to Stripe payment page:', paymentLink);
                         // リダイレクトフラグを設定してonAuthStateChangedのリダイレクトを防ぐ
                         isRedirecting = true;
                         // 即座にリダイレクト（onAuthStateChangedより先に実行されるように）
-                        window.location.href = paymentLink;
+                        window.location.replace(paymentLink); // replaceを使用してブラウザ履歴に残さない
                         return; // 以降の処理を実行しない
                     } else {
                         // Payment Linkが見つからない場合、メンバーページにリダイレクト
+                        loginInProgress = false;
                         showSuccess('ログインに成功しました！');
                         setTimeout(() => {
                             window.location.href = 'member.html';
@@ -645,6 +649,7 @@
                     }
                 } else {
                     // プランが選択されていない場合、メンバーページにリダイレクト
+                    loginInProgress = false;
                     showSuccess('ログインに成功しました！');
                     setTimeout(() => {
                         window.location.href = 'member.html';
@@ -836,29 +841,31 @@
 
         // リダイレクト中フラグ（グローバルスコープ）
         let isRedirecting = false;
+        let loginInProgress = false; // ログイン処理中フラグ
 
         // 認証状態の監視
-        // 注意: ログイン/会員登録処理でリダイレクトするため、planパラメータがある場合はリダイレクトしない
+        // 注意: ログイン/会員登録処理でリダイレクトするため、planパラメータがある場合やログイン処理中はリダイレクトしない
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log('ユーザーがログインしています:', user.email);
                 // 既にログインしている場合はメンバーページにリダイレクト
-                // ただし、URLパラメータにplanがある場合、またはリダイレクト中はリダイレクトしない
-                if (window.location.pathname.includes('auth.html') && !isRedirecting) {
+                // ただし、URLパラメータにplanがある場合、リダイレクト中、またはログイン処理中はリダイレクトしない
+                if (window.location.pathname.includes('auth.html') && !isRedirecting && !loginInProgress) {
                     const urlParams = new URLSearchParams(window.location.search);
                     const plan = urlParams.get('plan');
                     // planパラメータがない場合のみ、member.htmlにリダイレクト
                     if (!plan) {
                         setTimeout(() => {
-                            if (!isRedirecting) {
+                            if (!isRedirecting && !loginInProgress) {
                                 window.location.href = 'member.html';
                             }
-                        }, 500);
+                        }, 1000); // ログイン処理のリダイレクトより遅く実行
                     }
                 }
             } else {
                 console.log('ユーザーはログインしていません');
                 isRedirecting = false; // ログアウト時にフラグをリセット
+                loginInProgress = false; // ログアウト時にフラグをリセット
             }
         });
     </script>
