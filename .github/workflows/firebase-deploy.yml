@@ -11,6 +11,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Flutterのセットアップ
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+          channel: 'stable'
+
+      # Flutterアプリのビルド
+      - name: Install Flutter dependencies
+        run: |
+          cd echo-quiz-app
+          flutter pub get
+
+      - name: Build Flutter web app
+        run: |
+          cd echo-quiz-app
+          flutter build web --base-href=/quiz-app/
+
+      # ビルド出力をquiz-appディレクトリにコピー
+      - name: Copy build output to quiz-app
+        run: |
+          rm -rf quiz-app
+          mkdir -p quiz-app
+          cp -r echo-quiz-app/build/web/* quiz-app/
+
+      # Firebase Hostingにデプロイ
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
