@@ -454,15 +454,20 @@
                     container.appendChild(titleDiv);
                 }
                 
+                // Vimeo動画の埋め込み（プライベート動画にも対応）
                 videoWrapper.innerHTML = `
                     <iframe 
-                        src="https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0" 
+                        src="https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&dnt=1" 
                         frameborder="0" 
                         allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
                         allowfullscreen
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                        loading="lazy">
                     </iframe>
                 `;
+                
+                // デバッグ用: コンソールに動画IDを出力
+                console.log(`Loading Vimeo video: ${videoId}`);
                 container.appendChild(videoWrapper);
             });
         }
