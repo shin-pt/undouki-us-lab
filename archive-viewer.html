@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アーカイブ動画閲覧 - 運動器超音波Lab</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --secondary-color: #999999;
+            --primary-color: #007bff;
+            --accent-green: #28a745;
+            --error-color: #dc3545;
+            --success-color: #28a745;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .header p {
+            color: var(--secondary-color);
+            font-size: 1rem;
+        }
+
+        .password-section {
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .password-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .form-group input {
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn {
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            padding: 12px;
+            background: rgba(220, 53, 69, 0.2);
+            border: 1px solid var(--error-color);
+            border-radius: 8px;
+            color: var(--error-color);
+            display: none;
+            margin-top: 10px;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .expired-message {
+            padding: 20px;
+            background: rgba(220, 53, 69, 0.2);
+            border: 2px solid var(--error-color);
+            border-radius: 12px;
+            color: var(--error-color);
+            text-align: center;
+            max-width: 600px;
+            margin: 60px auto;
+        }
+
+        .expired-message h2 {
+            margin-bottom: 10px;
+            color: var(--error-color);
+        }
+
+        .content-section {
+            display: none;
+            padding: 40px 20px;
+        }
+
+        .content-section.show {
+            display: block;
+        }
+
+        .video-container {
+            margin-bottom: 40px;
+        }
+
+        .video-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            background: #000;
+            margin-bottom: 20px;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .pdf-container {
+            margin-bottom: 40px;
+        }
+
+        .pdf-container h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .pdf-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .pdf-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .pdf-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 20px rgba(0, 123, 255, 0.2);
+        }
+
+        .pdf-item a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        .pdf-item i {
+            font-size: 2rem;
+            color: var(--error-color);
+        }
+
+        .pdf-item span {
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--text-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .password-section {
+                padding: 30px 20px;
+            }
+
+            .pdf-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-archive"></i> アーカイブ動画閲覧</h1>
+            <p>限定公開コンテンツをご覧いただけます</p>
+        </div>
+
+        <!-- パスワード入力セクション -->
+        <div id="passwordSection" class="password-section">
+            <form id="passwordForm" class="password-form">
+                <div class="form-group">
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" name="password" placeholder="パスワードを入力してください" required autocomplete="off">
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fas fa-unlock"></i> 認証する
+                </button>
+                <div id="errorMessage" class="error-message">
+                    <i class="fas fa-exclamation-circle"></i> パスワードが正しくありません。
+                </div>
+            </form>
+        </div>
+
+        <!-- 期限切れメッセージ -->
+        <div id="expiredMessage" class="expired-message" style="display: none;">
+            <h2><i class="fas fa-calendar-times"></i> 閲覧期限が過ぎています</h2>
+            <p>このコンテンツの閲覧期限は過ぎています。ご利用いただけません。</p>
+            <a href="index.html" class="back-link" style="margin-top: 20px; display: inline-block;">
+                <i class="fas fa-arrow-left"></i> トップページに戻る
+            </a>
+        </div>
+
+        <!-- コンテンツ表示セクション -->
+        <div id="contentSection" class="content-section">
+            <!-- Vimeo動画セクション -->
+            <div class="video-container">
+                <h2><i class="fas fa-video"></i> アーカイブ動画</h2>
+                <div id="videosContainer"></div>
+            </div>
+
+            <!-- PDF資料セクション -->
+            <div class="pdf-container">
+                <h2><i class="fas fa-file-pdf"></i> PDF資料</h2>
+                <div id="pdfsContainer" class="pdf-list"></div>
+            </div>
+
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> トップページに戻る
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // ===== 設定 =====
+        // 
+        // 【パスワード設定】
+        // ここにアーカイブ閲覧用のパスワードを設定してください
+        // 本番環境ではより安全な方法（サーバーサイド認証など）の使用を推奨します
+        const ARCHIVE_PASSWORD = 'archive2026';
+        
+        // 【閲覧期限設定】
+        // YYYY-MM-DD形式で設定してください
+        // この日付を過ぎると自動的に閲覧できなくなります
+        // 例: '2026-12-31'（2026年12月31日まで）
+        const EXPIRY_DATE = '2026-12-31';
+        
+        // 【Vimeo動画設定】
+        // Vimeoの動画IDを配列に追加してください
+        // 動画IDの取得方法: VimeoのURL（https://vimeo.com/123456789）の数字部分
+        // 例: ['123456789', '987654321']
+        const VIMEO_VIDEOS = [
+            // 例: '123456789'
+            // ここにVimeoの動画IDを追加してください
+        ];
+        
+        // 【PDF資料設定】
+        // PDFファイルの情報を配列に追加してください
+        // name: archive-pdfs/ディレクトリ内のファイル名
+        // displayName: ページに表示される名前
+        // 例: { name: 'セミナー資料1.pdf', displayName: 'セミナー資料1' }
+        const PDF_FILES = [
+            // 例: { name: '資料1.pdf', displayName: 'セミナー資料1' }
+            // ここにPDFファイルの情報を追加してください
+        ];
+
+        // ===== 初期化 =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // 期限チェック
+            checkExpiry();
+            
+            // 既に認証済みかチェック
+            const isAuthenticated = sessionStorage.getItem('archiveAuthenticated') === 'true';
+            const authExpiry = sessionStorage.getItem('archiveAuthExpiry');
+            
+            if (isAuthenticated && authExpiry && new Date(authExpiry) > new Date()) {
+                showContent();
+            }
+        });
+
+        // ===== 期限チェック =====
+        function checkExpiry() {
+            const today = new Date();
+            const expiry = new Date(EXPIRY_DATE + 'T23:59:59');
+            
+            if (today > expiry) {
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('expiredMessage').style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
+        // ===== パスワード認証 =====
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (!checkExpiry()) {
+                return;
+            }
+            
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (password === ARCHIVE_PASSWORD) {
+                // 認証成功
+                sessionStorage.setItem('archiveAuthenticated', 'true');
+                // セッション有効期限を24時間後に設定
+                const expiry = new Date();
+                expiry.setHours(expiry.getHours() + 24);
+                sessionStorage.setItem('archiveAuthExpiry', expiry.toISOString());
+                
+                errorMessage.classList.remove('show');
+                showContent();
+            } else {
+                // 認証失敗
+                errorMessage.classList.add('show');
+                document.getElementById('password').value = '';
+            }
+        });
+
+        // ===== コンテンツ表示 =====
+        function showContent() {
+            document.getElementById('passwordSection').style.display = 'none';
+            document.getElementById('contentSection').classList.add('show');
+            
+            // Vimeo動画を表示
+            displayVideos();
+            
+            // PDF資料を表示
+            displayPDFs();
+        }
+
+        // ===== Vimeo動画表示 =====
+        function displayVideos() {
+            const container = document.getElementById('videosContainer');
+            
+            if (VIMEO_VIDEOS.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary-color);">動画が設定されていません。</p>';
+                return;
+            }
+            
+            VIMEO_VIDEOS.forEach((videoId, index) => {
+                const videoWrapper = document.createElement('div');
+                videoWrapper.className = 'video-wrapper';
+                videoWrapper.innerHTML = `
+                    <iframe 
+                        src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0" 
+                        frameborder="0" 
+                        allow="autoplay; fullscreen; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                `;
+                container.appendChild(videoWrapper);
+            });
+        }
+
+        // ===== PDF資料表示 =====
+        function displayPDFs() {
+            const container = document.getElementById('pdfsContainer');
+            
+            if (PDF_FILES.length === 0) {
+                container.innerHTML = '<p style="color: var(--secondary-color);">PDF資料が設定されていません。</p>';
+                return;
+            }
+            
+            PDF_FILES.forEach(pdf => {
+                const pdfItem = document.createElement('div');
+                pdfItem.className = 'pdf-item';
+                pdfItem.innerHTML = `
+                    <a href="archive-pdfs/${pdf.name}" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>${pdf.displayName}</span>
+                    </a>
+                `;
+                container.appendChild(pdfItem);
+            });
+        }
+    </script>
+</body>
+</html>
