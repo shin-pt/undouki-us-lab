@@ -335,14 +335,14 @@
         const EXPIRY_DATE = '2026-12-31';
         
         // 【Vimeo動画設定】
-        // Vimeoの動画IDを配列に追加してください
-        // 動画IDの取得方法: VimeoのURL（https://vimeo.com/123456789）の数字部分
-        // 例: ['123456789', '987654321']
+        // Vimeoの動画情報を配列に追加してください
+        // プライベート動画の場合はhパラメータ（ハッシュ）が必要です
+        // 例: [{ id: '123456789', hash: 'abc123def456', title: '動画タイトル' }]
         const VIMEO_VIDEOS = [
-            '1168341259',  // 膝関節後面のアーカイブ講義動画
-            '1168285252',  // 半膜様筋・半腱様筋・腓腹筋内側頭の観察
-            '1168287338',  // 腓腹筋内側頭への徒手療法
-            '1168282680',  // 下内側膝神経への徒手療法
+            { id: '1168341259', hash: 'd37095959c', title: '膝関節後面講義アーカイブ動画 （2026.02）' },
+            { id: '1168285252', hash: '4c7a30e143', title: '半膜様筋、半腱様筋、腓腹筋内側頭の観察' },
+            { id: '1168287338', hash: '9ac059e229', title: '腓腹筋内側頭の徒手療法' },
+            { id: '1168282680', hash: '53a9e81a5f', title: '下内側膝神経の徒手療法' },
         ];
         
         // 【PDF資料設定】
@@ -430,45 +430,47 @@
                 return;
             }
             
-            VIMEO_VIDEOS.forEach((videoId, index) => {
-                const videoWrapper = document.createElement('div');
-                videoWrapper.className = 'video-wrapper';
-                videoWrapper.style.marginBottom = '40px';
-                
-                // 動画タイトルを追加（オプション）
+            // Vimeo Player APIスクリプトを読み込む（一度だけ）
+            if (!document.getElementById('vimeo-player-script')) {
+                const script = document.createElement('script');
+                script.id = 'vimeo-player-script';
+                script.src = 'https://player.vimeo.com/api/player.js';
+                document.head.appendChild(script);
+            }
+            
+            VIMEO_VIDEOS.forEach((video, index) => {
+                // 動画タイトルを追加
                 const titleDiv = document.createElement('div');
-                titleDiv.style.marginBottom = '10px';
-                titleDiv.style.fontSize = '1.1rem';
+                titleDiv.style.marginBottom = '15px';
+                titleDiv.style.fontSize = '1.2rem';
                 titleDiv.style.fontWeight = '600';
                 titleDiv.style.color = 'var(--text-color)';
+                titleDiv.textContent = video.title || `動画 ${index + 1}`;
+                container.appendChild(titleDiv);
                 
-                // 動画タイトルの設定（コメントから取得）
-                const titles = [
-                    '膝関節後面のアーカイブ講義動画',
-                    '半膜様筋・半腱様筋・腓腹筋内側頭の観察',
-                    '腓腹筋内側頭への徒手療法',
-                    '下内側膝神経への徒手療法'
-                ];
-                if (titles[index]) {
-                    titleDiv.textContent = titles[index];
-                    container.appendChild(titleDiv);
-                }
+                // Vimeo動画の埋め込みコンテナ
+                const videoContainer = document.createElement('div');
+                videoContainer.style.padding = '56.25% 0 0 0';
+                videoContainer.style.position = 'relative';
+                videoContainer.style.marginBottom = '40px';
                 
-                // Vimeo動画の埋め込み（プライベート動画にも対応）
-                videoWrapper.innerHTML = `
+                // プライベート動画の場合はhパラメータを含める
+                const videoUrl = video.hash 
+                    ? `https://player.vimeo.com/video/${video.id}?h=${video.hash}&badge=0&autopause=0&player_id=0&app_id=58479`
+                    : `https://player.vimeo.com/video/${video.id}?badge=0&autopause=0&player_id=0&app_id=58479`;
+                
+                videoContainer.innerHTML = `
                     <iframe 
-                        src="https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&player_id=0&app_id=58479&title=0&byline=0&portrait=0&dnt=1" 
+                        src="${videoUrl}" 
                         frameborder="0" 
-                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write" 
-                        allowfullscreen
-                        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
-                        loading="lazy">
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;" 
+                        title="${video.title || '動画'}">
                     </iframe>
                 `;
                 
-                // デバッグ用: コンソールに動画IDを出力
-                console.log(`Loading Vimeo video: ${videoId}`);
-                container.appendChild(videoWrapper);
+                container.appendChild(videoContainer);
             });
         }
 
