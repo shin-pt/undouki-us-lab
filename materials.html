@@ -197,34 +197,183 @@
 
         /* --- Materials List --- */
         .materials-container {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 20px;
             padding: 40px;
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
+        /* カテゴリフィルタタブ */
+        .materials-filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 35px;
+        }
+
+        .mat-filter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 22px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mat-filter-btn .count {
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            padding: 1px 8px;
+            font-weight: 700;
+        }
+
+        .mat-filter-btn:hover {
+            border-color: rgba(102, 126, 234, 0.6);
+            background: rgba(102, 126, 234, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .mat-filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.35);
+        }
+
+        .mat-filter-btn.active .count {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* カードグリッド */
         .materials-list {
             display: grid;
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
         }
 
         .material-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
             transition: all 0.3s ease;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 16px;
+            overflow: hidden;
+        }
+
+        .material-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .material-item:hover {
             transform: translateY(-5px);
-            border-color: var(--accent-brown);
-            background: rgba(139, 69, 19, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
+            background: rgba(102, 126, 234, 0.08);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+        }
+
+        .material-item:hover::before {
+            opacity: 1;
+        }
+
+        /* 資料が非表示（フィルタ）の場合 */
+        .material-item.filtered-out {
+            display: none;
+        }
+
+        /* カード上部: カテゴリバッジ + アクセス状態 */
+        .material-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .category-badge.cat-upper {
+            background: rgba(102, 126, 234, 0.18);
+            color: #9db1f5;
+            border: 1px solid rgba(102, 126, 234, 0.4);
+        }
+
+        .category-badge.cat-lower {
+            background: rgba(40, 167, 69, 0.15);
+            color: #6fcf8a;
+            border: 1px solid rgba(40, 167, 69, 0.4);
+        }
+
+        .category-badge.cat-trunk {
+            background: rgba(118, 75, 162, 0.2);
+            color: #c39ae0;
+            border: 1px solid rgba(118, 75, 162, 0.45);
+        }
+
+        /* アクセス状態チップ（JSが状態判明後に表示） */
+        .access-status {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .material-item.card-plan-access .access-status,
+        .material-item.card-purchased .access-status {
+            display: inline-flex;
+        }
+
+        .material-item.card-plan-access .access-status {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.45);
+        }
+
+        .material-item.card-purchased .access-status {
+            background: rgba(40, 167, 69, 0.15);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.45);
+        }
+
+        .material-item.card-plan-access,
+        .material-item.card-purchased {
+            border-color: rgba(255, 193, 7, 0.35);
+        }
+
+        .material-item.card-purchased {
+            border-color: rgba(40, 167, 69, 0.35);
         }
 
         .material-info {
@@ -240,52 +389,80 @@
 
         .material-date {
             color: var(--secondary-color);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .material-date i {
+            color: #667eea;
         }
 
         .material-description {
             color: var(--secondary-color);
-            font-size: 1rem;
-            line-height: 1.6;
+            font-size: 0.95rem;
+            line-height: 1.7;
         }
 
+        /* カード下部: 価格 + ボタン */
         .material-purchase {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
             gap: 15px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .material-price-wrap {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+        }
+
+        .price-label {
+            font-size: 0.75rem;
+            color: var(--secondary-color);
+            font-weight: 600;
         }
 
         .material-price {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--accent-brown);
+            color: var(--text-color);
         }
 
         .purchase-btn {
-            background: var(--accent-brown);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 12px 22px;
             border-radius: 25px;
             font-weight: 600;
+            font-family: inherit;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             white-space: nowrap;
+            min-height: 44px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .purchase-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(139, 69, 19, 0.3);
-            background: #a0541b;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+            filter: brightness(1.1);
         }
 
         .purchase-btn:disabled {
-            background: #666;
+            background: #444;
             color: #999;
             cursor: not-allowed;
             opacity: 0.6;
@@ -295,39 +472,12 @@
         .purchase-btn:disabled:hover {
             transform: none;
             box-shadow: none;
-            background: #666;
+            filter: none;
+            background: #444;
         }
 
         .purchase-btn i {
             margin-right: 8px;
-        }
-
-        /* --- Category Headers --- */
-        .category-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-green));
-            color: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            margin: 40px 0 20px 0;
-            text-align: center;
-        }
-
-        .category-header:first-child {
-            margin-top: 0;
-        }
-
-        .category-header h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .category-header i {
-            margin-right: 12px;
-            font-size: 2rem;
         }
 
         /* --- Notice --- */
@@ -430,6 +580,96 @@
             margin-top: 25px;
             font-size: 1rem;
             font-style: italic;
+        }
+
+        /* ヒーロー内: プラン特典ハイライト */
+        .plan-highlight {
+            max-width: 700px;
+            margin: 0 auto 35px auto;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.18) 0%, rgba(118, 75, 162, 0.18) 100%);
+            border: 2px solid rgba(255, 193, 7, 0.45);
+            border-radius: 16px;
+            padding: 28px 30px;
+        }
+
+        .plan-highlight .highlight-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.5);
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 5px 16px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .plan-highlight .highlight-main {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .plan-highlight .highlight-main strong {
+            color: #ffc107;
+        }
+
+        .plan-highlight .highlight-sub {
+            font-size: 1rem;
+            color: var(--secondary-color);
+            margin: 0;
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        .plan-cta-btn {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+            font-size: 1.1rem;
+        }
+
+        .plan-cta-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.45);
+        }
+
+        .plan-cta-btn i {
+            margin-right: 10px;
+            color: #ffc107;
+        }
+
+        .view-materials-btn.btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: var(--text-color);
+            box-shadow: none;
+            padding: 16px 36px;
+            font-size: 1.05rem;
+        }
+
+        .view-materials-btn.btn-outline:hover {
+            border-color: rgba(102, 126, 234, 0.7);
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
 
         /* --- Plan Promotion Section --- */
@@ -562,19 +802,31 @@
         }
 
         /* --- Responsive Design --- */
-        /* タブレット対応 (768px以上) */
-        @media (min-width: 768px) {
+        /* ワイド画面のみ横並びナビ（折り返しでヘッダーが縦に伸びるのを防ぐ） */
+        @media (min-width: 1100px) {
             .menu-toggle {
                 display: none;
+            }
+
+            .main-header .container {
+                gap: 20px;
+            }
+
+            .logo {
+                font-size: 1.4rem;
+                flex: 0 1 auto;
             }
 
             .nav-links {
                 display: flex !important;
                 position: static;
                 flex-direction: row;
-                flex-wrap: wrap;
-                gap: 15px;
+                flex-wrap: nowrap;
+                justify-content: flex-end;
+                gap: 6px;
                 width: auto;
+                flex: 1 1 auto;
+                min-width: 0;
                 background: transparent;
                 backdrop-filter: none;
                 border: none;
@@ -585,8 +837,10 @@
 
             .nav-links a {
                 width: auto;
-                padding: 8px 12px;
-                font-size: 0.95rem;
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                min-height: 36px;
+                white-space: nowrap;
                 justify-content: flex-start;
                 border: none;
                 background: transparent;
@@ -598,7 +852,7 @@
             }
 
             .nav-links a i {
-                font-size: 1rem;
+                font-size: 0.9rem;
                 width: auto;
             }
         }
@@ -631,18 +885,47 @@
                 font-size: 2rem;
             }
 
-            .material-item {
-                flex-direction: column;
-                text-align: center;
-                gap: 20px;
+            .materials-list {
+                grid-template-columns: 1fr;
+                gap: 18px;
             }
 
             .materials-container {
-                padding: 25px;
+                padding: 25px 18px;
             }
 
-            .category-header h2 {
-                font-size: 1.4rem;
+            .materials-filter-bar {
+                gap: 8px;
+                margin-bottom: 25px;
+            }
+
+            .mat-filter-btn {
+                padding: 8px 16px;
+                font-size: 0.88rem;
+            }
+
+            .plan-highlight {
+                padding: 22px 18px;
+            }
+
+            .plan-highlight .highlight-main {
+                font-size: 1.15rem;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .plan-cta-btn {
+                padding: 15px 32px;
+                font-size: 1rem;
+            }
+
+            .material-purchase {
+                flex-wrap: wrap;
+                justify-content: center;
+                text-align: center;
             }
 
             .plan-promotion-section {
@@ -676,9 +959,9 @@
             <nav class="nav-links" id="navLinks">
                 <a href="index.html"><i class="fas fa-home"></i> ホーム</a>
                 <a href="member.html" id="memberLink" style="display: none;"><i class="fas fa-user"></i> マイページ</a>
-                <a href="salon.html"><i class="fas fa-users"></i> オンラインサロン</a>
+                <a href="salon.html"><i class="fas fa-users"></i> 有料会員</a>
                 <a href="echo-videos.html"><i class="fas fa-video"></i> エコー動画</a>
-                <a href="/quiz-app/"><i class="fas fa-question-circle"></i> エコークイズ</a>
+                <a href="quiz-home.html"><i class="fas fa-question-circle"></i> エコークイズ</a>
                 <a href="auth.html" id="authLink"><i class="fas fa-sign-in-alt"></i> ログイン</a>
                 <a href="#" id="logoutBtn" style="display: none;"><i class="fas fa-sign-out-alt"></i> ログアウト</a>
             </nav>
@@ -694,40 +977,75 @@
                     過去のセミナー資料
                 </h1>
                 <div class="intro-text">
-                    <p>これまでに開催したセミナーの詳細PDF資料をご購入いただけます。</p>
+                    <p>これまでに開催したセミナーの詳細PDF資料（全12部位）をご覧いただけます。</p>
                     <p><strong>セミナーに参加できなかった方</strong>や、<strong>復習したい方</strong>におすすめです。</p>
                 </div>
-                <a href="#materials-list" class="view-materials-btn">
-                    <i class="fas fa-book-open"></i>
-                    過去のセミナー資料を見る
-                </a>
+                <div class="plan-highlight">
+                    <span class="highlight-badge">
+                        <i class="fas fa-crown"></i>
+                        いちばんお得な利用方法
+                    </span>
+                    <p class="highlight-main">
+                        <strong>1980円プラン（月額）</strong>なら、すべてのPDF資料が<strong>見放題</strong>
+                    </p>
+                    <p class="highlight-sub">
+                        2つ以上の資料をご覧になるなら、個別購入（各¥1,500）よりプラン登録がお得です。
+                    </p>
+                </div>
+                <div class="hero-actions">
+                    <a href="plans.html" class="plan-cta-btn">
+                        <i class="fas fa-crown"></i>
+                        プラン登録ページへ
+                    </a>
+                    <a href="#materials-list" class="view-materials-btn btn-outline">
+                        <i class="fas fa-book-open"></i>
+                        過去のセミナー資料を見る
+                    </a>
+                </div>
                 <p class="price-info">
-                    各資料 ¥1,500 / 決済後すぐにPDFをダウンロード可能
+                    1つだけ欲しい方は個別購入も可能：各資料 ¥1,500 / 決済後すぐにPDFをダウンロード可能
                 </p>
             </div>
 
             <!-- 詳細リストセクション -->
             <div id="materials-list" class="materials-container">
+
+                <!-- カテゴリフィルタ -->
+                <div class="materials-filter-bar" role="tablist" aria-label="カテゴリで絞り込み">
+                    <button class="mat-filter-btn active" data-category="all">
+                        <i class="fas fa-th-large"></i> すべて <span class="count">18</span>
+                    </button>
+                    <button class="mat-filter-btn" data-category="upper">
+                        <i class="fas fa-hand-paper"></i> 上肢 <span class="count">5</span>
+                    </button>
+                    <button class="mat-filter-btn" data-category="lower">
+                        <i class="fas fa-walking"></i> 下肢 <span class="count">9</span>
+                    </button>
+                    <button class="mat-filter-btn" data-category="trunk">
+                        <i class="fas fa-user"></i> 体幹 <span class="count">4</span>
+                    </button>
+                </div>
+
                 <div class="materials-list">
 
-                    <!-- 上肢カテゴリ -->
-                    <div class="category-header">
-                        <h2>
-                            <i class="fas fa-hand-paper"></i>
-                            上肢
-                        </h2>
-                    </div>
-
-                    <div class="material-item" data-material-id="shoulder_superior">
+                    <!-- 上肢 -->
+                    <div class="material-item" data-material-id="shoulder_superior" data-category="upper">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-upper"><i class="fas fa-hand-paper"></i> 上肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">肩関節上方</div>
-                            <div class="material-date">開催日: 2025年5月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年5月</div>
                             <div class="material-description">
                                 棘上筋、上部僧帽筋、肩甲挙筋などの肩関節上方に位置する筋群のエコー描出法と機能評価について詳しく解説した資料です。肩こりや肩関節インピンジメント症候群の評価に応用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -735,16 +1053,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="shoulder_inferior">
+                    <div class="material-item" data-material-id="shoulder_inferior" data-category="upper">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-upper"><i class="fas fa-hand-paper"></i> 上肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">肩関節下方</div>
-                            <div class="material-date">開催日: 2025年6月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年6月</div>
                             <div class="material-description">
                                 広背筋、大円筋、小円筋、棘下筋などの肩関節下方に位置する筋群のエコー描出法と評価について詳しく解説した資料です。肩関節の安定性評価や可動域制限の原因究明に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -752,16 +1077,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="elbow_medial">
+                    <div class="material-item" data-material-id="elbow_medial" data-category="upper">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-upper"><i class="fas fa-hand-paper"></i> 上肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">肘関節内側</div>
-                            <div class="material-date">開催日: 2025年11月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年11月</div>
                             <div class="material-description">
                                 腕尺関節、内側側副靱帯、前腕屈筋群、尺骨神経などの肘関節内側の構造物のエコー描出法について詳しく解説した資料です。肘関節内側痛や尺骨神経障害、前腕のしびれ・疼痛の原因究明に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -769,24 +1101,72 @@
                         </div>
                     </div>
 
-                    <!-- 下肢カテゴリ -->
-                    <div class="category-header">
-                        <h2>
-                            <i class="fas fa-walking"></i>
-                            下肢
-                        </h2>
+                    <div class="material-item" data-material-id="shoulder_anterior" data-category="upper">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-upper"><i class="fas fa-hand-paper"></i> 上肢</span>
+                            <span class="access-status"></span>
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">肩関節前面</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2026年5月</div>
+                            <div class="material-description">
+                                肩甲下筋腱、烏口上腕靱帯、上腕二頭筋長頭腱など肩関節前面の構造物のエコー描出法について詳しく解説した資料です。肩関節前方の疼痛評価や烏口上腕靱帯損傷の評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="material-item" data-material-id="knee_anterior">
+                    <div class="material-item" data-material-id="shoulder_posterior" data-category="upper">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-upper"><i class="fas fa-hand-paper"></i> 上肢</span>
+                            <span class="access-status"></span>
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">肩関節後面</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2026年6月</div>
+                            <div class="material-description">
+                                棘下筋、小円筋、後方関節唇など肩関節後面の構造物のエコー描出法について詳しく解説した資料です。肩関節後方痛や棘下筋腱損傷の評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 下肢 -->
+                    <div class="material-item" data-material-id="knee_anterior" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">膝関節前面</div>
-                            <div class="material-date">開催日: 2025年3月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年3月</div>
                             <div class="material-description">
                                 大腿四頭筋、膝蓋靭帯、膝蓋上嚢などの膝関節前面の構造物のエコー描出法について詳しく解説した資料です。膝前面痛や膝関節伸展制限の評価に応用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -794,16 +1174,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item">
+                    <div class="material-item" data-material-id="knee_medial" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">膝関節内側</div>
-                            <div class="material-date">開催日: 2025年4月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年4月</div>
                             <div class="material-description">
                                 内側側副靭帯、内側半月板、縫工筋、薄筋などの膝関節内側の構造物のエコー描出法と機能評価について解説した資料です。内側型変形性膝関節症の評価に有用です。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -811,16 +1198,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="hip_lateral">
+                    <div class="material-item" data-material-id="hip_lateral" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">股関節外側</div>
-                            <div class="material-date">開催日: 2025年7月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年7月</div>
                             <div class="material-description">
                                 中殿筋、小殿筋、大腿筋膜張筋、腸脛靭帯などの股関節外側に位置する筋群のエコー描出法について詳しく解説した資料です。股関節外側痛やトレンデレンブルグ歩行の評価に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -828,16 +1222,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="ankle_medial">
+                    <div class="material-item" data-material-id="ankle_medial" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">足関節内側</div>
-                            <div class="material-date">開催日: 2025年10月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年10月</div>
                             <div class="material-description">
                                 後脛骨筋、脛骨神経、内側足底神経、外側足底神経などの足関節内側の構造物のエコー描出法について詳しく解説した資料です。扁平足の評価や足関節内側痛、足底のしびれ・疼痛の原因究明に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -845,16 +1246,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="achilles_tendon">
+                    <div class="material-item" data-material-id="achilles_tendon" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">アキレス腱周囲</div>
-                            <div class="material-date">開催日: 2025年1月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年1月</div>
                             <div class="material-description">
                                 アキレス腱、Kager's fat pad、長母趾屈筋などのアキレス腱周囲の構造物のエコー描出法について詳しく解説した資料です。アキレス腱炎やアキレス腱周囲炎、足関節後方痛の評価に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -862,16 +1270,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="plantar_fascia">
+                    <div class="material-item" data-material-id="plantar_fascia" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">足底部</div>
-                            <div class="material-date">開催日: 2025年2月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年2月</div>
                             <div class="material-description">
                                 足底腱膜、足底神経、母趾外転筋、小趾外転筋などの足底部の構造物のエコー描出法について詳しく解説した資料です。足底筋膜炎や足底痛、足部のしびれ・疼痛の原因究明に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -879,24 +1294,96 @@
                         </div>
                     </div>
 
-                    <!-- 体幹カテゴリ -->
-                    <div class="category-header">
-                        <h2>
-                            <i class="fas fa-user"></i>
-                            体幹
-                        </h2>
+                    <div class="material-item" data-material-id="knee_posterior" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">膝関節後面</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2026年2月</div>
+                            <div class="material-description">
+                                膝窩筋、後十字靱帯、腓腹筋内側頭などの膝関節後面の構造物のエコー描出法について詳しく解説した資料です。膝窩部痛やベーカー嚢腫の評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="material-item" data-material-id="cervical_anterior">
+                    <div class="material-item" data-material-id="ankle_sprain" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">足関節ねんざの診療</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2026年3月</div>
+                            <div class="material-description">
+                                前距腓靱帯、踵腓靱帯などの外側靱帯損傷を中心に、足関節ねんざに対するエコーを用いた評価・診療の考え方を解説した資料です。急性期の靱帯損傷評価や治療方針の決定に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item" data-material-id="ankle_lateral" data-category="lower">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-lower"><i class="fas fa-walking"></i> 下肢</span>
+                            <span class="access-status"></span>
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">足関節外側</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2026年3月</div>
+                            <div class="material-description">
+                                前距腓靱帯、踵腓靱帯、長短腓骨筋腱など足関節外側の構造物のエコー描出法について詳しく解説した資料です。足関節外側の不安定性評価や腓骨筋腱障害の評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 体幹 -->
+                    <div class="material-item" data-material-id="cervical_anterior" data-category="trunk">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-trunk"><i class="fas fa-user"></i> 体幹</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">頚部前面</div>
-                            <div class="material-date">開催日: 2025年9月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年9月</div>
                             <div class="material-description">
                                 頚椎神経根、腕神経叢、斜角筋、胸鎖乳突筋などの頚部前面の構造物のエコー描出法について詳しく解説した資料です。頚部痛や上肢のしびれ・疼痛の原因究明、神経根障害の評価に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -904,16 +1391,23 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="lumbar_region">
+                    <div class="material-item" data-material-id="lumbar_region" data-category="trunk">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-trunk"><i class="fas fa-user"></i> 体幹</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">腰部</div>
-                            <div class="material-date">開催日: 2024年9月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2024年9月</div>
                             <div class="material-description">
                                 腰部多裂筋、腰方形筋、脊柱起立筋などの腰部深層筋群のエコー描出法と筋厚測定について詳しく解説した資料です。腰痛評価や腰椎安定性の評価に重要な内容です。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -921,16 +1415,47 @@
                         </div>
                     </div>
 
-                    <div class="material-item" data-material-id="lumbar_part2">
+                    <div class="material-item" data-material-id="lumbar_part2" data-category="trunk">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-trunk"><i class="fas fa-user"></i> 体幹</span>
+                            <span class="access-status"></span>
+                        </div>
                         <div class="material-info">
                             <div class="material-title">腰部（Part2）</div>
-                            <div class="material-date">開催日: 2025年8月</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2025年8月</div>
                             <div class="material-description">
                                 大腰筋、腸骨筋、梨状筋などの腰部周辺筋群の応用的なエコー描出法について解説した資料です。腰椎前弯異常や股関節機能との関連性評価に活用できます。
                             </div>
                         </div>
                         <div class="material-purchase">
-                            <div class="material-price">¥1,500</div>
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
+                            <button class="purchase-btn" disabled>
+                                <i class="fas fa-clock"></i>
+                                準備中
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="material-item" data-material-id="cervical_posterior" data-category="trunk">
+                        <div class="material-card-top">
+                            <span class="category-badge cat-trunk"><i class="fas fa-user"></i> 体幹</span>
+                            <span class="access-status"></span>
+                        </div>
+                        <div class="material-info">
+                            <div class="material-title">頚部後面</div>
+                            <div class="material-date"><i class="far fa-calendar-alt"></i> 開催日: 2026年4月</div>
+                            <div class="material-description">
+                                頭板状筋、頭半棘筋、大後頭直筋などの頚部後面の筋群のエコー描出法について詳しく解説した資料です。頚部後面痛や緊張型頭痛の評価に活用できます。
+                            </div>
+                        </div>
+                        <div class="material-purchase">
+                            <div class="material-price-wrap">
+                                <span class="price-label">個別購入</span>
+                                <div class="material-price">¥1,500</div>
+                            </div>
                             <button class="purchase-btn" disabled>
                                 <i class="fas fa-clock"></i>
                                 準備中
@@ -958,7 +1483,7 @@
                     </h3>
                     <div class="promotion-text">
                         <p>
-                            <strong>2980円プラン</strong>にご登録いただくと、<strong>PDF資料</strong>や<strong>エコー動画</strong>を含む<strong>すべてのコンテンツ</strong>にアクセスできます。
+                            <strong>1980円プラン</strong>にご登録いただくと、<strong>PDF資料</strong>が見放題になります。<strong>4980円プラン</strong>ならさらに<strong>アーカイブ動画・エコー動画</strong>を含む<strong>すべてのコンテンツ</strong>にアクセスできます。
                         </p>
                         <p>
                             個別購入よりも<strong>お得</strong>にご利用いただけます。
@@ -969,7 +1494,7 @@
                         プラン登録ページへ
                     </a>
                     <p class="plan-info">
-                        1980円プラン / 2980円プランからお選びいただけます
+                        1980円プラン / 4980円プランからお選びいただけます
                     </p>
                 </div>
             </div>
@@ -1011,7 +1536,7 @@
             addDoc,
             serverTimestamp
         } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-        import { 
+        import {
             getStorage,
             ref,
             getDownloadURL
@@ -1262,16 +1787,19 @@
         // 一般利用者向けに「準備中」メッセージを表示
         function showComingSoonMessage() {
             return `
-                <div style="background: rgba(255, 193, 7, 0.15); border: 2px solid rgba(255, 193, 7, 0.5); 
+                <div style="background: rgba(255, 193, 7, 0.15); border: 2px solid rgba(255, 193, 7, 0.5);
                             border-radius: 12px; padding: 40px 30px; margin: 40px 0; text-align: center;">
                     <i class="fas fa-clock" style="font-size: 3rem; color: #ffc107; margin-bottom: 20px;"></i>
                     <h2 style="color: #ffc107; margin-bottom: 15px; font-size: 1.5rem;">
-                        準備中です
+                        PDF資料はまもなく公開予定です
                     </h2>
-                    <p style="color: #e0e0e0; font-size: 1rem; line-height: 1.8;">
-                        PDF資料は現在準備中です。<br>
-                        公開まで今しばらくお待ちください。
+                    <p style="color: #e0e0e0; font-size: 1rem; line-height: 1.8; margin-bottom: 20px;">
+                        1980円プランにご登録いただくと、講義資料PDFが見放題になります。<br>
+                        公開までしばらくお待ちください。
                     </p>
+                    <a href="salon-about.html" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #667eea, #764ba2); color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                        <i class="fas fa-info-circle"></i> 有料会員の内容を見る
+                    </a>
                 </div>
             `;
         }
@@ -1292,14 +1820,18 @@
                 }
 
                 // 管理者の場合：通常の処理を実行
+                // PDF資料は1980円プラン以上（basic/premium）で閲覧可能
                 const userPlan = await getUserPlan(user);
-                const isPremium = userPlan === 'premium';
+                const hasBasicAccess = userPlan === 'basic' || userPlan === 'premium';
 
                 // 購入済みPDF資料を取得
                 const purchasedMaterials = await getPurchasedMaterials(user);
 
                 // 各資料のボタン状態を更新
-                updateMaterialButtons(isPremium, purchasedMaterials);
+                updateMaterialButtons(hasBasicAccess, purchasedMaterials);
+
+                // カードの見た目にアクセス状態を反映（表示のみ・権限判定には関与しない）
+                applyCardAccessStyles(hasBasicAccess, purchasedMaterials);
             } catch (error) {
                 console.error('資料ページの初期化エラー:', error);
             }
@@ -1343,8 +1875,30 @@
             }
         }
 
+        // カードの見た目にアクセス状態を反映する（純粋に表示のみ。アクセス制御は行わない）
+        function applyCardAccessStyles(hasBasicAccess, purchasedMaterials) {
+            const materialItems = document.querySelectorAll('.material-item');
+            materialItems.forEach((item) => {
+                const materialId = item.dataset.materialId;
+                if (!materialId) return;
+
+                const statusChip = item.querySelector('.access-status');
+                item.classList.remove('card-plan-access', 'card-purchased');
+
+                if (purchasedMaterials.includes(materialId)) {
+                    item.classList.add('card-purchased');
+                    if (statusChip) statusChip.innerHTML = '<i class="fas fa-check-circle"></i> 購入済み';
+                } else if (hasBasicAccess) {
+                    item.classList.add('card-plan-access');
+                    if (statusChip) statusChip.innerHTML = '<i class="fas fa-crown"></i> プランで閲覧可';
+                } else {
+                    if (statusChip) statusChip.innerHTML = '';
+                }
+            });
+        }
+
         // 資料ボタンの状態を更新
-        function updateMaterialButtons(isPremium, purchasedMaterials) {
+        function updateMaterialButtons(hasBasicAccess, purchasedMaterials) {
             const user = auth.currentUser;
             const materialItems = document.querySelectorAll('.material-item');
             materialItems.forEach((item) => {
@@ -1368,15 +1922,23 @@
                 }
 
                 const isPurchased = purchasedMaterials.includes(materialId);
-                const hasAccess = isPremium || isPurchased;
+                const hasAccess = hasBasicAccess || isPurchased;
+                const priceWrap = item.querySelector('.material-price-wrap');
 
                 if (hasAccess) {
-                    // アクセス可能な場合
+                    // アクセス可能な場合（プラン特典 or 個別購入済み）は
+                    // 個別購入価格の表示自体が不要かつ紛らわしいため非表示にする
+                    if (priceWrap) priceWrap.style.display = 'none';
                     purchaseBtn.disabled = false;
                     purchaseBtn.innerHTML = '<i class="fas fa-download"></i> ダウンロード';
                     purchaseBtn.classList.remove('disabled');
-                    purchaseBtn.onclick = () => downloadMaterial(materialId);
+                    purchaseBtn.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        downloadMaterial(materialId);
+                    };
                 } else {
+                    if (priceWrap) priceWrap.style.display = '';
                     // 購入が必要な場合
                     purchaseBtn.disabled = false;
                     purchaseBtn.innerHTML = '<i class="fas fa-shopping-cart"></i> 購入する';
@@ -1392,6 +1954,25 @@
             });
         }
 
+        // モバイルブラウザ判定（iOS Safariのユーザージェスチャー制限対策に使用）
+        function isMobileBrowser() {
+            return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
+                || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        }
+
+        // PDFを開く（モバイルは同一タブ、PCは新しいタブ）
+        function openPdfUrl(downloadURL) {
+            if (isMobileBrowser()) {
+                window.location.assign(downloadURL);
+                return;
+            }
+
+            const opened = window.open(downloadURL, '_blank', 'noopener,noreferrer');
+            if (!opened) {
+                window.location.assign(downloadURL);
+            }
+        }
+
         // PDF資料をダウンロード
         async function downloadMaterial(materialId) {
             const user = auth.currentUser;
@@ -1402,30 +1983,33 @@
                 return;
             }
 
-            // 管理者判定
-            const isAdmin = await isAdminUser(user);
-            if (!isAdmin) {
-                alert('現在、PDF資料は準備中です。');
-                return;
+            // モバイルSafariは非同期処理後にwindow.open/link.clickが無効になるため、
+            // ユーザータップ直後（await前）にプレースホルダを開いてジェスチャーを保持する
+            const pdfWindow = isMobileBrowser() ? null : window.open('about:blank', '_blank');
+            if (pdfWindow) {
+                pdfWindow.document.write('<p style="font-family:sans-serif;text-align:center;margin-top:40px">PDFを読み込み中...</p>');
             }
 
             try {
                 console.log(`📥 PDFダウンロード開始: ${materialId}`);
                 
-                // アクセス権限を再確認
+                // アクセス権限を再確認（PDF資料は1980円プラン以上で閲覧可能）
                 const userPlan = await getUserPlan(user);
-                const isPremium = userPlan === 'premium';
+                const hasBasicAccess = userPlan === 'basic' || userPlan === 'premium';
                 const purchasedMaterials = await getPurchasedMaterials(user);
                 const isPurchased = purchasedMaterials.includes(materialId);
+                const isAdmin = await isAdminUser(user);
 
                 console.log(`🔍 アクセス権限チェック:`, {
                     materialId,
-                    isPremium,
+                    hasBasicAccess,
                     isPurchased,
+                    isAdmin,
                     purchasedMaterials
                 });
 
-                if (!isPremium && !isPurchased) {
+                if (!isAdmin && !hasBasicAccess && !isPurchased) {
+                    if (pdfWindow && !pdfWindow.closed) pdfWindow.close();
                     alert('この資料を購入する必要があります。');
                     return;
                 }
@@ -1440,17 +2024,15 @@
                 const downloadURL = await getDownloadURL(storageRef);
                 console.log(`✅ ダウンロードURL取得成功: ${downloadURL.substring(0, 50)}...`);
 
-                // ダウンロードリンクを作成してクリック
-                const link = document.createElement('a');
-                link.href = downloadURL;
-                link.download = `${MATERIAL_TITLES[materialId] || materialId}.pdf`;
-                link.target = '_blank'; // 新しいタブで開く
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+                if (pdfWindow && !pdfWindow.closed) {
+                    pdfWindow.location.href = downloadURL;
+                } else {
+                    openPdfUrl(downloadURL);
+                }
 
                 console.log(`✅ PDF downloaded: ${materialId}`);
             } catch (error) {
+                if (pdfWindow && !pdfWindow.closed) pdfWindow.close();
                 console.error('❌ PDFダウンロードエラー:', error);
                 console.error('エラー詳細:', {
                     code: error.code,
@@ -1473,6 +2055,24 @@
                 alert(errorMessage);
             }
         }
+    </script>
+
+    <!-- カテゴリフィルタ機能（表示切替のみ） -->
+    <script>
+        // イベントデリゲーションで実装（非管理者向けにリストが差し替えられても安全）
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('.mat-filter-btn');
+            if (!btn) return;
+
+            document.querySelectorAll('.mat-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const category = btn.dataset.category;
+            document.querySelectorAll('.material-item').forEach(card => {
+                const match = category === 'all' || card.dataset.category === category;
+                card.classList.toggle('filtered-out', !match);
+            });
+        });
     </script>
 
     <!-- メニュートグル機能 -->
